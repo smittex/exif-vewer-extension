@@ -1,0 +1,10 @@
+{
+  "name": "EXIF Viewer",
+  "description": "Quick access to EXIF data of any image you view",
+  "version": "0.5",
+  "permissions": ["contextMenus"],
+  "icons": {
+    "16": "exif.png"
+	},
+  "background_page": "background.html"
+}
