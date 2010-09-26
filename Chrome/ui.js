@@ -21,6 +21,7 @@ function genericOnClick(info, tab) {
 
 				//http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css
 				var exif_data = EXIF.prettyHTML(img, {
+					"Make": chrome.i18n.getMessage("Make"),
 					"Model": chrome.i18n.getMessage("Model"),
 					"ExposureTime": chrome.i18n.getMessage("ExposureTime"),
 					"FNumber": chrome.i18n.getMessage("FNumber"),
