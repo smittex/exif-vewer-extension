@@ -3,10 +3,10 @@ del exif.zip
 
 xcopy "../Chrome" Output /E /F /Y
 
-rem For /r Output\ %%i in (*.js) do (
-rem jsmin < %%i > out.tmp
-rem copy out.tmp %%i
-rem Del /q out.tmp) 
+For /r Output\ %%i in (*.js) do (
+jsmin < %%i > out.tmp
+copy out.tmp %%i
+Del /q out.tmp) 
 
 
 
