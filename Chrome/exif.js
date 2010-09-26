@@ -313,7 +313,7 @@ function imageHasData(oImg)
 function getImageData(oImg, fncCallback) 
 {
 	BinaryAjax(
-		oImg.srcUrl,
+		oImg.src,
 		function(oHTTP) {
 			var oEXIF = findEXIFinJPEG(oHTTP.binaryResponse);
 			oImg.exifdata = oEXIF || {};
@@ -552,10 +552,27 @@ function readEXIFData(oFile, iStart, iLength)
 	return oTags;
 }
 
+function prettyPrint(data, a){
+	if(a == "ExposureTime"){
+		return float2exposure(data[a]);
+	} else {
+		return data[a];
+	}
+}
+
+function float2exposure(ex){
+	if(ex.toString().indexOf(".")>0){
+		var f = ex.toString().split(".")[1];
+		//alert(ex +"("+f+"): "+Math.pow(10, f.length) +"/"+ parseInt(f.replace(/^0*/, "")))
+		return "1/" + Math.pow(10, f.length) / parseInt(f.replace(/^0*/, ""));
+	} else {
+		return ex;
+	}
+}
 
 EXIF.getData = function(oImg, fncCallback) 
 {
-	if (!oImg.complete) return false;
+	//if (!oImg.complete) return false;
 	if (!imageHasData(oImg)) {
 		getImageData(oImg, fncCallback);
 	} else {
@@ -573,6 +590,7 @@ EXIF.getTag = function(oImg, strTag)
 EXIF.getAllTags = function(oImg) 
 {
 	if (!imageHasData(oImg)) return {};
+	alert(oImg)
 	var oData = oImg.exifdata;
 	var oAllTags = {};
 	for (var a in oData) {
@@ -600,6 +618,34 @@ EXIF.pretty = function(oImg)
 	}
 	return strPretty;
 }
+
+EXIF.prettyHTML = function(oImg, prop) 
+{
+	if (!imageHasData(oImg)) return "";
+	var oData = oImg.exifdata;
+	var strPretty = "";
+	var bAll = false;
+	if(!prop){
+		prop = {};
+		bAll = true;
+	}
+	for (var a in oData) {
+		if (oData.hasOwnProperty(a)) {
+			if(bAll || prop[a]){
+				prop[a] = prop[a]||a;
+				if (typeof oData[a] == "object") {
+					strPretty += "<tr><td>" + prop[a] + " </td><td> [" + oData[a].length + " values]</td></tr>";
+				} else {
+					strPretty += "<tr><td>" + prop[a] + " </td><td> " + prettyPrint(oData, a) + "</td></tr>";
+				}
+			}
+		}
+	}
+	if(strPretty != "")
+		strPretty = "<table width=100%>" + strPretty + "</table>";
+	return strPretty;
+}
+
 
 EXIF.readFromBinaryFile = function(oFile) {
 	return findEXIFinJPEG(oFile);

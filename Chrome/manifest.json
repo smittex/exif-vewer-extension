@@ -1,10 +1,17 @@
 {
-  "name": "EXIF Viewer",
-  "description": "Quick access to EXIF data of any image you view",
-  "version": "0.5",
-  "permissions": ["contextMenus"],
-  "icons": {
-    "16": "exif.png"
+	"name": "EXIF Viewer",
+	"description": "Quick access to EXIF data of any image you view",
+	"version": "0.2",
+	"default_locale": "en",
+	"permissions": [
+		"tabs",
+		"contextMenus",
+		"http://*/"
+	],
+	"icons": {
+		"16": "camera_blue-small.png",
+		"48": "camera_blue-middle.png",
+		"128": "camera_blue-large.png"
 	},
-  "background_page": "background.html"
+	"background_page": "background.html"
 }
