@@ -26,6 +26,7 @@ function genericOnClick(info, tab) {
 					"ExposureTime": chrome.i18n.getMessage("ExposureTime"),
 					"FNumber": chrome.i18n.getMessage("FNumber"),
 					"ExposureProgram": chrome.i18n.getMessage("ExposureProgram"),
+					"ExposureBias": chrome.i18n.getMessage("ExposureBias"),
 					"ISOSpeedRatings": chrome.i18n.getMessage("ISOSpeedRatings"),
 					"FocalLength": chrome.i18n.getMessage("FocalLength"),
 					"DateTimeOriginal": chrome.i18n.getMessage("DateTimeOriginal"),
