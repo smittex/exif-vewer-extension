@@ -1,7 +1,7 @@
 {
 	"name": "EXIF Viewer",
 	"description": "Quick access to EXIF data of any image you view",
-	"version": "0.6",
+	"version": "1.0",
 	"default_locale": "en",
 	"permissions": [
 		"tabs",
@@ -13,5 +13,6 @@
 		"48": "camera_blue-middle.png",
 		"128": "camera_blue-large.png"
 	},
-	"background_page": "background.html"
+	"background_page": "background.html",
+	"options_page": "options.html"
 }

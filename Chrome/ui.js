@@ -20,21 +20,13 @@ function genericOnClick(info, tab) {
 		EXIF.getData(img, function(){
 
 				//http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css
-				var exif_data = EXIF.prettyHTML(img, {
-					"Make": chrome.i18n.getMessage("Make"),
-					"Model": chrome.i18n.getMessage("Model"),
-					"ExposureTime": chrome.i18n.getMessage("ExposureTime"),
-					"FNumber": chrome.i18n.getMessage("FNumber"),
-					"ExposureProgram": chrome.i18n.getMessage("ExposureProgram"),
-					"ExposureBias": chrome.i18n.getMessage("ExposureBias"),
-					"ISOSpeedRatings": chrome.i18n.getMessage("ISOSpeedRatings"),
-					"FocalLength": chrome.i18n.getMessage("FocalLength"),
-					"DateTimeOriginal": chrome.i18n.getMessage("DateTimeOriginal"),
-					"ExposureProgram": chrome.i18n.getMessage("ExposureProgram"),
-					"MeteringMode": chrome.i18n.getMessage("MeteringMode"),
-					"Flash": chrome.i18n.getMessage("Flash"),
-					"WhiteBalance": chrome.i18n.getMessage("WhiteBalance")
-				});
+				var param = {};
+				for(name in exifAttributes){
+					if(exifAttributes[name].visible){
+						param[name] = chrome.i18n.getMessage(name)
+					}
+				}
+				var exif_data = EXIF.prettyHTML(img,param);
 				chrome.tabs.insertCSS(tab.id, {file: "css/redmond/jquery-ui-1.8.5.custom.css"});
 				chrome.tabs.executeScript(tab.id, {file: "jquery-1.4.2.min.js"}, function(){
 					chrome.tabs.executeScript(tab.id, {file: "jquery-ui-1.8.5.custom.min.js"}, function(){
@@ -58,10 +50,20 @@ function genericOnClick(info, tab) {
 }
 
 // Create one test item for each context type.
-  var context = "image"
+  var context = "image";
+  loadExifAttributes();
   var title = chrome.i18n.getMessage("menuitem");
   var id = chrome.contextMenus.create({"title": title, "contexts":[context],
                                        "onclick": genericOnClick});
   console.log("'" + context + "' item:" + id);
 
+  
+//-- Load exif attributes list;
+function loadExifAttributes(){
+	if(localStorage.getItem("exif_attributes")){
+		exifAttributes = JSON.parse(localStorage.getItem("exif_attributes"));
+	} else {
+		localStorage.setItem("exif_attributes", JSON.stringify(exifAttributes));
+	}
+}
 
