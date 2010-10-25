@@ -629,6 +629,17 @@ EXIF.prettyHTML = function(oImg, prop)
 		prop = {};
 		bAll = true;
 	}
+	for (name in prop){
+		if (oData.hasOwnProperty(name)) {
+
+				if (typeof oData[name] == "object") {
+					strPretty += "<tr><td>" + prop[name] + " </td><td> [" + oData[name].length + " values]</td></tr>";
+				} else {
+					strPretty += "<tr><td>" + prop[name] + " </td><td> " + prettyPrint(oData, name) + "</td></tr>";
+				}
+		}
+	}
+	/*
 	for (var a in oData) {
 		if (oData.hasOwnProperty(a)) {
 			if(bAll || prop[a]){
@@ -641,6 +652,7 @@ EXIF.prettyHTML = function(oImg, prop)
 			}
 		}
 	}
+	*/
 	if(strPretty != "")
 		strPretty = "<table width=100%>" + strPretty + "</table>";
 	return strPretty;

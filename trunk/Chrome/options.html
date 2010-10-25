@@ -2,6 +2,45 @@
 	<head>
 		<style type="text/css" title="currentStyle">
 			@import "css/redmond/jquery-ui-1.8.5.custom.css";
+
+	ul { list-style-type: none; margin: 0; padding: 0;  height:100%; }
+	ul li{  padding-left: 10px;}
+
+	#selectedattributes li { 
+		margin: 3px 3px 3px 3px;  
+		font-size: 0.9em; 
+		height: 20px; 
+		white-space: nowrap; 
+		border-radius: 3px;
+		border: 1px solid #87b6d9;
+		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#dddddd));
+		cursor: move;
+	}
+	#attributes li { 
+		margin: 3px 3px 3px 3px;  
+		font-size: 0.9em; 
+		height: 20px; 
+		white-space: nowrap; 
+		border-radius: 3px;
+		border: 1px solid #cccccc;
+		background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#FAFAFA));
+		cursor: move;
+		color:#777777;
+	}
+	ul li.ui-state-highlight{
+		background: #ffffff;
+		border: 1px solid #cccccc;
+	}
+
+	.attributes_layer{
+		width: 220px;
+
+	}
+	
+	.scrollframe{
+		height: 400px;
+		overflow: auto;
+	}
 		</style>
 		<script src="jquery-1.4.2.min.js"></script>
 		<script src="jquery-ui-1.8.5.custom.min.js"></script>
@@ -11,21 +50,36 @@
 		
 			var attributes = JSON.parse(localStorage.getItem("exif_attributes"));
 			$.each(attributes, function(name, attr){
-				$("#attributes").append(
-					$("<INPUT />").attr("type", "checkbox").attr("checked"+(attr.visible?"":"_not"), "true").attr("id", name)
-				).append(
-					$("<SPAN />").text(chrome.i18n.getMessage(name))
-				).append("<br />");
+					$("<li />").attr("id", name).text(chrome.i18n.getMessage(name)).appendTo(
+						(attr.visible)?"#selectedattributes":"#attributes"
+					);
 			})
-		
+
+			$("ul").sortable({
+				placeholder: 'ui-state-highlight',
+				connectWith: 'ul'
+			});
+
 		});
 		
 		
 		function saveOptions(){
 			try{
-				var attributes = JSON.parse(localStorage.getItem("exif_attributes"));
-				$.each(attributes, function(name, attr){
-					attr.visible = $("#"+name).is(':checked');
+				var attributes = {};//JSON.parse(localStorage.getItem("exif_attributes"));
+				//$.each(attributes, function(name, attr){
+				$("#selectedattributes li").each(function(i, elem){
+					var name = elem.getAttribute("id");
+					attributes[name] = {
+						visible: true,
+						pos: i
+					}
+				});
+				$("#attributes li").each(function(i, elem){
+					var name = elem.getAttribute("id");
+					attributes[name] = {
+						visible: false,
+						pos: i
+					}
 				});
 				
 				localStorage.setItem("exif_attributes", JSON.stringify(attributes));
@@ -49,7 +103,6 @@
 		</script>
 	</head>
 	<body>
-	
 		<table style="width:100%;height:100%;">
 		<tr>
 			<td valign="center">
@@ -57,10 +110,11 @@
 				<font size="5" face="calibri, tahoma" color="#2e6eaf">EXIF Viewer Extension Options</font>
 				<table style="border:8px solid #87b6d9; border-radius:10px; background-color:#e2e4ff;padding:15px;font-family: Calibri, tahoma">
 				<tr>
-					<td id="attributes" type="text"></td>
+					<td type="text" class="attributes_layer" valign="top">Selected attributes:<ul id="selectedattributes" ></ul></td>
+					<td type="text" class="attributes_layer" valign="top">Available attributes:<div class="scrollframe"><ul id="attributes" ><div></ul></td>
 				</tr>
 				<tr>
-					<td align="right"><hr/><input type="button" onclick="saveOptions();" value="Save Options" /></td>
+					<td align="right" colspan=2><hr/><input type="button" onclick="saveOptions();" value="Save Options" /></td>
 				</tr>
 				</table>
 				</center>

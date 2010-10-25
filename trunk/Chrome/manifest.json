@@ -6,7 +6,8 @@
 	"permissions": [
 		"tabs",
 		"contextMenus",
-		"http://*/"
+		"http://*/*",
+		"https://*/*"
 	],
 	"icons": {
 		"16": "camera_blue-small.png",
