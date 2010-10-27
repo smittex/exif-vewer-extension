@@ -1,5 +1,5 @@
 function exif_inject(data, title, closeButton){
-		$("<div />").html(data+"<hr />").append(
+		$("<div />").html(data+"<hr />").css("text-size", "0.9em").css("color", "black").append(
 			$("<a href='"+chrome.extension.getURL("options.html")+"' />")
 				.text("Options")
 				.css("font-size","0.8em")
