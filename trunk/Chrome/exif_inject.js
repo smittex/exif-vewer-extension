@@ -1,16 +1,14 @@
 function exif_inject(data, title, closeButton){
-		$("<div />").html(data+"<hr />").css("text-size", "0.9em").css("color", "black").append(
-			$("<a href='"+chrome.extension.getURL("options.html")+"' />")
-				.text("Options")
-				.css("font-size","0.8em")
-				.css("padding","2px 5px 2px 5px")
-				.css("float", "right")
-				.button()
-		).dialog({
+		$("<div />").html(data).dialog({
 			"minWidth" : 400,
 			"position": "center",
+			"resizable": false,
 			"title": title,
 			"closeOnEscape": true,
-			"closeText": 'hide'
+			"closeText": 'hide',
+			buttons: { 
+				"Configure": function() { document.location = chrome.extension.getURL("options.html"); },
+				"Close": function() { $(this).dialog("close"); },
+			}
 		});
 }
