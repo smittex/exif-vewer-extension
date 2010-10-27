@@ -93,6 +93,7 @@
 			$("#dialog").text(chrome.i18n.getMessage("optionsSaved")).dialog({
 				title: chrome.i18n.getMessage("optionsDone"),
 				modal: true,
+				resizable: false,
 				buttons: {
 					Ok: function() {
 						$( this ).dialog( "close" );
