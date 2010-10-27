@@ -27,9 +27,9 @@
 		cursor: move;
 		color:#777777;
 	}
-	ul li.ui-state-highlight{
-		background: #ffffff;
-		border: 1px solid #cccccc;
+	.ui-state-highlight{
+		background: #ffffff !important;
+		border: 1px solid #cccccc !important;
 	}
 
 	.attributes_layer{
@@ -48,6 +48,7 @@
 		
 		$(document).ready(function(){
 		
+			$("input[type='button']").css("font-size","0.8em").css("padding","2px 5px 2px 5px").button();
 			var attributes = JSON.parse(localStorage.getItem("exif_attributes"));
 			$.each(attributes, function(name, attr){
 					$("<li />").attr("id", name).text(chrome.i18n.getMessage(name)).appendTo(
