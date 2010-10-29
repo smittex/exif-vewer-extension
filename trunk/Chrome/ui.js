@@ -27,17 +27,21 @@ function genericOnClick(info, tab) {
 					}
 				}
 				var exif_data = EXIF.prettyHTML(img,param);
-				chrome.tabs.insertCSS(tab.id, {file: "css/redmond/jquery-ui-1.8.5.custom.css"});
+
 				chrome.tabs.executeScript(tab.id, {file: "jquery-1.4.2.min.js"}, function(){
-					chrome.tabs.executeScript(tab.id, {file: "jquery-ui-1.8.5.custom.min.js"}, function(){
-						chrome.tabs.executeScript(tab.id, {file: "exif_inject.js"}, function(){
-							if(exif_data == '')
-								exif_data = chrome.i18n.getMessage("noEXIF")
-							var js = 'try{exif_inject("'+
-								exif_data+'","'+
-								chrome.i18n.getMessage("dialogTitle")+'"'+
-								');}catch(e){alert(e)}';
-							chrome.tabs.executeScript(tab.id, {code: js});
+					chrome.tabs.insertCSS(tab.id, {file: "css/redmond/jquery-ui-1.8.5.custom.css"}, function(){
+						chrome.tabs.executeScript(tab.id, {file: "jquery-ui-1.8.5.custom.min.js"}, function(){
+							chrome.tabs.executeScript(tab.id, {file: "exif_inject.js"}, function(){
+								chrome.tabs.insertCSS(tab.id, {file: "css/base.css"}, function(){
+									if(exif_data == '')
+										exif_data = chrome.i18n.getMessage("noEXIF")
+									var js = 'try{exif_inject("'+
+										exif_data+'","'+
+										chrome.i18n.getMessage("dialogTitle")+'"'+
+										');}catch(e){alert(e)}';
+									chrome.tabs.executeScript(tab.id, {code: js});
+								});
+							});
 						});
 					});
 				});

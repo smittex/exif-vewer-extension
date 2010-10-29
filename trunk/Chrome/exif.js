@@ -633,9 +633,9 @@ EXIF.prettyHTML = function(oImg, prop)
 		if (oData.hasOwnProperty(name)) {
 
 				if (typeof oData[name] == "object") {
-					strPretty += "<tr><td>" + prop[name] + " </td><td> [" + oData[name].length + " values]</td></tr>";
+					strPretty += "<tr><td class='exifTd'>" + prop[name] + " </td><td class='exifTd'> [" + oData[name].length + " values]</td></tr>";
 				} else {
-					strPretty += "<tr><td>" + prop[name] + " </td><td> " + prettyPrint(oData, name) + "</td></tr>";
+					strPretty += "<tr><td class='exifTd'>" + prop[name] + " </td><td class='exifTd'> " + prettyPrint(oData, name) + "</td></tr>";
 				}
 		}
 	}
