@@ -27,7 +27,14 @@ function genericOnClick(info, tab) {
 					}
 				}
 				var exif_data = EXIF.prettyHTML(img,param);
-
+				var gps_data = {
+					Latitude: EXIF.getTag(img, "GPSLatitude"),
+					Longitude: EXIF.getTag(img, "GPSLongitude"),
+					LatitudeRef: EXIF.getTag(img, "GPSLatitudeRef"),
+					LongitudeRef: EXIF.getTag(img, "GPSLongitudeRef"),
+					Position: EXIF.getTag(img, "GPSPosition")
+				}
+					
 				chrome.tabs.executeScript(tab.id, {file: "jquery-1.4.2.min.js"}, function(){
 					chrome.tabs.insertCSS(tab.id, {file: "css/redmond/jquery-ui-1.8.5.custom.css"}, function(){
 						chrome.tabs.executeScript(tab.id, {file: "jquery-ui-1.8.5.custom.min.js"}, function(){
@@ -35,11 +42,14 @@ function genericOnClick(info, tab) {
 								chrome.tabs.insertCSS(tab.id, {file: "css/base.css"}, function(){
 									if(exif_data == '')
 										exif_data = chrome.i18n.getMessage("noEXIF")
-									var js = 'try{exif_inject("'+
-										exif_data+'","'+
-										chrome.i18n.getMessage("dialogTitle")+'"'+
-										');}catch(e){alert(e)}';
-									chrome.tabs.executeScript(tab.id, {code: js});
+									chrome.tabs.executeScript(tab.id, {code: 'exif_inject("'+exif_data+'");'},function(){
+										if(gps_data.Latitude && gps_data.Longitude){
+											var gps = {};
+											gps.lat = Geo.parseDMS(gps_data.Latitude,gps_data.LatitudeRef);
+											gps.lng = Geo.parseDMS(gps_data.Longitude,gps_data.LongitudeRef);
+											chrome.tabs.executeScript(tab.id, {code: 'exif_injectMap("'+escape(JSON.stringify(gps))+'");'});
+										}
+									});
 								});
 							});
 						});
