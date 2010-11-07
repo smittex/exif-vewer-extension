@@ -1,7 +1,7 @@
 {
 	"name": "EXIF Viewer",
 	"description": "Quick access to EXIF data of any image you view",
-	"version": "1.1.6",
+	"version": "1.2.0",
 	"default_locale": "en",
 	"permissions": [
 		"tabs",
