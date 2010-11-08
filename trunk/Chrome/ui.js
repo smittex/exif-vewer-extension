@@ -36,8 +36,8 @@ function genericOnClick(info, tab) {
 				}
 					
 				chrome.tabs.executeScript(tab.id, {file: "jquery-1.4.2.min.js"}, function(){
-					chrome.tabs.insertCSS(tab.id, {file: "css/redmond/jquery-ui-1.8.5.custom.css"}, function(){
-						chrome.tabs.executeScript(tab.id, {file: "jquery-ui-1.8.5.custom.min.js"}, function(){
+					chrome.tabs.insertCSS(tab.id, {file: "css/redmond/jquery-ui-1.8.6.custom.css"}, function(){
+						chrome.tabs.executeScript(tab.id, {file: "jquery-ui-1.8.6.custom.min.js"}, function(){
 							chrome.tabs.executeScript(tab.id, {file: "exif_inject.js"}, function(){
 								chrome.tabs.insertCSS(tab.id, {file: "css/base.css"}, function(){
 									if(exif_data == '')
