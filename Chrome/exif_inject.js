@@ -23,7 +23,7 @@ function exif_injectMap(sData){
 	$("<iframe />")
 		.appendTo($("#ExifViewer").attr("id", ""))
 		.css("width", "100%")
-		.css("height", "200px")
+		.css("min-height", "200px")
 		.css("border", "1px solid #cccccc")
 		.attr("src","http://maps.google.com/maps?f=q&source=s_q&q="+data.lat+","+data.lng+"&output=embed&type=G_NORMAL_MAP");
 
