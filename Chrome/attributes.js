@@ -93,7 +93,8 @@ var exifAttributes = {
 		visible: false
 	},
 	FocalLength: {
-		visible: true
+		visible: true,
+		dim: "mm"
 	},
 	FlashEnergy: {
 		visible: false
@@ -171,10 +172,13 @@ var exifAttributes = {
 		visible: false
 	},
 	ImageWidth: {
-		visible: false
+		visible: false,
+		dim: "px"
+		
 	},
 	ImageHeight: {
-		visible: false
+		visible: false,
+		dim: "px"
 	},
 	ExifIFDPointer: {
 		visible: false

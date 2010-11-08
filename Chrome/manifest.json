@@ -10,9 +10,9 @@
 		"https://*/*"
 	],
 	"icons": {
-		"16": "camera_blue-small.png",
-		"48": "camera_blue-middle.png",
-		"128": "camera_blue-large.png"
+		"16": "camera_blue-16.png",
+		"48": "camera_blue-48.png",
+		"128": "camera_blue-128.png"
 	},
 	"background_page": "background.html",
 	"options_page": "options.html"

@@ -630,13 +630,15 @@ EXIF.prettyHTML = function(oImg, prop)
 		bAll = true;
 	}
 	for (name in prop){
-		if (oData.hasOwnProperty(name)) {
+		if(prop[name].visible){
+			if (oData.hasOwnProperty(name)) {
 
-				if (typeof oData[name] == "object") {
-					strPretty += "<tr><td class='exifTd'>" + prop[name] + " </td><td class='exifTd'> [" + oData[name].length + " values]</td></tr>";
-				} else {
-					strPretty += "<tr><td class='exifTd'>" + prop[name] + " </td><td class='exifTd'> " + prettyPrint(oData, name) + "</td></tr>";
-				}
+					if (typeof oData[name] == "object") {
+						strPretty += "<tr><td class='exifTd'>" + prop[name] + " </td><td class='exifTd'> [" + oData[name].length + " values]</td></tr>";
+					} else {
+						strPretty += "<tr><td class='exifTd'>" + prop[name] + " </td><td class='exifTd'> " + prettyPrint(oData, name) + (prop[name].dim?prop[name].dim:'')+"</td></tr>";
+					}
+			}
 		}
 	}
 	/*
