@@ -6,11 +6,11 @@
 
 
 var EXIF = {};
-
+//0x4019	LensInfo
+//0x0095	LensModel
 (function() {
 
 var bDebug = false;
-
 EXIF.Tags = {
 
 	// version tags
@@ -84,7 +84,16 @@ EXIF.Tags = {
 
 	// other tags
 	0xA005 : "InteroperabilityIFDPointer",
-	0xA420 : "ImageUniqueID"		// Identifier assigned uniquely to each image
+	0xA420 : "ImageUniqueID",		// Identifier assigned uniquely to each image
+	
+	// Lens tag
+	
+	/*0xA432	: "LensInfo", //	rational64u[4]	ExifIFD	(4 rational values giving focal and aperture ranges, called LensSpecification by the EXIF spec.)
+	0xA433	: "LensMake", //	string	ExifIFD	 
+	0xA434	: "LensModel", //	string	ExifIFD	 
+	0xA435	: "LensSerialNumber",
+	0xFDEA :	"Lens"*/
+	
 };
 
 EXIF.TiffTags = {
@@ -120,7 +129,12 @@ EXIF.TiffTags = {
 	0x0110 : "Model",
 	0x0131 : "Software",
 	0x013B : "Artist",
-	0x8298 : "Copyright"
+	0x8298 : "Copyright",
+	0xA432	: "LensInfo", //	rational64u[4]	ExifIFD	(4 rational values giving focal and aperture ranges, called LensSpecification by the EXIF spec.)
+	0xA433	: "LensMake", //	string	ExifIFD	 
+	0xA434	: "LensModel", //	string	ExifIFD	 
+	0xA435	: "LensSerialNumber",
+	0xFDEA :	"Lens"	
 }
 
 EXIF.GPSTags = {
@@ -234,6 +248,16 @@ EXIF.StringValues = {
 		5 : "Color sequential area sensor",
 		7 : "Trilinear sensor",
 		8 : "Color sequential linear sensor"
+	},
+	Orientation: {//	int16u	IFD0	
+		1: "Horizontal (normal) ",
+		2: "Mirror horizontal ",
+		3: "Rotate 180 ",
+		4: "Mirror vertical ",
+		5: "Mirror horizontal and rotate 270 CW ",
+		6: "Rotate 90 CW ",
+		7: "Mirror horizontal and rotate 90 CW ",
+		8: "Rotate 270 CW"
 	},
 	SceneCaptureType : {
 		0 : "Standard",
@@ -514,6 +538,7 @@ function readEXIFData(oFile, iStart, iLength)
 				case "Sharpness" : 
 				case "SubjectDistanceRange" :
 				case "FileSource" :
+				case "Orientation" :
 					oEXIFTags[strTag] = EXIF.StringValues[strTag][oEXIFTags[strTag]];
 					break;
 	
@@ -564,7 +589,7 @@ function float2exposure(ex){
 	if(ex.toString().indexOf(".")>0){
 		var f = ex.toString().split(".")[1];
 		//alert(ex +"("+f+"): "+Math.pow(10, f.length) +"/"+ parseInt(f.replace(/^0*/, "")))
-		return "1/" + Math.pow(10, f.length) / parseInt(f.replace(/^0*/, ""));
+		return "1/" + Math.floor(Math.pow(10, f.length) / parseInt(f.replace(/^0*/, ""))).toString();
 	} else {
 		return ex;
 	}
@@ -630,16 +655,16 @@ EXIF.prettyHTML = function(oImg, prop)
 		bAll = true;
 	}
 	for (name in prop){
-		if(prop[name].visible){
+		//if(prop[name].visible){
 			if (oData.hasOwnProperty(name)) {
 
 					if (typeof oData[name] == "object") {
 						strPretty += "<tr><td class='exifTd'>" + prop[name] + " </td><td class='exifTd'> [" + oData[name].length + " values]</td></tr>";
 					} else {
-						strPretty += "<tr><td class='exifTd'>" + prop[name] + " </td><td class='exifTd'> " + prettyPrint(oData, name) + (prop[name].dim?prop[name].dim:'')+"</td></tr>";
+						strPretty += "<tr><td class='exifTd'>" + prop[name] + " </td><td class='exifTd'> " + prettyPrint(oData, name) +"</td></tr>";
 					}
 			}
-		}
+		//}
 	}
 	/*
 	for (var a in oData) {

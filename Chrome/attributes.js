@@ -272,5 +272,10 @@ var exifAttributes = {
 	},
 	Copyright: {
 		visible: false
-	}
+	},
+	"LensInfo": {visible:true},
+	"LensMake": {visible:true},
+	"LensModel": {visible:true},	
+	"LensSerialNumber": {visible:true},	
+	"Lens": {visible:true},	
 }
