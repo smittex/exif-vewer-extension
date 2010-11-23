@@ -5,11 +5,6 @@ function image(src){
 // A generic onclick callback function.
 function genericOnClick(info, tab) {
 	try{
-		console.log("item " + info.menuItemId + " was clicked");
-		console.log("mediaType " + info.mediaType  + " was clicked");
-		console.log("linkUrl  " + info.linkUrl  + " was clicked");
-		console.log("selectionText  " + info.selectionText  + " was clicked");
-
 		if(info.pageUrl .indexOf(".jpg") == info.pageUrl .length-4 ||
 			info.pageUrl .indexOf(".jpeg") == info.pageUrl .length-5){
 			
@@ -20,12 +15,14 @@ function genericOnClick(info, tab) {
 		EXIF.getData(img, function(){
 
 				//http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css
+				
 				var param = {};
 				for(name in exifAttributes){
 					if(exifAttributes[name].visible){
 						param[name] = chrome.i18n.getMessage(name)
 					}
 				}
+				
 				var exif_data = EXIF.prettyHTML(img,param);
 				var gps_data = {
 					Latitude: EXIF.getTag(img, "GPSLatitude"),
