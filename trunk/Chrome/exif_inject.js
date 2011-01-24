@@ -14,7 +14,12 @@ function exif_inject(data){
 			"closeOnEscape": true,
 			"closeText": 'hide',
 			"buttons": buttons
-		});
+		}).prev("div.ui-dialog-titlebar").prepend(
+			$("<img />").attr("src", "chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/camera_blue-16.png").css({
+				"float":"left",
+				"padding-right": "5px"
+			})
+		);
 }
 
 

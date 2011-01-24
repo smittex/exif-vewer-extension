@@ -72,9 +72,15 @@ function genericOnClick(info, tab) {
 //-- Load exif attributes list;
 function loadExifAttributes(){
 	if(localStorage.getItem("exif_attributes")){
-		exifAttributes = JSON.parse(localStorage.getItem("exif_attributes"));
-	} else {
-		localStorage.setItem("exif_attributes", JSON.stringify(exifAttributes));
-	}
+		var tmp = JSON.parse(localStorage.getItem("exif_attributes"));
+		exifAttributes = $.extend(exifAttributes, JSON.parse(localStorage.getItem("exif_attributes")));
+		//exifAttributes = $.map($.extend(exifAttributes, tmp) , function(id){
+		//	console.log(JSON.stringify(tmp[id]));
+		//	return $.extend(exifAttributes[id], tmp[id]);
+		//});
+		
+	} 
+	localStorage.setItem("exif_attributes", JSON.stringify(exifAttributes));
+	
 }
 

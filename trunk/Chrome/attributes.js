@@ -1,6 +1,7 @@
 var exifAttributes = {
 	ExifVersion: {
-		visible: false
+		visible: false,
+		dim: ""
 	},
 	FlashpixVersion: {
 		visible: false

@@ -9,8 +9,6 @@ copy out.tmp "%%i"
 Del /q out.tmp) 
 
 
-
-
 7z.exe a -tzip exif.zip .\Output\*
 
 del "Output\*" /Q /F /s
