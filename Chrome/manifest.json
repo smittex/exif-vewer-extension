@@ -1,7 +1,7 @@
 {
 	"name": "EXIF Viewer",
 	"description": "Quick access to EXIF data of any image you view",
-	"version": "1.2.3",
+	"version": "1.2.4",
 	"default_locale": "en",
 	"permissions": [
 		"tabs",
@@ -14,6 +14,7 @@
 		"48": "camera_blue-48.png",
 		"128": "camera_blue-128.png"
 	},
+	"key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD7Gi/vw+R3ugGNTUw8jFaiJQ90vRyqglq02yo6GGf5NOjV5LitswjEY+AqDW0pmC0Lx/XoH/PDCdmjA5aCnCLdzurRZnuf56efcy1HC+B5D8kXqQ/BNOr3/ngheLDR1eoWDWHYrN8HXICtEF5LHCsnbgiAbCpvKzpcdDsV4ttLpQIDAQAB",
 	"background_page": "background.html",
 	"options_page": "options.html"
 }
