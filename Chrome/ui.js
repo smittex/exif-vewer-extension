@@ -39,7 +39,7 @@ function genericOnClick(info, tab) {
 								chrome.tabs.insertCSS(tab.id, {file: "css/base.css"}, function(){
 									if(exif_data == '')
 										exif_data = chrome.i18n.getMessage("noEXIF")
-									chrome.tabs.executeScript(tab.id, {code: 'exif_inject("'+exif_data+'");'},function(){
+									chrome.tabs.executeScript(tab.id, {code: 'exif_inject("'+exif_data+'", "'+img.src+'");'},function(){
 										if(gps_data.Latitude && gps_data.Longitude){
 											var gps = {};
 											gps.lat = Geo.parseDMS(gps_data.Latitude,gps_data.LatitudeRef);

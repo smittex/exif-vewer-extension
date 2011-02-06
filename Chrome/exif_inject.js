@@ -1,4 +1,4 @@
-function exif_inject(data){
+function exif_inject(data, url){
 	var buttons = {};
 	buttons[chrome.i18n.getMessage("dialogConfigure")] = function() { document.location = chrome.extension.getURL("options.html"); };
 	buttons[chrome.i18n.getMessage("dialogClose")] = function() { $(this).dialog("close"); }
@@ -19,7 +19,17 @@ function exif_inject(data){
 				"float":"left",
 				"padding-right": "5px"
 			})
-		);
+		).parent(".ui-dialog").children(".ui-dialog-buttonpane").prepend(
+			$("<div style='float:left;line-height:38px;padding:8px 0 0 0;'>")
+			.append('<a href="http://twitter.com/share" class="twitter-share-button" data-url="'+url+'" data-count="horizontal">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>')
+			.append(
+				$('<iframe src="http://www.facebook.com/plugins/like.php?href='+url+'&amp;layout=button_count&amp;show_faces=true&amp;width=50&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:110px; height:21px;" allowTransparency="true"></iframe>')
+			)
+		)
+		
+		/*.prepend(
+			$('<iframe src="http://www.facebook.com/plugins/like.php?href=ya.ru&amp;layout=button_count&amp;show_faces=true&amp;width=50&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:21px;" allowTransparency="true"></iframe>')
+		)*/
 }
 
 
