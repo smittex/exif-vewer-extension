@@ -19,7 +19,7 @@ function exif_inject(data, url){
 				"float":"left",
 				"padding-right": "5px"
 			})
-		).parent(".ui-dialog").children(".ui-dialog-buttonpane").prepend(
+		).parent(".ui-dialog").css({"direction": "ltr"}).children(".ui-dialog-buttonpane").prepend(
 			$("<div style='float:left;line-height:38px;padding:8px 0 0 0;'>")
 			.append('<a href="http://twitter.com/share" class="twitter-share-button" data-url="'+url+'" data-count="horizontal">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>')
 			.append(
