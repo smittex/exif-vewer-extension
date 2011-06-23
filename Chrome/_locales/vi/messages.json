@@ -12,7 +12,13 @@
         "dialogConfigure":
                 {"message":"Cấu hình"}, 
         "dialogClose":
-                {"message":"Đóng"},
+                {"message":"Đóng"}, 
+	"dialogExpand": {
+		"message": "Mở rộng"
+	}, 
+	"dialogCollapse": {
+		"message": "Thu gọn"
+	},
         "dialogTabData":
                 {"message":"Dữ liệu"},
         "dialogTabGeolocation":
@@ -47,7 +53,7 @@
         "MeteringMode": {"message": "Chế độ đo sáng"},
         "Lightsource": {"message": "Nguồn sáng"},
         "Flash": {"message": "Có dùng đèn phụ trợ?"},
-        "SubjectArea": ​​{ "message": "Diện tích chủ thể"},
+        "SubjectArea": ​​{"message": "Diện tích chủ thể"},
         "FocalLength": {"message": "Chiều dài tiêu cự"},
         "FlashEnergy": {"message": "Năng lượng đèn"},
         "SpatialFrequencyResponse": {"message": "Đáp ứng tần số không gian"},
@@ -78,7 +84,7 @@
         "ImageHeight": {"message": "Hình ảnh chiều cao"},
         "ExifIFDPointer": {"message":"ExifIFDPointer"},
         "GPSInfoIFDPointer": {"message ":"GPSInfoIFDPointer"},
-        "InteroperabilityIFDPointer": { message":"InteroperabilityIFDPointer"},
+        "InteroperabilityIFDPointer": { "message":"InteroperabilityIFDPointer"},
         "BitsPerSample ": {"message":"BitsPerSample"},
         "Compression": {"message":"Độ nén"},
         "PhotoMetricInterpretation": {"message":"photometricinterpretation"},
@@ -103,7 +109,7 @@
         "DateTime": {"message": "Ngày thời gian"},
         "ImageDescription": {"message": "Hình ảnh mô tả"},
         "Make": {"message": "Hãng chế tạo máy ảnh"},
-        "Model": {“message":"Mẫu"},
+        "Model": {"message":"Mẫu"},
         "Software": {"message ":"Phần mềm"},
         "Artist": {"message":"Tác giả"},
         "Copyright": {"message ":"Bản quyền"},

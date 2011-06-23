@@ -19,7 +19,13 @@
         }, 
         "dialogClose": {
                 "message": "Κλείσιμο"
-        },
+        }, 
+		"dialogExpand": {
+			"message": "Ανάπτυξη"
+		}, 
+		"dialogCollapse": {
+			"message": "Κατάρρευση"
+		},
         "dialogTabData": {
                 "message": "Δεδομένα"
         },

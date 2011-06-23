@@ -4,11 +4,10 @@ function image(src){
 
 // A generic onclick callback function.
 function genericOnClick(info, tab) {
-	try{
-		if(info.pageUrl .indexOf(".jpg") == info.pageUrl .length-4 ||
-			info.pageUrl .indexOf(".jpeg") == info.pageUrl .length-5){
+		/*if(info.pageUrl .indexOf(".jpg") == info.pageUrl.length-4 ||
+			info.pageUrl .indexOf(".jpeg") == info.pageUrl.length-5){
 			
-		}
+		}*/
 		var img = {src: info.srcUrl};
 
 		
@@ -23,7 +22,20 @@ function genericOnClick(info, tab) {
 					}
 				}
 				
-				var exif_data = EXIF.prettyHTML(img,param);
+				//var exif_data = exif_data = EXIF.prettyHTML(img,param);
+				var aExifData = $.extend({}, exifAttributes);
+				$.each(aExifData, function(name, tag){
+					var data = EXIF.getTag(img, name);
+					if(data){
+						$.extend(tag, {
+							"data": EXIF.getTag(img, name),
+							"label": chrome.i18n.getMessage(name)
+						});
+					} else {
+						delete aExifData[name];
+					}
+				});
+
 				var gps_data = {
 					Latitude: EXIF.getTag(img, "GPSLatitude"),
 					Longitude: EXIF.getTag(img, "GPSLongitude"),
@@ -32,32 +44,35 @@ function genericOnClick(info, tab) {
 					Position: EXIF.getTag(img, "GPSPosition")
 				}
 					
-				chrome.tabs.executeScript(tab.id, {file: "jquery-1.4.2.min.js"}, function(){
-					chrome.tabs.insertCSS(tab.id, {file: "css/redmond/jquery-ui-1.8.6.custom.css"}, function(){
-						chrome.tabs.executeScript(tab.id, {file: "jquery-ui-1.8.6.custom.min.js"}, function(){
-							chrome.tabs.executeScript(tab.id, {file: "exif_inject.js"}, function(){
-								chrome.tabs.insertCSS(tab.id, {file: "css/base.css"}, function(){
-									if(exif_data == '')
-										exif_data = chrome.i18n.getMessage("noEXIF")
-									chrome.tabs.executeScript(tab.id, {code: 'exif_inject("'+exif_data+'", "'+img.src+'");'},function(){
-										if(gps_data.Latitude && gps_data.Longitude){
-											var gps = {};
-											gps.lat = Geo.parseDMS(gps_data.Latitude,gps_data.LatitudeRef);
-											gps.lng = Geo.parseDMS(gps_data.Longitude,gps_data.LongitudeRef);
-											chrome.tabs.executeScript(tab.id, {code: 'exif_injectMap("'+escape(JSON.stringify(gps))+'");'});
-										}
-									});
-								});
-							});
+
+				//if(exif_data == '')	exif_data = chrome.i18n.getMessage("noEXIF");
+				chrome.tabs.sendRequest(tab.id, {
+					'action': 'showExif',
+					'src': img.src,
+					'data': aExifData
+				}, function (){
+					if(gps_data.Latitude && gps_data.Longitude){
+						var gps = {};
+						gps.lat = Geo.parseDMS(gps_data.Latitude,gps_data.LatitudeRef);
+						gps.lng = Geo.parseDMS(gps_data.Longitude,gps_data.LongitudeRef);
+						chrome.tabs.sendRequest(tab.id, {
+							'action': 'showGps',
+							'src': img.src,
+							'data' : gps
 						});
-					});
+						//chrome.tabs.executeScript(tab.id, {code: 'exif_injectMap("'+escape(JSON.stringify(gps))+'");'});
+					}
 				});
-				//alert(EXIF.pretty(img));
+				/*
+				chrome.tabs.executeScript(tab.id, {code: 'exif_inject("'+exif_data+'", "'+img.src+'");'}, function(){
+					if(gps_data.Latitude && gps_data.Longitude){
+						var gps = {};
+						gps.lat = Geo.parseDMS(gps_data.Latitude,gps_data.LatitudeRef);
+						gps.lng = Geo.parseDMS(gps_data.Longitude,gps_data.LongitudeRef);
+						chrome.tabs.executeScript(tab.id, {code: 'exif_injectMap("'+escape(JSON.stringify(gps))+'");'});
+					}
+				});*/
 		});
-		//alert(info.srcUrl + "I was taken by a " + EXIF.getTag(img, "Make") + " " + EXIF.getTag(img, "Model"));
-	}catch(e){
-		alert(e);
-	}
 }
 
 // Create one test item for each context type.
@@ -66,7 +81,7 @@ function genericOnClick(info, tab) {
   var title = chrome.i18n.getMessage("menuitem");
   var id = chrome.contextMenus.create({"title": title, "contexts":[context],
                                        "onclick": genericOnClick});
-  console.log("'" + context + "' item:" + id);
+//console.log("'" + context + "' item:" + id);
 
   
 //-- Load exif attributes list;
