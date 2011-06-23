@@ -12,7 +12,7 @@ function exif_inject(data){
 			"closeText": 'hide',
 			"buttons": [{
 					text: chrome.i18n.getMessage("dialogExpand"),
-					disabled: true,
+					disabled: (Object.keys(data.data).length==0),
 					click: function(){
 						if($(this).find(".exifHiddenRow").is(":visible")){
 							$(this).find(".exifHiddenRow").hide();
@@ -84,7 +84,7 @@ chrome.extension.onRequest.addListener(	function (request, sender, callback) {
 		var methods = {
 			init : function( data ) {
 				return this.each(function(){
-					if(data.length){
+					if(Object.keys(data).length){
 						var table= $("<tbody />").appendTo($("<table />").attr("width", "100%").appendTo(this));
 						$.each(data, function(name, tag){
 							table.append(
