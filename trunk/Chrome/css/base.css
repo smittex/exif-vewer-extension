@@ -4,4 +4,14 @@
 	color: #000000 !important;
 	text-align: left !important;
 	background-color: #FFFFFF !important;
+	padding: 0 0 2px 2px;
+	border-bottom: 1px solid #eee;
+}
+
+.exifHiddenRow{
+	display: none;
+}
+
+.exifHiddenRow td{
+	color: #888 !important;
 }
