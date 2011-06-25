@@ -88,8 +88,11 @@ chrome.extension.sendRequest({
 					'margin': '0px'
 				})).parent().append(
 					$("<div />")
-						.addClass('overlayContainer').click(function(){
+						.addClass('overlayContainer').click(function(e){
+							console.log(e);
 							exif_inject(data);
+							e.stopPropagation();
+							e.preventDefault();
 						})
 				)
 			})
