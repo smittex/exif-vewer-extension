@@ -1,0 +1,382 @@
+/*
+ * jQuery UI CSS Framework 1.8.6
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Theming/API
+ */
+
+/* Layout helpers
+----------------------------------*/
+.exif-helper-hidden { display: none; }
+.exif-helper-hidden-accessible { position: absolute; left: -99999999px; }
+.exif-helper-reset { margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none; }
+.exif-helper-clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+.exif-helper-clearfix { display: inline-block; }
+/* required comment for clearfix to work in Opera \*/
+* html .exif-helper-clearfix { height:1%; }
+.exif-helper-clearfix { display:block; }
+/* end clearfix */
+.exif-helper-zfix { width: 100%; height: 100%; top: 0; left: 0; position: absolute; opacity: 0; filter:Alpha(Opacity=0); }
+
+
+/* Interaction Cues
+----------------------------------*/
+.exif-state-disabled { cursor: default !important; }
+
+
+/* Icons
+----------------------------------*/
+
+/* states and images */
+.exif-icon { display: block; text-indent: -99999px; overflow: hidden; background-repeat: no-repeat; }
+
+
+/* Misc visuals
+----------------------------------*/
+
+/* Overlays */
+.exif-widget-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+
+/*
+ * jQuery UI CSS Framework 1.8.6
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Theming/API
+ *
+ * To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Arial,%20sans-serif&fwDefault=bold&fsDefault=12px&cornerRadius=3px&bgColorHeader=66c0e5&bgTextureHeader=12_gloss_wave.png&bgImgOpacityHeader=80&borderColorHeader=649bb4&fcHeader=ffffff&iconColorHeader=d8e7f3&bgColorContent=fcfdfd&bgTextureContent=06_inset_hard.png&bgImgOpacityContent=100&borderColorContent=86cce9&fcContent=222222&iconColorContent=469bdd&bgColorDefault=dfeffc&bgTextureDefault=02_glass.png&bgImgOpacityDefault=85&borderColorDefault=c5dbec&fcDefault=2e6e9e&iconColorDefault=6da8d5&bgColorHover=d0e5f5&bgTextureHover=02_glass.png&bgImgOpacityHover=75&borderColorHover=79b7e7&fcHover=1d5987&iconColorHover=217bc0&bgColorActive=f5f8f9&bgTextureActive=06_inset_hard.png&bgImgOpacityActive=100&borderColorActive=79b7e7&fcActive=d46816&iconColorActive=f9bd01&bgColorHighlight=fbec88&bgTextureHighlight=01_flat.png&bgImgOpacityHighlight=55&borderColorHighlight=fad42e&fcHighlight=363636&iconColorHighlight=2e83ff&bgColorError=fef1ec&bgTextureError=02_glass.png&bgImgOpacityError=95&borderColorError=cd0a0a&fcError=cd0a0a&iconColorError=cd0a0a&bgColorOverlay=aaaaaa&bgTextureOverlay=01_flat.png&bgImgOpacityOverlay=0&opacityOverlay=30&bgColorShadow=395d7f&bgTextureShadow=01_flat.png&bgImgOpacityShadow=80&opacityShadow=50&thicknessShadow=8px&offsetTopShadow=-8px&offsetLeftShadow=-8px&cornerRadiusShadow=8px
+ */
+
+
+/* Component containers
+----------------------------------*/
+.exif-widget { font-family: Arial, sans-serif; font-size: 12px; }
+.exif-widget .exif-widget { font-size: 1em; }
+.exif-widget input, .exif-widget select, .exif-widget textarea, .exif-widget button { font-family: Arial, sans-serif; font-size: 1em; }
+.exif-widget-content { border: 1px solid #86cce9; background: #fcfdfd url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_inset-hard_100_fcfdfd_1x100.png) 50% bottom repeat-x; color: #222222; }
+.exif-widget-content a { color: #222222; }
+.exif-widget-header { border: 1px solid #649bb4; background: #66c0e5 url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_gloss-wave_80_66c0e5_500x100.png) 50% 50% repeat-x; color: #ffffff; font-weight: bold; }
+.exif-widget-header a { color: #ffffff; }
+
+/* Interaction states
+----------------------------------*/
+.exif-state-default, .exif-widget-content .exif-state-default, .exif-widget-header .exif-state-default { border: 1px solid #c5dbec; background: #dfeffc url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x; font-weight: bold; color: #2e6e9e; }
+.exif-state-default a, .exif-state-default a:link, .exif-state-default a:visited { color: #2e6e9e; text-decoration: none; }
+.exif-state-hover, .exif-widget-content .exif-state-hover, .exif-widget-header .exif-state-hover, .exif-state-focus, .exif-widget-content .exif-state-focus, .exif-widget-header .exif-state-focus { border: 1px solid #79b7e7; background: #d0e5f5 url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_glass_75_d0e5f5_1x400.png) 50% 50% repeat-x; font-weight: bold; color: #1d5987; }
+.exif-state-hover a, .exif-state-hover a:hover { color: #1d5987; text-decoration: none; }
+.exif-state-active, .exif-widget-content .exif-state-active, .exif-widget-header .exif-state-active { border: 1px solid #79b7e7; background: #f5f8f9 url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_inset-hard_100_f5f8f9_1x100.png) 50% 50% repeat-x; font-weight: bold; color: #d46816; }
+.exif-state-active a, .exif-state-active a:link, .exif-state-active a:visited { color: #d46816; text-decoration: none; }
+.exif-widget :active { outline: none; }
+
+/* Interaction Cues
+----------------------------------*/
+.exif-state-highlight, .exif-widget-content .exif-state-highlight, .exif-widget-header .exif-state-highlight  {border: 1px solid #fad42e; background: #fbec88 url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_flat_55_fbec88_40x100.png) 50% 50% repeat-x; color: #363636; }
+.exif-state-highlight a, .exif-widget-content .exif-state-highlight a,.exif-widget-header .exif-state-highlight a { color: #363636; }
+.exif-state-error, .exif-widget-content .exif-state-error, .exif-widget-header .exif-state-error {border: 1px solid #cd0a0a; background: #fef1ec url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x; color: #cd0a0a; }
+.exif-state-error a, .exif-widget-content .exif-state-error a, .exif-widget-header .exif-state-error a { color: #cd0a0a; }
+.exif-state-error-text, .exif-widget-content .exif-state-error-text, .exif-widget-header .exif-state-error-text { color: #cd0a0a; }
+.exif-priority-primary, .exif-widget-content .exif-priority-primary, .exif-widget-header .exif-priority-primary { font-weight: bold; }
+.exif-priority-secondary, .exif-widget-content .exif-priority-secondary,  .exif-widget-header .exif-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; }
+.exif-state-disabled, .exif-widget-content .exif-state-disabled, .exif-widget-header .exif-state-disabled { opacity: .35; filter:Alpha(Opacity=35); background-image: none; }
+
+/* Icons
+----------------------------------*/
+
+/* states and images */
+.exif-icon { width: 16px; height: 16px; background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_469bdd_256x240.png); }
+.exif-widget-content .exif-icon {background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_469bdd_256x240.png); }
+.exif-widget-header .exif-icon {background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_d8e7f3_256x240.png); }
+.exif-state-default .exif-icon { background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_6da8d5_256x240.png); }
+.exif-state-hover .exif-icon, .exif-state-focus .exif-icon {background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_217bc0_256x240.png); }
+.exif-state-active .exif-icon {background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_f9bd01_256x240.png); }
+.exif-state-highlight .exif-icon {background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_2e83ff_256x240.png); }
+.exif-state-error .exif-icon, .exif-state-error-text .exif-icon {background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_cd0a0a_256x240.png); }
+
+/* positioning */
+.exif-icon-carat-1-n { background-position: 0 0; }
+.exif-icon-carat-1-ne { background-position: -16px 0; }
+.exif-icon-carat-1-e { background-position: -32px 0; }
+.exif-icon-carat-1-se { background-position: -48px 0; }
+.exif-icon-carat-1-s { background-position: -64px 0; }
+.exif-icon-carat-1-sw { background-position: -80px 0; }
+.exif-icon-carat-1-w { background-position: -96px 0; }
+.exif-icon-carat-1-nw { background-position: -112px 0; }
+.exif-icon-carat-2-n-s { background-position: -128px 0; }
+.exif-icon-carat-2-e-w { background-position: -144px 0; }
+.exif-icon-triangle-1-n { background-position: 0 -16px; }
+.exif-icon-triangle-1-ne { background-position: -16px -16px; }
+.exif-icon-triangle-1-e { background-position: -32px -16px; }
+.exif-icon-triangle-1-se { background-position: -48px -16px; }
+.exif-icon-triangle-1-s { background-position: -64px -16px; }
+.exif-icon-triangle-1-sw { background-position: -80px -16px; }
+.exif-icon-triangle-1-w { background-position: -96px -16px; }
+.exif-icon-triangle-1-nw { background-position: -112px -16px; }
+.exif-icon-triangle-2-n-s { background-position: -128px -16px; }
+.exif-icon-triangle-2-e-w { background-position: -144px -16px; }
+.exif-icon-arrow-1-n { background-position: 0 -32px; }
+.exif-icon-arrow-1-ne { background-position: -16px -32px; }
+.exif-icon-arrow-1-e { background-position: -32px -32px; }
+.exif-icon-arrow-1-se { background-position: -48px -32px; }
+.exif-icon-arrow-1-s { background-position: -64px -32px; }
+.exif-icon-arrow-1-sw { background-position: -80px -32px; }
+.exif-icon-arrow-1-w { background-position: -96px -32px; }
+.exif-icon-arrow-1-nw { background-position: -112px -32px; }
+.exif-icon-arrow-2-n-s { background-position: -128px -32px; }
+.exif-icon-arrow-2-ne-sw { background-position: -144px -32px; }
+.exif-icon-arrow-2-e-w { background-position: -160px -32px; }
+.exif-icon-arrow-2-se-nw { background-position: -176px -32px; }
+.exif-icon-arrowstop-1-n { background-position: -192px -32px; }
+.exif-icon-arrowstop-1-e { background-position: -208px -32px; }
+.exif-icon-arrowstop-1-s { background-position: -224px -32px; }
+.exif-icon-arrowstop-1-w { background-position: -240px -32px; }
+.exif-icon-arrowthick-1-n { background-position: 0 -48px; }
+.exif-icon-arrowthick-1-ne { background-position: -16px -48px; }
+.exif-icon-arrowthick-1-e { background-position: -32px -48px; }
+.exif-icon-arrowthick-1-se { background-position: -48px -48px; }
+.exif-icon-arrowthick-1-s { background-position: -64px -48px; }
+.exif-icon-arrowthick-1-sw { background-position: -80px -48px; }
+.exif-icon-arrowthick-1-w { background-position: -96px -48px; }
+.exif-icon-arrowthick-1-nw { background-position: -112px -48px; }
+.exif-icon-arrowthick-2-n-s { background-position: -128px -48px; }
+.exif-icon-arrowthick-2-ne-sw { background-position: -144px -48px; }
+.exif-icon-arrowthick-2-e-w { background-position: -160px -48px; }
+.exif-icon-arrowthick-2-se-nw { background-position: -176px -48px; }
+.exif-icon-arrowthickstop-1-n { background-position: -192px -48px; }
+.exif-icon-arrowthickstop-1-e { background-position: -208px -48px; }
+.exif-icon-arrowthickstop-1-s { background-position: -224px -48px; }
+.exif-icon-arrowthickstop-1-w { background-position: -240px -48px; }
+.exif-icon-arrowreturnthick-1-w { background-position: 0 -64px; }
+.exif-icon-arrowreturnthick-1-n { background-position: -16px -64px; }
+.exif-icon-arrowreturnthick-1-e { background-position: -32px -64px; }
+.exif-icon-arrowreturnthick-1-s { background-position: -48px -64px; }
+.exif-icon-arrowreturn-1-w { background-position: -64px -64px; }
+.exif-icon-arrowreturn-1-n { background-position: -80px -64px; }
+.exif-icon-arrowreturn-1-e { background-position: -96px -64px; }
+.exif-icon-arrowreturn-1-s { background-position: -112px -64px; }
+.exif-icon-arrowrefresh-1-w { background-position: -128px -64px; }
+.exif-icon-arrowrefresh-1-n { background-position: -144px -64px; }
+.exif-icon-arrowrefresh-1-e { background-position: -160px -64px; }
+.exif-icon-arrowrefresh-1-s { background-position: -176px -64px; }
+.exif-icon-arrow-4 { background-position: 0 -80px; }
+.exif-icon-arrow-4-diag { background-position: -16px -80px; }
+.exif-icon-extlink { background-position: -32px -80px; }
+.exif-icon-newwin { background-position: -48px -80px; }
+.exif-icon-refresh { background-position: -64px -80px; }
+.exif-icon-shuffle { background-position: -80px -80px; }
+.exif-icon-transfer-e-w { background-position: -96px -80px; }
+.exif-icon-transferthick-e-w { background-position: -112px -80px; }
+.exif-icon-folder-collapsed { background-position: 0 -96px; }
+.exif-icon-folder-open { background-position: -16px -96px; }
+.exif-icon-document { background-position: -32px -96px; }
+.exif-icon-document-b { background-position: -48px -96px; }
+.exif-icon-note { background-position: -64px -96px; }
+.exif-icon-mail-closed { background-position: -80px -96px; }
+.exif-icon-mail-open { background-position: -96px -96px; }
+.exif-icon-suitcase { background-position: -112px -96px; }
+.exif-icon-comment { background-position: -128px -96px; }
+.exif-icon-person { background-position: -144px -96px; }
+.exif-icon-print { background-position: -160px -96px; }
+.exif-icon-trash { background-position: -176px -96px; }
+.exif-icon-locked { background-position: -192px -96px; }
+.exif-icon-unlocked { background-position: -208px -96px; }
+.exif-icon-bookmark { background-position: -224px -96px; }
+.exif-icon-tag { background-position: -240px -96px; }
+.exif-icon-home { background-position: 0 -112px; }
+.exif-icon-flag { background-position: -16px -112px; }
+.exif-icon-calendar { background-position: -32px -112px; }
+.exif-icon-cart { background-position: -48px -112px; }
+.exif-icon-pencil { background-position: -64px -112px; }
+.exif-icon-clock { background-position: -80px -112px; }
+.exif-icon-disk { background-position: -96px -112px; }
+.exif-icon-calculator { background-position: -112px -112px; }
+.exif-icon-zoomin { background-position: -128px -112px; }
+.exif-icon-zoomout { background-position: -144px -112px; }
+.exif-icon-search { background-position: -160px -112px; }
+.exif-icon-wrench { background-position: -176px -112px; }
+.exif-icon-gear { background-position: -192px -112px; }
+.exif-icon-heart { background-position: -208px -112px; }
+.exif-icon-star { background-position: -224px -112px; }
+.exif-icon-link { background-position: -240px -112px; }
+.exif-icon-cancel { background-position: 0 -128px; }
+.exif-icon-plus { background-position: -16px -128px; }
+.exif-icon-plusthick { background-position: -32px -128px; }
+.exif-icon-minus { background-position: -48px -128px; }
+.exif-icon-minusthick { background-position: -64px -128px; }
+.exif-icon-close { background-position: -80px -128px; }
+.exif-icon-closethick { background-position: -96px -128px; }
+.exif-icon-key { background-position: -112px -128px; }
+.exif-icon-lightbulb { background-position: -128px -128px; }
+.exif-icon-scissors { background-position: -144px -128px; }
+.exif-icon-clipboard { background-position: -160px -128px; }
+.exif-icon-copy { background-position: -176px -128px; }
+.exif-icon-contact { background-position: -192px -128px; }
+.exif-icon-image { background-position: -208px -128px; }
+.exif-icon-video { background-position: -224px -128px; }
+.exif-icon-script { background-position: -240px -128px; }
+.exif-icon-alert { background-position: 0 -144px; }
+.exif-icon-info { background-position: -16px -144px; }
+.exif-icon-notice { background-position: -32px -144px; }
+.exif-icon-help { background-position: -48px -144px; }
+.exif-icon-check { background-position: -64px -144px; }
+.exif-icon-bullet { background-position: -80px -144px; }
+.exif-icon-radio-off { background-position: -96px -144px; }
+.exif-icon-radio-on { background-position: -112px -144px; }
+.exif-icon-pin-w { background-position: -128px -144px; }
+.exif-icon-pin-s { background-position: -144px -144px; }
+.exif-icon-play { background-position: 0 -160px; }
+.exif-icon-pause { background-position: -16px -160px; }
+.exif-icon-seek-next { background-position: -32px -160px; }
+.exif-icon-seek-prev { background-position: -48px -160px; }
+.exif-icon-seek-end { background-position: -64px -160px; }
+.exif-icon-seek-start { background-position: -80px -160px; }
+/* exif-icon-seek-first is deprecated, use exif-icon-seek-start instead */
+.exif-icon-seek-first { background-position: -80px -160px; }
+.exif-icon-stop { background-position: -96px -160px; }
+.exif-icon-eject { background-position: -112px -160px; }
+.exif-icon-volume-off { background-position: -128px -160px; }
+.exif-icon-volume-on { background-position: -144px -160px; }
+.exif-icon-power { background-position: 0 -176px; }
+.exif-icon-signal-diag { background-position: -16px -176px; }
+.exif-icon-signal { background-position: -32px -176px; }
+.exif-icon-battery-0 { background-position: -48px -176px; }
+.exif-icon-battery-1 { background-position: -64px -176px; }
+.exif-icon-battery-2 { background-position: -80px -176px; }
+.exif-icon-battery-3 { background-position: -96px -176px; }
+.exif-icon-circle-plus { background-position: 0 -192px; }
+.exif-icon-circle-minus { background-position: -16px -192px; }
+.exif-icon-circle-close { background-position: -32px -192px; }
+.exif-icon-circle-triangle-e { background-position: -48px -192px; }
+.exif-icon-circle-triangle-s { background-position: -64px -192px; }
+.exif-icon-circle-triangle-w { background-position: -80px -192px; }
+.exif-icon-circle-triangle-n { background-position: -96px -192px; }
+.exif-icon-circle-arrow-e { background-position: -112px -192px; }
+.exif-icon-circle-arrow-s { background-position: -128px -192px; }
+.exif-icon-circle-arrow-w { background-position: -144px -192px; }
+.exif-icon-circle-arrow-n { background-position: -160px -192px; }
+.exif-icon-circle-zoomin { background-position: -176px -192px; }
+.exif-icon-circle-zoomout { background-position: -192px -192px; }
+.exif-icon-circle-check { background-position: -208px -192px; }
+.exif-icon-circlesmall-plus { background-position: 0 -208px; }
+.exif-icon-circlesmall-minus { background-position: -16px -208px; }
+.exif-icon-circlesmall-close { background-position: -32px -208px; }
+.exif-icon-squaresmall-plus { background-position: -48px -208px; }
+.exif-icon-squaresmall-minus { background-position: -64px -208px; }
+.exif-icon-squaresmall-close { background-position: -80px -208px; }
+.exif-icon-grip-dotted-vertical { background-position: 0 -224px; }
+.exif-icon-grip-dotted-horizontal { background-position: -16px -224px; }
+.exif-icon-grip-solid-vertical { background-position: -32px -224px; }
+.exif-icon-grip-solid-horizontal { background-position: -48px -224px; }
+.exif-icon-gripsmall-diagonal-se { background-position: -64px -224px; }
+.exif-icon-grip-diagonal-se { background-position: -80px -224px; }
+
+
+/* Misc visuals
+----------------------------------*/
+
+/* Corner radius */
+.exif-corner-tl { -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-top-left-radius: 3px; }
+.exif-corner-tr { -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-top-right-radius: 3px; }
+.exif-corner-bl { -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; border-bottom-left-radius: 3px; }
+.exif-corner-br { -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; border-bottom-right-radius: 3px; }
+.exif-corner-top { -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-top-left-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-top-right-radius: 3px; }
+.exif-corner-bottom { -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; border-bottom-right-radius: 3px; }
+.exif-corner-right {  -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-top-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; border-bottom-right-radius: 3px; }
+.exif-corner-left { -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-top-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; border-bottom-left-radius: 3px; }
+.exif-corner-all { -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
+
+/* Overlays */
+.exif-widget-overlay { background: #aaaaaa url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); }
+.exif-widget-shadow { margin: -8px 0 0 -8px; padding: 8px; background: #395d7f url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_flat_80_395d7f_40x100.png) 50% 50% repeat-x; opacity: .50;filter:Alpha(Opacity=50); -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px; }/*
+ * jQuery UI Resizable 1.8.6
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Resizable#theming
+ */
+.exif-resizable { position: relative;}
+.exif-resizable-handle { position: absolute;font-size: 0.1px;z-index: 99999; display: block;}
+.exif-resizable-disabled .exif-resizable-handle, .exif-resizable-autohide .exif-resizable-handle { display: none; }
+.exif-resizable-n { cursor: n-resize; height: 7px; width: 100%; top: -5px; left: 0; }
+.exif-resizable-s { cursor: s-resize; height: 7px; width: 100%; bottom: -5px; left: 0; }
+.exif-resizable-e { cursor: e-resize; width: 7px; right: -5px; top: 0; height: 100%; }
+.exif-resizable-w { cursor: w-resize; width: 7px; left: -5px; top: 0; height: 100%; }
+.exif-resizable-se { cursor: se-resize; width: 12px; height: 12px; right: 1px; bottom: 1px; }
+.exif-resizable-sw { cursor: sw-resize; width: 9px; height: 9px; left: -5px; bottom: -5px; }
+.exif-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
+.exif-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}/*
+ * jQuery UI Selectable 1.8.6
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Selectable#theming
+ */
+.exif-selectable-helper { position: absolute; z-index: 100; border:1px dotted black; }
+/*
+ * jQuery UI Button 1.8.6
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Button#theming
+ */
+.exif-button { display: inline-block; position: relative; padding: 0; margin-right: .1em; text-decoration: none !important; cursor: pointer; text-align: center; zoom: 1; overflow: visible; } /* the overflow property removes extra width in IE */
+.exif-button-icon-only { width: 2.2em; } /* to make room for the icon, a width needs to be set here */
+button.exif-button-icon-only { width: 2.4em; } /* button elements seem to need a little more width */
+.exif-button-icons-only { width: 3.4em; } 
+button.exif-button-icons-only { width: 3.7em; } 
+
+/*button text element */
+.exif-button .exif-button-text { display: block; line-height: 1.4;  }
+.exif-button-text-only .exif-button-text { padding: .4em 1em; }
+.exif-button-icon-only .exif-button-text, .exif-button-icons-only .exif-button-text { padding: .4em; text-indent: -9999999px; }
+.exif-button-text-icon-primary .exif-button-text, .exif-button-text-icons .exif-button-text { padding: .4em 1em .4em 2.1em; }
+.exif-button-text-icon-secondary .exif-button-text, .exif-button-text-icons .exif-button-text { padding: .4em 2.1em .4em 1em; }
+.exif-button-text-icons .exif-button-text { padding-left: 2.1em; padding-right: 2.1em; }
+/* no icon support for input elements, provide padding by default */
+input.exif-button { padding: .4em 1em; }
+
+/*button icon element(s) */
+.exif-button-icon-only .exif-icon, .exif-button-text-icon-primary .exif-icon, .exif-button-text-icon-secondary .exif-icon, .exif-button-text-icons .exif-icon, .exif-button-icons-only .exif-icon { position: absolute; top: 50%; margin-top: -8px; }
+.exif-button-icon-only .exif-icon { left: 50%; margin-left: -8px; }
+.exif-button-text-icon-primary .exif-button-icon-primary, .exif-button-text-icons .exif-button-icon-primary, .exif-button-icons-only .exif-button-icon-primary { left: .5em; }
+.exif-button-text-icon-secondary .exif-button-icon-secondary, .exif-button-text-icons .exif-button-icon-secondary, .exif-button-icons-only .exif-button-icon-secondary { right: .5em; }
+.exif-button-text-icons .exif-button-icon-secondary, .exif-button-icons-only .exif-button-icon-secondary { right: .5em; }
+
+/*button sets*/
+.exif-buttonset { margin-right: 7px; }
+.exif-buttonset .exif-button { margin-left: 0; margin-right: -.3em; }
+
+/* workarounds */
+button.exif-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra padding in Firefox */
+/*
+ * jQuery UI Dialog 1.8.6
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Dialog#theming
+ */
+.exif-dialog { position: absolute; padding: 0.2em; width: 300px; overflow: hidden; }
+.exif-dialog .exif-dialog-titlebar { margin: -0.1em !important; padding: .5em 1em .3em; border-top: 0px !important; border-left: 0px !important; border-right: 0px !important;position: relative;  -moz-border-radius-bottomleft: 0px !important; -webkit-border-bottom-left-radius: 0px !important; border-bottom-left-radius: 0px !important; -moz-border-radius-bottomright: 0px !important; -webkit-border-bottom-right-radius: 0px !important; border-bottom-right-radius: 0px !important; }
+.exif-dialog .exif-dialog-title { float: left; margin: .1em 16px .2em 0; } 
+.exif-dialog .exif-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
+.exif-dialog .exif-dialog-titlebar-close span { display: block; margin: 1px; }
+.exif-dialog .exif-dialog-titlebar-close:hover, .exif-dialog .exif-dialog-titlebar-close:focus { padding: 0; }
+.exif-dialog .exif-dialog-content { position: relative; border: 0; padding: .5em 1em; background: none; overflow: auto; zoom: 1; }
+.exif-dialog .exif-dialog-buttonpane { text-align: left; border-width: 1px 0 0 0; background-image: none; margin: .5em 0 0 0; padding: .3em 1em .5em .4em; }
+.exif-dialog .exif-dialog-buttonpane .exif-dialog-buttonset { float: right; }
+.exif-dialog .exif-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
+.exif-dialog .exif-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
+.exif-draggable .exif-dialog-titlebar { cursor: move; }

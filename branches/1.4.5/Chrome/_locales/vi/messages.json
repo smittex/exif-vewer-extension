@@ -1,0 +1,411 @@
+﻿{
+	"menuitem" : {
+		"message" : "Hiển thị dữ liệu EXIF"
+	},
+	"dialogTitle" : {
+		"message" : "EXIF dữ liệu"
+	},
+	"noEXIF" : {
+		"message" : "Không có dữ liệu EXIF"
+	},
+	"optionsSaved" : {
+		"message" : "Lựa chọn đã được lưu thành công"
+	},
+	"optionsDone" : {
+		"message" : "Xong!"
+	},
+	"dialogConfigure" : {
+		"message" : "Cấu hình"
+	},
+	"dialogClose" : {
+		"message" : "Đóng"
+	},
+	"dialogExpand" : {
+		"message" : "Mở rộng"
+	},
+	"dialogCollapse" : {
+		"message" : "Thu gọn"
+	},
+	"dialogTabData" : {
+		"message" : "Dữ liệu"
+	},
+	"dialogTabGeolocation" : {
+		"message" : "Geolocation"
+	},
+	"ExifVersion" : {
+		"message" : "Phiên bản EXIF"
+	},
+	"FlashpixVersion" : {
+		"message" : "Phiên bản Flashpix"
+	},
+	"ColorSpace" : {
+		"message " : "Không gian màu"
+	},
+	"PixelXDimension" : {
+		"message" : "Pixel X Kích thước"
+	},
+	"PixelYDimension" : {
+		"message " : "Pixel Y Kích thước"
+	},
+	"componentsconfiguration" : {
+		"message " : "Các thành phần cấu hình"
+	},
+	"CompressedBitsPerPixel" : {
+		"message " : "CompressedBitsPerPixel"
+	},
+	"MakerNote" : {
+		"message" : "Maker Note"
+	},
+	"UserComment" : {
+		"message" : "Thành viên thảo luận"
+	},
+	"RelatedSoundFile " : {
+		"message" : "Related Sound File"
+	},
+	"DateTimeOriginal" : {
+		"message" : "Ngày thời gian gốc"
+	},
+	"DateTimeDigitized" : {
+		"message" : "Ngày thời gian số hoá"
+	},
+	"SubsecTime" : {
+		"message" : "Thời gian (ms)"
+	},
+	"SubsecTimeOriginal" : {
+		"message" : "Thời gian ban đầu (ms)"
+	},
+	"SubsecTimeDigitized" : {
+		"message" : "Thời gian số hoá (ms)"
+	},
+	"ExposureTime" : {
+		"message" : "Thời gian phơi sáng"
+	},
+	"FNumber" : {
+		"message " : "Thông số F"
+	},
+	"ExposureProgram" : {
+		"message" : "Chương trình phơi sáng"
+	},
+	"SpectralSensitivity" : {
+		"message" : "Độ nhạy quang phổ"
+	},
+	"ISOSpeedRatings" : {
+		"message" : "Tốc độ ISO Ratings"
+	},
+	"OECF" : {
+		"message" : "OECF"
+	},
+	"ShutterSpeedValue" : {
+		"message" : "Tốc độ chụp"
+	},
+	"ApertureValue" : {
+		"message" : "Độ khep"
+	},
+	"BrightnessValue" : {
+		"message" : "Độ sáng"
+	},
+	"ExposureBias" : {
+		"message" : "Khuynh hướng phơi sáng"
+	},
+	"MaxApertureValue" : {
+		"message" : "Giá trị phơi sáng cực độ"
+	},
+	"SubjectDistance" : {
+		"message " : "Chủ đề từ xa"
+	},
+	"MeteringMode" : {
+		"message" : "Chế độ đo sáng"
+	},
+	"Lightsource" : {
+		"message" : "Nguồn sáng"
+	},
+	"Flash" : {
+		"message" : "Có dùng đèn phụ trợ?"
+	},
+	"SubjectArea" : {
+		"message" : "Diện tích chủ thể"
+	},
+	"FocalLength" : {
+		"message" : "Chiều dài tiêu cự"
+	},
+	"FlashEnergy" : {
+		"message" : "Năng lượng đèn"
+	},
+	"SpatialFrequencyResponse" : {
+		"message" : "Đáp ứng tần số không gian"
+	},
+	"FocalPlaneXResolution" : {
+		"message" : "Độ phân giải X phẳng tiêu"
+	},
+	"FocalPlaneYResolution" : {
+		"message" : "Độ phân giải Y phẳng tiêu"
+	},
+	"FocalPlaneResolutionUnit " : {
+		"message" : "Đơn vị phân giải phẳng tiêu"
+	},
+	"SubjectLocation" : {
+		"message " : "Vị trí chủ thể"
+	},
+	"ExposureIndex" : {
+		"message " : "Chỉ số phơi sáng"
+	},
+	"SensingMethod" : {
+		"message " : "Sensing Method "
+	},
+	"FileSource" : {
+		"message" : "Tập tin nguồn"
+	},
+	"SceneType" : {
+		"message" : "Cảnh loại"
+	},
+	"CFAPattern" : {
+		"message" : "Cấu trúc CFA"
+	},
+	"CustomRendered" : {
+		"message" : "Custom Rendered"
+	},
+	"ExposureMode" : {
+		"message" : "Chế độ phơi sáng"
+	},
+	"WhiteBalance" : {
+		"message" : "Cân bằng điểm trắng"
+	},
+	"DigitalZoomRation" : {
+		"message" : "Zoom số suất ăn"
+	},
+	"FocalLengthIn35mmFilm" : {
+		"message" : "Chiều dài tiêu cự trong phim 35mm"
+	},
+	"SceneCaptureType" : {
+		"message" : "Kiểu bắt cảnh"
+	},
+	"GainControl" : {
+		"message" : "Độ hơn"
+	},
+	"Constrast" : {
+		"message" : "Độ tương phản"
+	},
+	"Saturation" : {
+		"message" : "Độ bão hòa"
+	},
+	"Sharpness" : {
+		"message" : "Độ sắc nét"
+	},
+	"DeviceSettingDescription " : {
+		"message" : "Thiết lập thiết bị mô tả"
+	},
+	"SubjectDistanceRange " : {
+		"message" : "Phạm vi khoảng cách"
+	},
+	"InteroperabilityIFDPointer" : {
+		"message " : "Khả năng cộng tác IFD Pointer"
+	},
+	"ImageUniqueID" : {
+		"message" : "Hình ảnh duy nhất"
+	},
+	"ImageWidth" : {
+		"message" : "Hình ảnh rộng"
+	},
+	"ImageHeight" : {
+		"message" : "Hình ảnh chiều cao"
+	},
+	"ExifIFDPointer" : {
+		"message" : "ExifIFDPointer"
+	},
+	"GPSInfoIFDPointer" : {
+		"message " : "GPSInfoIFDPointer"
+	},
+	"BitsPerSample " : {
+		"message" : "BitsPerSample"
+	},
+	"Compression" : {
+		"message" : "Độ nén"
+	},
+	"PhotoMetricInterpretation" : {
+		"message" : "photometricinterpretation"
+	},
+	"Orientation" : {
+		"message" : "Định hướng"
+	},
+	"SamplesPerPixel" : {
+		"message" : "Samples Per Pixel"
+	},
+	"PlanarConfiguration" : {
+		"message" : "PlanarConfiguration"
+	},
+	"YCbCrSubSampling" : {
+		"message" : "YCbCr Chi lấy mẫu"
+	},
+	"YCbCrPositioning" : {
+		"message" : "Vị tri YCbCr"
+	},
+	"XResolution" : {
+		"message" : "Độ phân giải X"
+	},
+	"YResolution" : {
+		"message" : "Độ phân giải Y"
+	},
+	"ResolutionUnit" : {
+		"message" : "Đơn vị phân giải"
+	},
+	"StripOffsets" : {
+		"message" : "Mảnh offset"
+	},
+	"RowsPerStrip" : {
+		"message" : "Hàng Per Strip"
+	},
+	"StripByteCounts" : {
+		"message" : "Dải Byte Counts"
+	},
+	"JPEGInterchangeFormat" : {
+		"message" : "Định dạng hoán đổi JPEG"
+	},
+	"JPEGInterchangeFormatLength" : {
+		"message" : "Chiều dài định dạng hoán đổi JPEG"
+	},
+	"TransferFunction" : {
+		"message" : "Hàm truyền"
+	},
+	"WhitePoint" : {
+		"message" : "Điểm trắng"
+	},
+	"PrimaryChromaticities " : {
+		"message" : "Sắc độ chính"
+	},
+	"YCbCrCoefficients" : {
+		"message" : "Hệ số YCbCr"
+	},
+	"ReferenceBlackWhite" : {
+		"message" : "Tài liệu tham khảo đen trắng"
+	},
+	"DateTime" : {
+		"message" : "Ngày thời gian"
+	},
+	"ImageDescription" : {
+		"message" : "Hình ảnh mô tả"
+	},
+	"Make" : {
+		"message" : "Hãng chế tạo máy ảnh"
+	},
+	"Model" : {
+		"message" : "Mẫu"
+	},
+	"Software" : {
+		"message " : "Phần mềm"
+	},
+	"Artist" : {
+		"message" : "Tác giả"
+	},
+	"Copyright" : {
+		"message " : "Bản quyền"
+	},
+	"LensInfo" : {
+		"message" : "Thông tin ống kính"
+	},
+	"LensMake" : {
+		"message" : "Hang che tao ống kính"
+	},
+	"LensModel" : {
+		"message" : "Mẫu ống kính"
+	},
+	"LensSerialNumber" : {
+		"message" : "Serial # ống kính"
+	},
+	"Lens" : {
+		"message" : "Ống kính"
+	},
+	"GPSVersionID" : {
+		"message" : "GPS Version Id"
+	},
+	"GPSLatitudeRef" : {
+		"message" : "GPS Latitude Reference"
+	},
+	"GPSLatitude" : {
+		"message " : " GPS Latitude"
+	},
+	"GPSLongitudeRef" : {
+		"message " : " GPS Longitude Reference"
+	},
+	"GPSLongitude" : {
+		"message " : "GPS Longitude"
+	},
+	"GPSAltitudeRef" : {
+		"message " : "GPS Altitude Reference"
+	},
+	"GPSAltitude" : {
+		"message " : "GPS Altitude"
+	},
+	"GPSTimeStamp" : {
+		"message " : "GPS Timestamp"
+	},
+	"GPSSatellites " : {
+		" message " : " GPS Satellites"
+	},
+	"GPSStatus " : {
+		"message" : "GPS Status"
+	},
+	"GPSMeasureMode" : {
+		"message" : "gpsmeasuremode"
+	},
+	"GPSDOP" : {
+		"message" : "GPSDOP"
+	},
+	"GPSSpeedRef" : {
+		"message" : "GPSSpeedRef"
+	},
+	"GPSSpeed" : {
+		"message" : "gpsspeed"
+	},
+	"GPSTrackRef" : {
+		"message" : "GPSTrackRef"
+	},
+	"GPSTrack" : {
+		"message" : "GPSTrack"
+	},
+	"GPSImgDirectionRef" : {
+		"message" : " GPSImgDirectionRef"
+	},
+	"GPSImgDirection " : {
+		"message" : "GPSImgDirection"
+	},
+	"GPSMapDatum " : {
+		" message " : "GPSMapDatum"
+	},
+	"GPSDestLatitudeRef " : {
+		"message" : "GPSDestLatitudeRef "
+	},
+	"GPSDestLatitude" : {
+		"message" : "GPSDestLatitude"
+	},
+	"GPSDestLongitudeRef" : {
+		"message" : "GPSDestLongitudeRef"
+	},
+	"GPSDestLongitude" : {
+		"message" : "GPSDestLongitude"
+	},
+	"gpsdestbearingref" : {
+		"message" : "GPS Destination Bearing Reference"
+	},
+	"GPSDestBearing" : {
+		"message" : "GPSDestination Bearing"
+	},
+	"GPSDestDistanceRef" : {
+		"message" : "GPS Destination Distance Reference"
+	},
+	"GPSDestDistance" : {
+		"message" : "GPSDestDistance"
+	},
+	"GPSProcessingMethod " : {
+		"message" : "GPSProcessingMethod"
+	},
+	"GPSAreaInformation" : {
+		"message" : "gpsareainformation"
+	},
+	"GPSDateStamp" : {
+		"message" : "GPSDateStamp"
+	},
+	"GPSDifferential" : {
+		"message" : "GPSDifferential"
+	}
+}
+ 

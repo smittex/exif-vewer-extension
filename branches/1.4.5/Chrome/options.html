@@ -1,0 +1,197 @@
+<html>
+	<head>
+		<title>EXIF viewer settings</title>
+		<style type="text/css" title="currentStyle">
+			@import "css/redmond/jquery-ui-1.8.6.custom.css";
+	body {maring:0px; padding:0px;font-family: Arial, sans-serif;}
+	ul { list-style-type: none; margin: 0; padding: 0;  height:100%; }
+	ul li{  padding-left: 10px;}
+
+	#selectedattributes li { 
+		margin: 3px;  
+		padding: 3px 5px;
+		font-size: 0.9em; 
+		white-space: nowrap; 
+		border-radius: 3px;
+		border: 1px solid #87b6d9;
+		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#dddddd));
+		cursor: move;
+	}
+	#attributes li { 
+		margin: 3px;  
+		padding: 3px 5px;
+		font-size: 0.9em; 
+		white-space: nowrap; 
+		border-radius: 3px;
+		border: 1px solid #cccccc;
+		background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#FAFAFA));
+		cursor: move;
+		color:#777777;
+	}
+	.ui-state-highlight{
+		background: #ffffff !important;
+		border: 1px solid #cccccc !important;
+	}
+
+	.attributes_layer{
+		width: 220px;
+
+	}
+	
+	
+#navbar-container {
+  -webkit-border-end: 1px solid #c6c9ce;
+  background: -webkit-linear-gradient(rgba(234, 238, 243, 0), #eaeef3),
+              -webkit-linear-gradient(left, #eaeef3, #eaeef3 97%, #d3d7db);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 206px;
+  z-index: 2;
+  text-align: right; 
+}	
+#settings-title {
+-webkit-padding-end: 24px;
+color: #53637D;
+font-size: 200%;
+font-weight: normal;
+margin: 0;
+padding-bottom: 14px;
+padding-top: 20px;
+text-align: end;
+}
+
+#mainview-content {
+  box-sizing: border-box;
+  max-width: 888px;
+  min-height: 100%;
+  min-width: 600px;
+  padding: 0 24px;
+  margin: 0 0 0 266px ;
+}
+
+hr{
+	width:90%;
+	background-color: #c6c9ce;
+}
+h1 {
+  -webkit-padding-end: 24px;
+  border-bottom: 1px solid #eeeeee;
+  color: #53637d;
+  font-size: 200%;
+  font-weight: normal;
+  margin: 0;
+  padding-bottom: 4px;
+  padding-top: 13px;
+}
+		</style>
+		<script src="jquery-1.6.1.min.js"></script>
+		<script src="jquery-ui-1.8.6.custom.min.js"></script>
+		<script>
+		
+		$(document).ready(function(){
+		
+	
+			$("input[type='button']").css("font-size","0.8em").css("padding","2px 5px 2px 5px").button();
+
+			if(localStorage.getItem("overlayEnabled") != "false")
+				$("#overlayEnabled").attr('checked', true);
+
+			var attributes = JSON.parse(localStorage.getItem("exif_attributes"));
+			$.each(attributes, function(name, attr){
+				
+					$("<li />").attr("id", name).text(chrome.i18n.getMessage(name)?chrome.i18n.getMessage(name):name).appendTo(
+						(attr.visible)?"#selectedattributes":"#attributes"
+					);
+			})
+
+			$("ul").sortable({
+				placeholder: 'ui-state-highlight',
+				connectWith: 'ul'
+			});
+			
+
+		});
+		
+		
+		function saveOptions(){
+
+			localStorage.setItem("overlayEnabled", $("#overlayEnabled").is(':checked'));
+			var attributes = {};//JSON.parse(localStorage.getItem("exif_attributes"));
+			//$.each(attributes, function(name, attr){
+			$("#selectedattributes li").each(function(i, elem){
+				var name = elem.getAttribute("id");
+				attributes[name] = {
+					visible: true,
+					pos: i
+				}
+			});
+			$("#attributes li").each(function(i, elem){
+				var name = elem.getAttribute("id");
+				attributes[name] = {
+					visible: false,
+					pos: i
+				}
+			});
+			
+			localStorage.setItem("exif_attributes", JSON.stringify(attributes));
+			var bgPage = chrome.extension.getBackgroundPage();
+			bgPage.exifAttributes = attributes;
+
+				
+			$("#dialog").text(chrome.i18n.getMessage("optionsSaved")).dialog({
+				title: chrome.i18n.getMessage("optionsDone"),
+				modal: true,
+				resizable: false,
+				buttons: {
+					Ok: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+			
+		}
+		</script>
+	</head>
+	<body >
+
+	
+	
+	
+	<div id="navbar-container">
+		<center>
+			<img src="camera_blue-128.png">
+		</center>
+		
+		<div style="padding: 20px;">
+				<input type="button" onclick="saveOptions();" value="Save Options" style="width:150px;height:26px;margin:5px;"/></br>
+				<input type="button" onclick="window.location.href='http://code.google.com/p/exif-vewer-extension/issues/list'" value="Report an issue"  style="width:150px;height:26px;margin:5px;" />
+
+				<img src="http://s1.softpedia-static.com/base_img/softpedia_free_award_f.gif" style="position: absolute; bottom: 10px; left: 10px;">
+		</div>
+	</div>
+	
+	<div id="mainview-content">
+	
+				<h1>Basic options</h1>
+				<p>
+					<input type="checkbox" id="overlayEnabled">Enable overlay on images with EXIF</input>
+				</p>
+				<div style="max-width: 500px; padding: 15px;">
+					Drag and drop properties you want to show in EXF Viewer dialog from the right column to the left
+				</div>
+				<table>
+					<tr>
+						<td type="text" class="attributes_layer" valign="top">Selected attributes:<ul id="selectedattributes" ></ul></td>
+						<td type="text" class="attributes_layer" valign="top">Available attributes:<div class="scrollframe"><ul id="attributes" ><div></ul></td>
+					</tr>
+				</table>
+	
+	</div>
+	
+
+	
+	<div id="dialog" ></div>
+	</body>
+</html>
