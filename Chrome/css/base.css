@@ -1,3 +1,7 @@
+.exifTable{
+	background-color: #FFFFFF !important;
+}
+
 .exifTd{
 	font-family: Lucida Grande, Lucida Sans, Arial, sans-serif !important; 
 	font-size: 12px !important; 
@@ -14,4 +18,28 @@
 
 .exifHiddenRow td{
 	color: #888 !important;
+}
+
+.overlayContainer{
+	position: absolute;
+	right: 4px;
+	bottom: 4px;
+	cursor: pointer;
+	width: 16px;
+	height: 16px;
+	padding: 2px;
+	margin: 0px;
+	/*border: 1px solid rgba(0,0,0,0);*/
+	border-radius: 4px;
+	background-color: rgba(0,0,0,0) !important;
+	background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/camera_blue-16.png);
+	background-position: 2px 2px;
+	background-repeat: no-repeat;
+	opacity: 0.75;
+}
+.overlayContainer:hover{
+	/*border: 1px solid #a0d7ee;*/
+	background-color: rgba(180,235,255, .4) !important;
+	-webkit-box-shadow: 0 0 10px 0 #555;
+	opacity: 1;
 }
