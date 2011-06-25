@@ -1,282 +1,293 @@
-var exifAttributes = {
-	ExifVersion: {
-		visible: false,
-		dim: ""
+window['exifAttributes'] = {
+	'ExifVersion' : {
+		'visible' : false,
+		'dim' : ""
 	},
-	FlashpixVersion: {
-		visible: false
+	'FlashpixVersion' : {
+		'visible' : false
 	},
-	ColorSpace: {
-		visible: false
+	'ColorSpace' : {
+		'visible' : false
 	},
-	PixelXDimension: {
-		visible: false
+	'PixelXDimension' : {
+		'visible' : false
 	},
-	PixelYDimension: {
-		visible: false
+	'PixelYDimension' : {
+		'visible' : false
 	},
-	ComponentsConfiguration: {
-		visible: false
+	'ComponentsConfiguration' : {
+		'visible' : false
 	},
-	CompressedBitsPerPixel: {
-		visible: false
+	'CompressedBitsPerPixel' : {
+		'visible' : false
 	},
-	MakerNote: {
-		visible: false
+	'MakerNote' : {
+		'visible' : false
 	},
-	UserComment: {
-		visible: false
+	'UserComment' : {
+		'visible' : false
 	},
-	RelatedSoundFile: {
-		visible: false
+	'RelatedSoundFile' : {
+		'visible' : false
 	},
-	DateTimeOriginal: {
-		visible: true
+	'DateTimeOriginal' : {
+		'visible' : true
 	},
-	DateTimeDigitized: {
-		visible: false
+	'DateTimeDigitized' : {
+		'visible' : false
 	},
-	SubsecTime: {
-		visible: false
+	'SubsecTime' : {
+		'visible' : false
 	},
-	SubsecTimeOriginal: {
-		visible: false
+	'SubsecTimeOriginal' : {
+		'visible' : false
 	},
-	SubsecTimeDigitized: {
-		visible: false
+	'SubsecTimeDigitized' : {
+		'visible' : false
 	},
-	ExposureTime: {
-		visible: true
+	'ExposureTime' : {
+		'visible' : true
 	},
-	FNumber: {
-		visible: true
+	'FNumber' : {
+		'visible' : true
 	},
-	ExposureProgram: {
-		visible: true
+	'ExposureProgram' : {
+		'visible' : true
 	},
-	SpectralSensitivity: {
-		visible: false
+	'SpectralSensitivity' : {
+		'visible' : false
 	},
-	ISOSpeedRatings: {
-		visible: true
+	'ISOSpeedRatings' : {
+		'visible' : true
 	},
-	OECF: {
-		visible: false
+	'OECF' : {
+		'visible' : false
 	},
-	ShutterSpeedValue: {
-		visible: false
+	'ShutterSpeedValue' : {
+		'visible' : false
 	},
-	ApertureValue: {
-		visible: false
+	'ApertureValue' : {
+		'visible' : false
 	},
-	BrightnessValue: {
-		visible: false
+	'BrightnessValue' : {
+		'visible' : false
 	},
-	ExposureBias: {
-		visible: false
+	'ExposureBias' : {
+		'visible' : false
 	},
-	MaxApertureValue: {
-		visible: false
+	'MaxApertureValue' : {
+		'visible' : false
 	},
-	SubjectDistance: {
-		visible: false
+	'SubjectDistance' : {
+		'visible' : false
 	},
-	MeteringMode: {
-		visible: true
+	'MeteringMode' : {
+		'visible' : true
 	},
-	LightSource: {
-		visible: false
+	'LightSource' : {
+		'visible' : false
 	},
-	Flash: {
-		visible: true
+	'Flash' : {
+		'visible' : true
 	},
-	SubjectArea: {
-		visible: false
+	'SubjectArea' : {
+		'visible' : false
 	},
-	FocalLength: {
-		visible: true,
-		dim: "mm"
+	'FocalLength' : {
+		'visible' : true,
+		'dim' : "mm"
 	},
-	FlashEnergy: {
-		visible: false
+	'FlashEnergy' : {
+		'visible' : false
 	},
-	SpatialFrequencyResponse: {
-		visible: false
+	'SpatialFrequencyResponse' : {
+		'visible' : false
 	},
-	FocalPlaneXResolution: {
-		visible: false
+	'FocalPlaneXResolution' : {
+		'visible' : false
 	},
-	FocalPlaneYResolution: {
-		visible: false
+	'FocalPlaneYResolution' : {
+		'visible' : false
 	},
-	FocalPlaneResolutionUnit: {
-		visible: false
+	'FocalPlaneResolutionUnit' : {
+		'visible' : false
 	},
-	SubjectLocation: {
-		visible: false
+	'SubjectLocation' : {
+		'visible' : false
 	},
-	ExposureIndex: {
-		visible: false
+	'ExposureIndex' : {
+		'visible' : false
 	},
-	SensingMethod: {
-		visible: false
+	'SensingMethod' : {
+		'visible' : false
 	},
-	FileSource: {
-		visible: false
+	'FileSource' : {
+		'visible' : false
 	},
-	SceneType: {
-		visible: false
+	'SceneType' : {
+		'visible' : false
 	},
-	CFAPattern: {
-		visible: false
+	'CFAPattern' : {
+		'visible' : false
 	},
-	CustomRendered: {
-		visible: false
+	'CustomRendered' : {
+		'visible' : false
 	},
-	ExposureMode: {
-		visible: false
+	'ExposureMode' : {
+		'visible' : false
 	},
-	WhiteBalance: {
-		visible: true
+	'WhiteBalance' : {
+		'visible' : true
 	},
-	DigitalZoomRation: {
-		visible: false
+	'DigitalZoomRation' : {
+		'visible' : false
 	},
-	FocalLengthIn35mmFilm: {
-		visible: false
+	'FocalLengthIn35mmFilm' : {
+		'visible' : false
 	},
-	SceneCaptureType: {
-		visible: false
+	'SceneCaptureType' : {
+		'visible' : false
 	},
-	GainControl: {
-		visible: false
+	'GainControl' : {
+		'visible' : false
 	},
-	Contrast: {
-		visible: false
+	'Contrast' : {
+		'visible' : false
 	},
-	Saturation: {
-		visible: false
+	'Saturation' : {
+		'visible' : false
 	},
-	Sharpness: {
-		visible: false
+	'Sharpness' : {
+		'visible' : false
 	},
-	DeviceSettingDescription: {
-		visible: false
+	'DeviceSettingDescription' : {
+		'visible' : false
 	},
-	SubjectDistanceRange: {
-		visible: false
+	'SubjectDistanceRange' : {
+		'visible' : false
 	},
-	InteroperabilityIFDPointer: {
-		visible: false
+	'InteroperabilityIFDPointer' : {
+		'visible' : false
 	},
-	ImageUniqueID: {
-		visible: false
+	'ImageUniqueID' : {
+		'visible' : false
 	},
-	ImageWidth: {
-		visible: false,
-		dim: "px"
+	'ImageWidth' : {
+		'visible' : false,
+		'dim' : "px"
 		
 	},
-	ImageHeight: {
-		visible: false,
-		dim: "px"
+	'ImageHeight' : {
+		'visible' : false,
+		'dim' : "px"
 	},
-	ExifIFDPointer: {
-		visible: false
+	'ExifIFDPointer' : {
+		'visible' : false
 	},
-	GPSInfoIFDPointer: {
-		visible: false
+	'GPSInfoIFDPointer' : {
+		'visible' : false
 	},
-	InteroperabilityIFDPointer: {
-		visible: false
+	'InteroperabilityIFDPointer' : {
+		'visible' : false
 	},
-	BitsPerSample: {
-		visible: false
+	'BitsPerSample' : {
+		'visible' : false
 	},
-	Compression: {
-		visible: false
+	'Compression' : {
+		'visible' : false
 	},
-	PhotometricInterpretation: {
-		visible: false
+	'PhotometricInterpretation' : {
+		'visible' : false
 	},
-	Orientation: {
-		visible: false
+	'Orientation' : {
+		'visible' : false
 	},
-	SamplesPerPixel: {
-		visible: false
+	'SamplesPerPixel' : {
+		'visible' : false
 	},
-	PlanarConfiguration: {
-		visible: false
+	'PlanarConfiguration' : {
+		'visible' : false
 	},
-	YCbCrSubSampling: {
-		visible: false
+	'YCbCrSubSampling' : {
+		'visible' : false
 	},
-	YCbCrPositioning: {
-		visible: false
+	'YCbCrPositioning' : {
+		'visible' : false
 	},
-	XResolution: {
-		visible: false
+	'XResolution' : {
+		'visible' : false
 	},
-	YResolution: {
-		visible: false
+	'YResolution' : {
+		'visible' : false
 	},
-	ResolutionUnit: {
-		visible: false
+	'ResolutionUnit' : {
+		'visible' : false
 	},
-	StripOffsets: {
-		visible: false
+	'StripOffsets' : {
+		'visible' : false
 	},
-	RowsPerStrip: {
-		visible: false
+	'RowsPerStrip' : {
+		'visible' : false
 	},
-	StripByteCounts: {
-		visible: false
+	'StripByteCounts' : {
+		'visible' : false
 	},
-	JPEGInterchangeFormat: {
-		visible: false
+	'JPEGInterchangeFormat' : {
+		'visible' : false
 	},
-	JPEGInterchangeFormatLength: {
-		visible: false
+	'JPEGInterchangeFormatLength' : {
+		'visible' : false
 	},
-	TransferFunction: {
-		visible: false
+	'TransferFunction' : {
+		'visible' : false
 	},
-	WhitePoint: {
-		visible: false
+	'WhitePoint' : {
+		'visible' : false
 	},
-	PrimaryChromaticities: {
-		visible: false
+	'PrimaryChromaticities' : {
+		'visible' : false
 	},
-	YCbCrCoefficients: {
-		visible: false
+	'YCbCrCoefficients' : {
+		'visible' : false
 	},
-	ReferenceBlackWhite: {
-		visible: false
+	'ReferenceBlackWhite' : {
+		'visible' : false
 	},
-	DateTime: {
-		visible: false
+	'DateTime' : {
+		'visible' : false
 	},
-	ImageDescription: {
-		visible: false
+	'ImageDescription' : {
+		'visible' : false
 	},
-	Make: {
-		visible: true
+	'Make' : {
+		'visible' : true
 	},
-	Model: {
-		visible: true
+	'Model' : {
+		'visible' : true
 	},
-	Software: {
-		visible: false
+	'Software' : {
+		'visible' : false
 	},
-	Artist: {
-		visible: false
+	'Artist' : {
+		'visible' : false
 	},
-	Copyright: {
-		visible: false
+	'Copyright' : {
+		'visible' : false
 	},
-	"LensInfo": {visible:true},
-	"LensMake": {visible:true},
-	"LensModel": {visible:true},	
-	"LensSerialNumber": {visible:true},	
-	"Lens": {visible:true},	
+	'LensInfo' : {
+		'visible' : true
+	},
+	'LensMake' : {
+		'visible' : true
+	},
+	"'LensModel'" : {
+		'visible' : true
+	},
+	"'LensSerialNumber'" : {
+		'visible' : true
+	},
+	"'Lens'" : {
+		'visible' : true
+	}
 }
+ 

@@ -84,7 +84,7 @@ EXIF.Tags = {
 
 	// other tags
 	0xA005 : "InteroperabilityIFDPointer",
-	0xA420 : "ImageUniqueID",		// Identifier assigned uniquely to each image
+	0xA420 : "ImageUniqueID"		// Identifier assigned uniquely to each image
 	
 	// Lens tag
 	
@@ -172,7 +172,7 @@ EXIF.GPSTags = {
 }
 
 EXIF.StringValues = {
-	ExposureProgram : {
+	'ExposureProgram' : {
 		0 : "Not defined",
 		1 : "Manual",
 		2 : "Normal program",
@@ -183,7 +183,7 @@ EXIF.StringValues = {
 		7 : "Portrait mode",
 		8 : "Landscape mode"
 	},
-	MeteringMode : {
+	'MeteringMode' : {
 		0 : "Unknown",
 		1 : "Average",
 		2 : "CenterWeightedAverage",
@@ -193,7 +193,7 @@ EXIF.StringValues = {
 		6 : "Partial",
 		255 : "Other"
 	},
-	LightSource : {
+	'LightSource' : {
 		0 : "Unknown",
 		1 : "Daylight",
 		2 : "Fluorescent",
@@ -216,7 +216,7 @@ EXIF.StringValues = {
 		24 : "ISO studio tungsten",
 		255 : "Other"
 	},
-	Flash : {
+	'Flash' : {
 		0x0000 : "Flash did not fire",
 		0x0001 : "Flash fired",
 		0x0005 : "Strobe return light not detected",
@@ -240,7 +240,7 @@ EXIF.StringValues = {
 		0x005D : "Flash fired, auto mode, return light not detected, red-eye reduction mode",
 		0x005F : "Flash fired, auto mode, return light detected, red-eye reduction mode"
 	},
-	SensingMethod : {
+	'SensingMethod' : {
 		1 : "Not defined",
 		2 : "One-chip color area sensor",
 		3 : "Two-chip color area sensor",
@@ -249,7 +249,7 @@ EXIF.StringValues = {
 		7 : "Trilinear sensor",
 		8 : "Color sequential linear sensor"
 	},
-	Orientation: {//	int16u	IFD0	
+	'Orientation': {//	int16u	IFD0	
 		1: "Horizontal (normal) ",
 		2: "Mirror horizontal ",
 		3: "Rotate 180 ",
@@ -259,56 +259,56 @@ EXIF.StringValues = {
 		7: "Mirror horizontal and rotate 90 CW ",
 		8: "Rotate 270 CW"
 	},
-	SceneCaptureType : {
+	'SceneCaptureType' : {
 		0 : "Standard",
 		1 : "Landscape",
 		2 : "Portrait",
 		3 : "Night scene"
 	},
-	SceneType : {
+	'SceneType' : {
 		1 : "Directly photographed"
 	},
-	CustomRendered : {
+	'CustomRendered' : {
 		0 : "Normal process",
 		1 : "Custom process"
 	},
-	WhiteBalance : {
+	'WhiteBalance' : {
 		0 : "Auto white balance",
 		1 : "Manual white balance"
 	},
-	GainControl : {
+	'GainControl' : {
 		0 : "None",
 		1 : "Low gain up",
 		2 : "High gain up",
 		3 : "Low gain down",
 		4 : "High gain down"
 	},
-	Contrast : {
+	'Contrast' : {
 		0 : "Normal",
 		1 : "Soft",
 		2 : "Hard"
 	},
-	Saturation : {
+	'Saturation': {
 		0 : "Normal",
 		1 : "Low saturation",
 		2 : "High saturation"
 	},
-	Sharpness : {
+	'Sharpness' : {
 		0 : "Normal",
 		1 : "Soft",
 		2 : "Hard"
 	},
-	SubjectDistanceRange : {
+	'SubjectDistanceRange' : {
 		0 : "Unknown",
 		1 : "Macro",
 		2 : "Close view",
 		3 : "Distant view"
 	},
-	FileSource : {
+	'FileSource' : {
 		3 : "DSC"
 	},
 
-	Components : {
+	'Components' : {
 		0 : "",
 		1 : "Y",
 		2 : "Cb",
@@ -519,8 +519,8 @@ function readEXIFData(oFile, iStart, iLength)
 
 	var oTags = readTags(oFile, iTIFFOffset, iTIFFOffset+8, EXIF.TiffTags, bBigEnd);
 
-	if (oTags.ExifIFDPointer) {
-		var oEXIFTags = readTags(oFile, iTIFFOffset, iTIFFOffset + oTags.ExifIFDPointer, EXIF.Tags, bBigEnd);
+	if (oTags['ExifIFDPointer']) {
+		var oEXIFTags = readTags(oFile, iTIFFOffset, iTIFFOffset + oTags['ExifIFDPointer'], EXIF.Tags, bBigEnd);
 		for (var strTag in oEXIFTags) {
 			switch (strTag) {
 				case "LightSource" :
@@ -549,18 +549,18 @@ function readEXIFData(oFile, iStart, iLength)
 	
 				case "ComponentsConfiguration" : 
 					oEXIFTags[strTag] = 
-						EXIF.StringValues.Components[oEXIFTags[strTag][0]]
-						+ EXIF.StringValues.Components[oEXIFTags[strTag][1]]
-						+ EXIF.StringValues.Components[oEXIFTags[strTag][2]]
-						+ EXIF.StringValues.Components[oEXIFTags[strTag][3]];
+						EXIF.StringValues['Components'][oEXIFTags[strTag][0]]
+						+ EXIF.StringValues['Components'][oEXIFTags[strTag][1]]
+						+ EXIF.StringValues['Components'][oEXIFTags[strTag][2]]
+						+ EXIF.StringValues['Components'][oEXIFTags[strTag][3]];
 					break;
 			}
 			oTags[strTag] = oEXIFTags[strTag];
 		}
 	}
 
-	if (oTags.GPSInfoIFDPointer) {
-		var oGPSTags = readTags(oFile, iTIFFOffset, iTIFFOffset + oTags.GPSInfoIFDPointer, EXIF.GPSTags, bBigEnd);
+	if (oTags['GPSInfoIFDPointer']) {
+		var oGPSTags = readTags(oFile, iTIFFOffset, iTIFFOffset + oTags['GPSInfoIFDPointer'], EXIF.GPSTags, bBigEnd);
 		for (var strTag in oGPSTags) {
 			switch (strTag) {
 				case "GPSVersionID" : 

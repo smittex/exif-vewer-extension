@@ -1,28 +1,44 @@
 function image(src){
-	this.src = src;
+	this['src'] = src;
 }
+
+$(document).ready(function(){
+	loadExifAttributes();
+});
+
+
+
+function checkExif(src, callback){
+	var img = new image(src);
+	EXIF.getData(img, function(){
+		//var exif_data = exif_data = EXIF.prettyHTML(img,param);
+		var aExifData = $.extend({}, exifAttributes);
+		$.each(aExifData, function(name, tag){
+			var data = EXIF.getTag(img, name);
+			if(data){
+				$.extend(tag, {
+					"data": EXIF.getTag(img, name),
+					"label": chrome.i18n.getMessage(name)
+				});
+			} else {
+				delete aExifData[name];
+			}
+		});
+		if(Object['keys'](aExifData).length){
+			callback({
+				'data': aExifData,
+				'src': src
+			});
+		}
+	});
+}
+
+
 
 // A generic onclick callback function.
 function genericOnClick(info, tab) {
-		/*if(info.pageUrl .indexOf(".jpg") == info.pageUrl.length-4 ||
-			info.pageUrl .indexOf(".jpeg") == info.pageUrl.length-5){
-			
-		}*/
 		var img = {src: info.srcUrl};
-
-		
 		EXIF.getData(img, function(){
-
-				//http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css
-				
-				var param = {};
-				for(name in exifAttributes){
-					if(exifAttributes[name].visible){
-						param[name] = chrome.i18n.getMessage(name)
-					}
-				}
-				
-				//var exif_data = exif_data = EXIF.prettyHTML(img,param);
 				var aExifData = $.extend({}, exifAttributes);
 				$.each(aExifData, function(name, tag){
 					var data = EXIF.getTag(img, name);
@@ -60,28 +76,22 @@ function genericOnClick(info, tab) {
 							'src': img.src,
 							'data' : gps
 						});
-						//chrome.tabs.executeScript(tab.id, {code: 'exif_injectMap("'+escape(JSON.stringify(gps))+'");'});
 					}
 				});
-				/*
-				chrome.tabs.executeScript(tab.id, {code: 'exif_inject("'+exif_data+'", "'+img.src+'");'}, function(){
-					if(gps_data.Latitude && gps_data.Longitude){
-						var gps = {};
-						gps.lat = Geo.parseDMS(gps_data.Latitude,gps_data.LatitudeRef);
-						gps.lng = Geo.parseDMS(gps_data.Longitude,gps_data.LongitudeRef);
-						chrome.tabs.executeScript(tab.id, {code: 'exif_injectMap("'+escape(JSON.stringify(gps))+'");'});
-					}
-				});*/
 		});
 }
-
 // Create one test item for each context type.
   var context = "image";
-  loadExifAttributes();
   var title = chrome.i18n.getMessage("menuitem");
   var id = chrome.contextMenus.create({"title": title, "contexts":[context],
                                        "onclick": genericOnClick});
-//console.log("'" + context + "' item:" + id);
+
+
+chrome.extension.onRequest.addListener(	function (request, sender, callback) {
+	if(request['action'] == 'checkExif'){
+		checkExif(request['src'], callback);
+	}
+});
 
   
 //-- Load exif attributes list;
@@ -89,13 +99,8 @@ function loadExifAttributes(){
 	if(localStorage.getItem("exif_attributes")){
 		var tmp = JSON.parse(localStorage.getItem("exif_attributes"));
 		exifAttributes = $.extend(exifAttributes, JSON.parse(localStorage.getItem("exif_attributes")));
-		//exifAttributes = $.map($.extend(exifAttributes, tmp) , function(id){
-		//	console.log(JSON.stringify(tmp[id]));
-		//	return $.extend(exifAttributes[id], tmp[id]);
-		//});
-		
 	} 
 	localStorage.setItem("exif_attributes", JSON.stringify(exifAttributes));
-	
 }
 
+window['loadExifAttributes'] = loadExifAttributes;
