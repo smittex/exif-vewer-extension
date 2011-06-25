@@ -90,6 +90,9 @@ function genericOnClick(info, tab) {
 chrome.extension.onRequest.addListener(	function (request, sender, callback) {
 	if(request['action'] == 'checkExif'){
 		checkExif(request['src'], callback);
+	} else if(request['action'] == 'checkOverlayEnabled'){
+		if(localStorage.getItem("overlayEnabled") != "false")
+			callback();
 	}
 });
 

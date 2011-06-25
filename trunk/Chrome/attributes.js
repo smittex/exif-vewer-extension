@@ -279,7 +279,7 @@ window['exifAttributes'] = {
 	},
 	'LensMake' : {
 		'visible' : true
-	},
+	}/*,
 	"'LensModel'" : {
 		'visible' : true
 	},
@@ -288,6 +288,6 @@ window['exifAttributes'] = {
 	},
 	"'Lens'" : {
 		'visible' : true
-	}
+	}*/
 }
  
