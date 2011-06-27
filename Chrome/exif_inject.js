@@ -71,34 +71,60 @@ chrome.extension.onRequest.addListener(	function (request, sender, callback) {
 	}
 });
 
-chrome.extension.sendRequest({
-	'action' : 'checkOverlayEnabled'
-}, function(){
-	$("img").each(function(){
-		var img = $(this);
-		if(img.height() > 30 && img.width() > 30){
-			chrome.extension.sendRequest({
-				'action': 'checkExif',
-				'src': this.src
-			}, function(data){
-				img.wrap($("<div />").css({
-					'position': 'relative',
-					'display': 'inline-block',
-					'padding': '0px',
-					'margin': '0px'
-				})).parent().append(
-					$("<div />")
-						.addClass('overlayContainer').click(function(e){
-							console.log(e);
-							exif_inject(data);
-							e.stopPropagation();
-							e.preventDefault();
-						})
-				)
-			})
-		}
+var re = {
+  PHOTO_PAGE: /^https?:\/\/[^\/]*\bflickr\.com\/photos\/[^\/]+\/(\d+)/i
+};
+
+if(re.PHOTO_PAGE.test(location.href)){
+	console.log(page.getPhotoId());
+	chrome.extension.sendRequest({
+		'action': 'checkFlikrExif',
+		'id': page.getPhotoId()
+	}, function(data){
+		console.log(data);
+		$("div.photo-div").append(
+			$("<div />")
+				.addClass('overlayContainer').click(function(e){
+					console.log(e);
+					exif_inject({
+						'src': page.getPhotoUrl(),
+						'data': data
+					});
+					e.stopPropagation();
+					e.preventDefault();
+				})
+		)
+	})
+} else {
+	chrome.extension.sendRequest({
+		'action' : 'checkOverlayEnabled'
+	}, function(){
+		$("img").each(function(){
+			var img = $(this);
+			if(img.height() > 30 && img.width() > 30){
+				chrome.extension.sendRequest({
+					'action': 'checkExif',
+					'src': this.src
+				}, function(data){
+					img.wrap($("<div />").css({
+						'position': 'relative',
+						'display': 'inline-block',
+						'padding': '0px',
+						'margin': '0px'
+					})).parent().append(
+						$("<div />")
+							.addClass('overlayContainer').click(function(e){
+								console.log(e);
+								exif_inject(data);
+								e.stopPropagation();
+								e.preventDefault();
+							})
+					)
+				})
+			}
+		});
 	});
-});
+}
 
 (function( $ ){
 	function float2exposure(ex){
@@ -120,27 +146,44 @@ chrome.extension.sendRequest({
 		var table, methods = {
 			init : function( data ) {
 				return this.each(function(){
-					if(Object['keys'](data).length){
-						table= $("<tbody />").appendTo($("<table />").attr("width", "100%").addClass("exifTable").appendTo(this));
-						$.each(data, function(name, tag){
+					table= $("<tbody />").appendTo($("<table />").attr("width", "100%").addClass("exifTable").appendTo(this));
+					if(data['photo'] && data['photo']['exif'] ){
+						//-- Show Flikr EXIF Data
+						$.each(data['photo']['exif'], function(i, tag){
 							table.append(
 								$("<tr>").append(
 									$("<td>").addClass("exifTd").text(tag['label'])
 								).append(
-									$("<td>").addClass("exifTd").text((typeof tag['data'] == 'object')?tag['data'].length:prettyPrint(name, tag))
-								).addClass(tag['visible']?"exifVisibleRow":"exifHiddenRow")
+									$("<td>").addClass("exifTd").text(tag['raw']['_content'])
+								).addClass("exifVisibleRow")
 							)
 						});
+					
+					
 					} else {
+						if(Object['keys'](data).length){
+							
+							$.each(data, function(name, tag){
+								table.append(
+									$("<tr>").append(
+										$("<td>").addClass("exifTd").text(tag['label'])
+									).append(
+										$("<td>").addClass("exifTd").text((typeof tag['data'] == 'object')?tag['data'].length:prettyPrint(name, tag))
+									).addClass(tag['visible']?"exifVisibleRow":"exifHiddenRow")
+								)
+							});
+						} else {
 
-						$(this).append(
-							$("<div />").css({
-								'color': '#000',
-								'font-size': '22px',
-								'text-align': 'center'
-							}).text(chrome.i18n.getMessage("noEXIF"))
-						)
+							$(this).append(
+								$("<div />").css({
+									'color': '#000',
+									'font-size': '22px',
+									'text-align': 'center'
+								}).text(chrome.i18n.getMessage("noEXIF"))
+							)
+						}
 					}
+					
 				});
 			},
 			visible: function(){
