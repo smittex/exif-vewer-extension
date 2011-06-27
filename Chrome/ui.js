@@ -17,7 +17,7 @@ function checkExif(src, callback){
 			var data = EXIF.getTag(img, name);
 			if(data){
 				$.extend(tag, {
-					"data": EXIF.getTag(img, name),
+					"data": data,
 					"label": chrome.i18n.getMessage(name)
 				});
 			} else {
@@ -47,7 +47,25 @@ function getFlikrEXIF(id, callback){
 			'nojsoncallback':'1'
 		},
 		'success': function(data){
-			callback(data);
+			var aExifData = {};
+			$.each(data['photo']['exif'], function(i, tag){
+				var data = tag['raw']['_content'],
+					name = tag['tag'];
+				if(typeof exifAttributes[name] != 'undefined'){
+					aExifData[name] = $.extend({}, exifAttributes[name], {
+						"data": data,
+						"label": chrome.i18n.getMessage(name)
+					});
+				} else {
+					aExifData[name] = {
+						"data": data,
+						"label": tag['label'],
+						"visible": false
+					};
+				}
+			});
+			//console.log(aExifData);
+			callback(aExifData);
 		}
 	});
 }

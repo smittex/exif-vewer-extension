@@ -75,25 +75,32 @@ var re = {
   PHOTO_PAGE: /^https?:\/\/[^\/]*\bflickr\.com\/photos\/[^\/]+\/(\d+)/i
 };
 
+function injectOverlay(img, data){
+	img.wrap($("<div />").css({
+		'position': 'relative',
+		'display': 'block',
+		'padding': '0px',
+		'margin': '0px'
+	})).parent().append(
+		$("<div />")
+			.addClass('overlayContainer').click(function(e){
+				exif_inject(data);
+				e.stopPropagation();
+				e.preventDefault();
+			})
+	)
+}
+
 if(re.PHOTO_PAGE.test(location.href)){
 	console.log(page.getPhotoId());
 	chrome.extension.sendRequest({
 		'action': 'checkFlikrExif',
 		'id': page.getPhotoId()
 	}, function(data){
-		console.log(data);
-		$("div.photo-div").append(
-			$("<div />")
-				.addClass('overlayContainer').click(function(e){
-					console.log(e);
-					exif_inject({
-						'src': page.getPhotoUrl(),
-						'data': data
-					});
-					e.stopPropagation();
-					e.preventDefault();
-				})
-		)
+		injectOverlay($("div.photo-div img"), {
+			'src': page.getPhotoUrl(),
+			'data': data
+		});
 	})
 } else {
 	chrome.extension.sendRequest({
@@ -106,20 +113,7 @@ if(re.PHOTO_PAGE.test(location.href)){
 					'action': 'checkExif',
 					'src': this.src
 				}, function(data){
-					img.wrap($("<div />").css({
-						'position': 'relative',
-						'display': 'inline-block',
-						'padding': '0px',
-						'margin': '0px'
-					})).parent().append(
-						$("<div />")
-							.addClass('overlayContainer').click(function(e){
-								console.log(e);
-								exif_inject(data);
-								e.stopPropagation();
-								e.preventDefault();
-							})
-					)
+					injectOverlay(img, data);
 				})
 			}
 		});
@@ -147,20 +141,20 @@ if(re.PHOTO_PAGE.test(location.href)){
 			init : function( data ) {
 				return this.each(function(){
 					table= $("<tbody />").appendTo($("<table />").attr("width", "100%").addClass("exifTable").appendTo(this));
-					if(data['photo'] && data['photo']['exif'] ){
-						//-- Show Flikr EXIF Data
-						$.each(data['photo']['exif'], function(i, tag){
-							table.append(
-								$("<tr>").append(
-									$("<td>").addClass("exifTd").text(tag['label'])
-								).append(
-									$("<td>").addClass("exifTd").text(tag['raw']['_content'])
-								).addClass("exifVisibleRow")
-							)
-						});
+					// if(data['photo'] && data['photo']['exif'] ){
+						// $.each(data['photo']['exif'], function(i, tag){
+							// table.append(
+								// $("<tr>").append(
+									// $("<td>").addClass("exifTd").text(tag['label'])
+								// ).append(
+									// $("<td>").addClass("exifTd").text(tag['raw']['_content'])
+								// ).addClass("exifVisibleRow")
+							// )
+						// });
 					
 					
-					} else {
+					// } else {
+					
 						if(Object['keys'](data).length){
 							
 							$.each(data, function(name, tag){
@@ -182,7 +176,7 @@ if(re.PHOTO_PAGE.test(location.href)){
 								}).text(chrome.i18n.getMessage("noEXIF"))
 							)
 						}
-					}
+					// }
 					
 				});
 			},
