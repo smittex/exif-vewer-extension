@@ -33,7 +33,24 @@ function checkExif(src, callback){
 	});
 }
 
+// get Flikr exif
 
+function getFlikrEXIF(id, callback){
+	$.ajax({
+		'url': "http://api.flickr.com/services/rest/",
+		'dataType': 'json',
+		'data': {
+			'method': 'flickr.photos.getExif',
+			'api_key': 'a44589ed5e15fc1c6d0e08193ab7b5b3',
+			'photo_id': id,
+			'format': 'json',
+			'nojsoncallback':'1'
+		},
+		'success': function(data){
+			callback(data);
+		}
+	});
+}
 
 // A generic onclick callback function.
 function genericOnClick(info, tab) {
@@ -90,6 +107,8 @@ function genericOnClick(info, tab) {
 chrome.extension.onRequest.addListener(	function (request, sender, callback) {
 	if(request['action'] == 'checkExif'){
 		checkExif(request['src'], callback);
+	} else if(request['action'] == 'checkFlikrExif'){
+		getFlikrEXIF(request['id'], callback);
 	} else if(request['action'] == 'checkOverlayEnabled'){
 		if(localStorage.getItem("overlayEnabled") != "false")
 			callback();

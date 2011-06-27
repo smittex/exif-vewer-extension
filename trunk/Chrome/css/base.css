@@ -22,6 +22,7 @@
 
 .overlayContainer{
 	position: absolute;
+	z-index: 1000;
 	right: 4px;
 	bottom: 4px;
 	cursor: pointer;
