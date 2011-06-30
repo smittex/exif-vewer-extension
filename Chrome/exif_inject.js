@@ -25,10 +25,10 @@ function exif_inject(data){
 						}
 					},
 					id: "ExifExpand"
-			}, {
+			},/* {
 				text: chrome.i18n.getMessage("dialogConfigure"),
 				click: function() { window.open(chrome.extension.getURL("options.html"), "_tab"); }
-			}, {
+			}, */{
 				text: chrome.i18n.getMessage("dialogClose"),
 				click: function() { $(this).dialog("close");}
 			}]
@@ -46,6 +46,40 @@ function exif_inject(data){
 				.append('<iframe src="http://www.facebook.com/plugins/like.php?href='+data.src+'&amp;layout=button_count&amp;show_faces=true&amp;width=50&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:110px; height:21px;" allowTransparency="true"></iframe>')
 		);
 		
+		var titlebar = content.parent(".exif-dialog").find(".exif-dialog-titlebar"),
+			h = $('<a href="#"/>').addClass("exif-dialog-titlebar-heart exif-corner-top").attr("role",
+				"button").hover(function () {
+					h.addClass("exif-state-hover")
+				}, function () {
+					h.removeClass("exif-state-hover")
+				}).focus(function () {
+					h.addClass("exif-state-focus")
+				}).blur(function () {
+					h.removeClass("exif-state-focus")
+				}).click(function (i) {
+					window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZR3H6DE6H496L", "_tab");
+					return false
+				}).append(
+					$("<span />").addClass("exif-icon exif-icon-heart")
+				)
+				.appendTo(titlebar),
+			w =  $('<a href="#"/>').addClass("exif-dialog-titlebar-wrench exif-corner-top").attr("role",
+				"button").hover(function () {
+					w.addClass("exif-state-hover")
+				}, function () {
+					w.removeClass("exif-state-hover")
+				}).focus(function () {
+					w.addClass("exif-state-focus")
+				}).blur(function () {
+					w.removeClass("exif-state-focus")
+				}).click(function (i) {
+					window.open(chrome.extension.getURL("options.html"), "_tab");
+					return false
+				}).append(
+					$("<span />").addClass("exif-icon exif-icon-wrench")
+				)
+				.appendTo(titlebar);
+			 
 		if(!content.find("tr.exifVisibleRow").length){
 			content.parent(".exif-dialog").find("#ExifExpand").click();
 		}
@@ -76,19 +110,25 @@ var re = {
 };
 
 function injectOverlay(img, data){
-	img.wrap($("<div />").css({
-		'position': 'relative',
-		'display': 'block',
-		'padding': '0px',
-		'margin': '0px'
-	})).parent().append(
-		$("<div />")
-			.addClass('overlayContainer').click(function(e){
-				exif_inject(data);
-				e.stopPropagation();
-				e.preventDefault();
-			})
-	)
+	console.log(img);
+	var position = img.offset(),
+		size = {
+			width: img.outerWidth(),
+			height: img.outerHeight()
+		};
+
+	$("<span />")
+		.addClass('overlayContainer')
+		.click(function(e){
+			exif_inject(data);
+			e.stopPropagation();
+			e.preventDefault();
+		})
+		.css({
+			'top': position['top'] + size.height - 22,
+			'left': position['left'] + size.width - 22
+		})
+		.appendTo(document.documentElement);
 }
 
 if(re.PHOTO_PAGE.test(location.href)){
@@ -108,7 +148,7 @@ if(re.PHOTO_PAGE.test(location.href)){
 	}, function(){
 		$("img").each(function(){
 			var img = $(this);
-			if(img.height() > 30 && img.width() > 30){
+			if(img.height() > 110 && img.width() > 110){
 				chrome.extension.sendRequest({
 					'action': 'checkExif',
 					'src': this.src
