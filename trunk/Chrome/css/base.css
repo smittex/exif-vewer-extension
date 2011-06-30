@@ -3,13 +3,15 @@
 }
 
 .exifTd{
-	font-family: Lucida Grande, Lucida Sans, Arial, sans-serif !important; 
-	font-size: 12px !important; 
+	font: 12px Lucida Grande, Lucida Sans, Arial, sans-serif !important; 
 	color: #000000 !important;
 	text-align: left !important;
 	background-color: #FFFFFF !important;
-	padding: 0 0 2px 2px;
-	border-bottom: 1px solid #eee;
+	padding: 0 0 2px 2px !important;
+	border-top: 0px !important;
+	border-right:0px !important;
+	border-left:0px !important;
+	border-bottom: 1px solid #eee !important;
 }
 
 .exifHiddenRow{
@@ -22,6 +24,7 @@
 
 .overlayContainer{
 	position: absolute;
+	display: block;
 	z-index: 1000;
 	right: 4px;
 	bottom: 4px;
@@ -44,3 +47,12 @@
 	-webkit-box-shadow: 0 0 10px 0 #555;
 	opacity: 1;
 }
+
+
+.exif-dialog .exif-dialog-titlebar-heart { position: absolute; right: 3.8em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
+.exif-dialog .exif-dialog-titlebar-heart span { display: block; margin: 1px; }
+.exif-dialog .exif-dialog-titlebar-heart:hover, .exif-dialog .exif-dialog-titlebar-heart:focus { padding: 0; }
+
+.exif-dialog .exif-dialog-titlebar-wrench { position: absolute; right: 2.0em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
+.exif-dialog .exif-dialog-titlebar-wrench span { display: block; margin: 1px; }
+.exif-dialog .exif-dialog-titlebar-wrench:hover, .exif-dialog .exif-dialog-titlebar-wrench:focus { padding: 0; }
