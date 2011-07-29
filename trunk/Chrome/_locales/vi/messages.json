@@ -26,6 +26,9 @@
 	"dialogCollapse" : {
 		"message" : "Thu gọn"
 	},
+	"dialogCopyToClipboard": {
+		"message": "Copy"
+	},
 	"dialogTabData" : {
 		"message" : "Dữ liệu"
 	},

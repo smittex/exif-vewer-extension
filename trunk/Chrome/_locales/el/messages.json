@@ -26,6 +26,9 @@
 		"dialogCollapse": {
 			"message": "Κατάρρευση"
 		},
+		"dialogCopyToClipboard": {
+			"message": "Copy"
+		},
         "dialogTabData": {
                 "message": "Δεδομένα"
         },
