@@ -1,10 +1,10 @@
 function exif_inject(data){
-		var content = $("<div />").append(
+	var content = $("<div />").append(
 			$("<div />").addClass("ExifViewer").attr("img", data['src']).append(
 				$("<div />").addClass("ExifVewerTabData").exif(data['data'])
 			)
-		);
-		content.dialog({
+		),
+		dialog = content.dialog({
 			"minWidth" : 450,
 			"position": "center",
 			"resizable": false,
@@ -12,6 +12,17 @@ function exif_inject(data){
 			"closeOnEscape": true,
 			"closeText": 'hide',
 			"buttons": [{
+				text: chrome.i18n.getMessage("dialogCopyToClipboard"),
+				disabled: (Object['keys'](data['data']).length==0),
+				click: function(){
+					chrome.extension.sendRequest({
+						'action' : 'copyToClipboard',
+						'value': $(this).find(".ExifVewerTabData tr:visible").map(function(){
+									return this.childNodes[0].innerText + ": " + this.childNodes[1].innerText ;
+								}).get().join("\n")
+					});
+				}
+			}, {
 					text: chrome.i18n.getMessage("dialogExpand"),
 					disabled: (Object['keys'](data['data']).length==0),
 					click: function(){
@@ -32,7 +43,9 @@ function exif_inject(data){
 				text: chrome.i18n.getMessage("dialogClose"),
 				click: function() { $(this).dialog("close");}
 			}]
-		}).prev("div.exif-dialog-titlebar").prepend(
+		});
+		
+		dialog.prev("div.exif-dialog-titlebar").prepend(
 			$("<img />").attr("src", "chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/camera_blue-16.png").css({
 				"float":"left",
 				"padding-right": "5px"
@@ -40,11 +53,15 @@ function exif_inject(data){
 		).parent(".exif-dialog").css({
 			"direction": "ltr",
 			"-webkit-box-shadow": "0 0 20px 5px #444"
-		}).children(".exif-dialog-buttonpane").prepend(
-			$("<div style='float:left;line-height:38px;padding:8px 0 0 0;'>")
-				.append('<a href="http://twitter.com/share" class="twitter-share-button" data-url="'+data.src+'" data-count="horizontal">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>')
-				.append('<iframe src="http://www.facebook.com/plugins/like.php?href='+data.src+'&amp;layout=button_count&amp;show_faces=true&amp;width=50&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:110px; height:21px;" allowTransparency="true"></iframe>')
-		);
+		});
+		
+		if(document.location.protocol == 'http:'){
+			dialog.parent(".exif-dialog").children(".exif-dialog-buttonpane").prepend(
+				$("<div style='float:left;line-height:38px;padding:8px 0 0 0;'>")
+					.append('<a href="https://twitter.com/share" class="twitter-share-button" data-url="'+data.src+'" data-count="horizontal">Tweet</a><script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>')
+					.append('<iframe src="https://www.facebook.com/plugins/like.php?href='+data.src+'&amp;layout=button_count&amp;show_faces=true&amp;width=50&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:110px; height:21px;" allowTransparency="true"></iframe>')
+			);
+		}
 		
 		var titlebar = content.parent(".exif-dialog").find(".exif-dialog-titlebar"),
 			h = $('<a href="#"/>').addClass("exif-dialog-titlebar-heart exif-corner-top").attr("role",
@@ -110,7 +127,6 @@ var re = {
 };
 
 function injectOverlay(img, data){
-	console.log(img);
 	var position = img.offset(),
 		size = {
 			width: img.outerWidth(),
@@ -132,16 +148,20 @@ function injectOverlay(img, data){
 }
 
 if(re.PHOTO_PAGE.test(location.href)){
-	console.log(page.getPhotoId());
 	chrome.extension.sendRequest({
-		'action': 'checkFlikrExif',
-		'id': page.getPhotoId()
-	}, function(data){
-		injectOverlay($("div.photo-div img"), {
-			'src': page.getPhotoUrl(),
-			'data': data
-		});
-	})
+		'action' : 'checkOverlayEnabled'
+	}, function(){
+		console.log(page.getPhotoId());
+		chrome.extension.sendRequest({
+			'action': 'checkFlikrExif',
+			'id': page.getPhotoId()
+		}, function(data){
+			injectOverlay($("div.photo-div img"), {
+				'src': page.getPhotoUrl(),
+				'data': data
+			});
+		})
+	});
 } else {
 	chrome.extension.sendRequest({
 		'action' : 'checkOverlayEnabled'
@@ -170,7 +190,7 @@ if(re.PHOTO_PAGE.test(location.href)){
 		}
 	}
 	function prettyPrint(name, tag){
-		console.log(tag.data);
+		
 		if(name == "ExposureTime"){
 			return float2exposure(tag.data);
 		} else {
@@ -180,44 +200,32 @@ if(re.PHOTO_PAGE.test(location.href)){
 		var table, methods = {
 			init : function( data ) {
 				return this.each(function(){
-					table= $("<tbody />").appendTo($("<table />").attr("width", "100%").addClass("exifTable").appendTo(this));
-					// if(data['photo'] && data['photo']['exif'] ){
-						// $.each(data['photo']['exif'], function(i, tag){
-							// table.append(
-								// $("<tr>").append(
-									// $("<td>").addClass("exifTd").text(tag['label'])
-								// ).append(
-									// $("<td>").addClass("exifTd").text(tag['raw']['_content'])
-								// ).addClass("exifVisibleRow")
-							// )
-						// });
-					
-					
-					// } else {
-					
-						if(Object['keys'](data).length){
-							
-							$.each(data, function(name, tag){
-								table.append(
-									$("<tr>").append(
-										$("<td>").addClass("exifTd").text(tag['label'])
-									).append(
-										$("<td>").addClass("exifTd").text((typeof tag['data'] == 'object')?tag['data'].length:prettyPrint(name, tag))
-									).addClass(tag['visible']?"exifVisibleRow":"exifHiddenRow")
-								)
-							});
-						} else {
-
-							$(this).append(
-								$("<div />").css({
-									'color': '#000',
-									'font-size': '22px',
-									'text-align': 'center'
-								}).text(chrome.i18n.getMessage("noEXIF"))
+					table= $("<tbody />").appendTo(
+						$("<table />").attr("width", "100%").addClass("exifTable").appendTo(
+							$(this).data('exif', data)
+						)
+					);
+					if(Object['keys'](data).length){
+						
+						$.each(data, function(name, tag){
+							table.append(
+								$("<tr>").append(
+									$("<td>").addClass("exifTd").text(tag['label'])
+								).append(
+									$("<td>").addClass("exifTd").text((typeof tag['data'] == 'object')?tag['data'].length:prettyPrint(name, tag))
+								).addClass(tag['visible']?"exifVisibleRow":"exifHiddenRow")
 							)
-						}
-					// }
-					
+						});
+					} else {
+
+						$(this).append(
+							$("<div />").css({
+								'color': '#000',
+								'font-size': '22px',
+								'text-align': 'center'
+							}).text(chrome.i18n.getMessage("noEXIF"))
+						)
+					}
 				});
 			},
 			visible: function(){

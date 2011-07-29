@@ -130,10 +130,20 @@ chrome.extension.onRequest.addListener(	function (request, sender, callback) {
 	} else if(request['action'] == 'checkOverlayEnabled'){
 		if(localStorage.getItem("overlayEnabled") != "false")
 			callback();
+	} else if(request['action'] == 'copyToClipboard'){
+		copyToClipboard(request['value'])
 	}
 });
 
-  
+function copyToClipboard(str) {
+  var obj=document.getElementById("hbnaclhngkhpmpgmfakaghgjbblokeeh");
+  if( obj ){
+	obj.value = str;
+	obj.select();
+	document.execCommand("copy", false, null);
+  }
+}
+		
 //-- Load exif attributes list;
 function loadExifAttributes(){
 	if(localStorage.getItem("exif_attributes")){
