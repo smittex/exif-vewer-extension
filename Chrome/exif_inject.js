@@ -74,7 +74,7 @@ function exif_inject(data){
 				}).blur(function () {
 					h.removeClass("exif-state-focus")
 				}).click(function (i) {
-					window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZR3H6DE6H496L", "_tab");
+					window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YHWF9X2ETGJ4W", "_tab");
 					return false
 				}).append(
 					$("<span />").addClass("exif-icon exif-icon-heart")
@@ -166,7 +166,7 @@ if(re.PHOTO_PAGE.test(location.href)){
 	chrome.extension.sendRequest({
 		'action' : 'checkOverlayEnabled'
 	}, function(){
-		$("img").each(function(){
+		$("img:visible").each(function(){
 			var img = $(this);
 			if(img.height() > 110 && img.width() > 110){
 				chrome.extension.sendRequest({
