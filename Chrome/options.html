@@ -4,38 +4,30 @@
 		<style type="text/css" title="currentStyle">
 			@import "css/redmond/jquery-ui-1.8.6.custom.css";
 	body {maring:0px; padding:0px;font-family: Arial, sans-serif;}
-	ul { list-style-type: none; margin: 0; padding: 0;  height:100%; }
-	ul li{  padding-left: 10px;}
 
-	#selectedattributes li { 
-		margin: 3px;  
-		padding: 3px 5px;
+	#attributes tr { 
+		height: 24px;
 		font-size: 0.9em; 
 		white-space: nowrap; 
-		border-radius: 3px;
-		border: 1px solid #87b6d9;
-		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#dddddd));
-		cursor: move;
-	}
-	#attributes li { 
-		margin: 3px;  
-		padding: 3px 5px;
-		font-size: 0.9em; 
-		white-space: nowrap; 
-		border-radius: 3px;
+		border-radius: 2px;
 		border: 1px solid #cccccc;
-		background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#FAFAFA));
-		cursor: move;
 		color:#777777;
+		background-color: #fff;
+	}	
+	#attributes tr[selected] { 
+		font-size: 0.9em; 
+		white-space: nowrap; 
+		color: #000;
+		font-weight: bold;
+		background-color: #eee;
+		border-radius: 2px;
+		border: 1px solid #cccccc;		
 	}
-	.ui-state-highlight{
-		background: #ffffff !important;
-		border: 1px solid #cccccc !important;
+	#attributes tr#exif-sortable-placeholder {
+
 	}
-
-	.attributes_layer{
-		width: 220px;
-
+	#attributes tr td{
+		padding: 2px 10px;
 	}
 	
 	
@@ -100,18 +92,31 @@ h1 {
 				$("#overlayEnabled").attr('checked', true);
 
 			var attributes = JSON.parse(localStorage.getItem("exif_attributes"));
+			var table = $("table#attributes");
 			$.each(attributes, function(name, attr){
-				
-					$("<li />").attr("id", name).text(chrome.i18n.getMessage(name)?chrome.i18n.getMessage(name):name).appendTo(
-						(attr.visible)?"#selectedattributes":"#attributes"
-					);
+				table.append(
+					$("<tr />").attr("id", name).attr('selected', attr.visible).append(
+						$("<td />").append(
+							$("<img />").attr('src', attr.visible ? 'img/yes.png' : 'img/no.png').click( function(){
+								var tr = $(this).parent().parent(),
+									visible = !tr.get(0).hasAttribute('selected');
+								console.log(visible)
+								
+								$(this).attr('src', visible ? 'img/yes.png' : 'img/no.png');
+								if(visible)
+									tr.attr('selected', true);
+								else
+									tr.removeAttr('selected');
+							})
+						)
+					).append(
+						$("<td />").text(chrome.i18n.getMessage(name)?chrome.i18n.getMessage(name):name)
+					)
+				)
 			})
 
-			$("ul").sortable({
-				placeholder: 'ui-state-highlight',
-				connectWith: 'ul'
-			});
-			
+			$("table#attributes tbody").sortable();
+		
 
 		});
 		
@@ -120,18 +125,11 @@ h1 {
 
 			localStorage.setItem("overlayEnabled", $("#overlayEnabled").is(':checked'));
 			var attributes = {};//JSON.parse(localStorage.getItem("exif_attributes"));
-			//$.each(attributes, function(name, attr){
-			$("#selectedattributes li").each(function(i, elem){
+
+			$("#attributes tr").each(function(i, elem){
 				var name = elem.getAttribute("id");
 				attributes[name] = {
-					visible: true,
-					pos: i
-				}
-			});
-			$("#attributes li").each(function(i, elem){
-				var name = elem.getAttribute("id");
-				attributes[name] = {
-					visible: false,
+					visible: elem.hasAttribute('selected'),
 					pos: i
 				}
 			});
@@ -180,14 +178,16 @@ h1 {
 				<p>
 					<input type="checkbox" id="overlayEnabled">Enable overlay on images with EXIF</input>
 				</p>
-				<div style="max-width: 500px; padding: 15px;">
-					Drag and drop properties you want to show in EXF Viewer dialog from the right column to the left
-				</div>
-				<table>
+				<hr />
+				<!--table>
 					<tr>
 						<td type="text" class="attributes_layer" valign="top">Selected attributes:<ul id="selectedattributes" ></ul></td>
 						<td type="text" class="attributes_layer" valign="top">Available attributes:<div class="scrollframe"><ul id="attributes" ><div></ul></td>
 					</tr>
+				</table-->
+				
+				<table id="attributes" cellspacing=0 cellpadding=0>
+				
 				</table>
 	
 	</div>

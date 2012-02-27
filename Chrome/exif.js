@@ -10,7 +10,7 @@ var EXIF = {};
 //0x0095	LensModel
 (function() {
 
-var bDebug = false;
+var bDebug = true;
 EXIF.Tags = {
 
 	// version tags
@@ -353,11 +353,13 @@ function findEXIFinJPEG(oFile) {
 		return false; // not a valid jpeg
 	}
 
-	var iOffset = 2;
+	var iOffset = 2,i=0;
 	var iLength = oFile.getLength();
 	while (iOffset < iLength) {
+		console.log(i);
+		if(i++ > 10) return;
 		if (oFile.getByteAt(iOffset) != 0xFF) {
-			if (bDebug) console.log("Not a valid marker at offset " + iOffset + ", found: " + oFile.getByteAt(iOffset));
+			if (bDebug) console.log("Not a valid marker at offset " + iOffset.toString(16) + ", found: " + oFile.getByteAt(iOffset).toString(16));
 			return false; // not a valid marker, something is wrong
 		}
 
@@ -365,20 +367,23 @@ function findEXIFinJPEG(oFile) {
 
 		// we could implement handling for other markers here, 
 		// but we're only looking for 0xFFE1 for EXIF data
-
+		console.log(iMarker.toString(16), oFile.getStringAt(iOffset + 4, 4));
 		if (iMarker == 22400) {
-			if (bDebug) console.log("Found 0xFFE1 marker");
+			if (bDebug) console.log("Found 0x5780 marker");
 			return readEXIFData(oFile, iOffset + 4, oFile.getShortAt(iOffset+2, true)-2);
 			iOffset += 2 + oFile.getShortAt(iOffset+2, true);
 
 		} else if (iMarker == 225) {
 			// 0xE1 = Application-specific 1 (for EXIF)
 			if (bDebug) console.log("Found 0xFFE1 marker");
-			return readEXIFData(oFile, iOffset + 4, oFile.getShortAt(iOffset+2, true)-2);
+			if (oFile.getStringAt(iOffset + 4, 4) == "Exif")
+				return readEXIFData(oFile, iOffset + 4, oFile.getShortAt(iOffset+2, true)-2);
 
-		} else {
+		} 
+
+			console.log((iOffset + 2 + oFile.getShortAt(iOffset+2, true)+2))
 			iOffset += 2 + oFile.getShortAt(iOffset+2, true);
-		}
+
 
 	}
 
@@ -392,7 +397,7 @@ function readTags(oFile, iTIFFStart, iDirStart, oStrings, bBigEnd)
 	for (var i=0;i<iEntries;i++) {
 		var iEntryOffset = iDirStart + i*12 + 2;
 		var strTag = oStrings[oFile.getShortAt(iEntryOffset, bBigEnd)];
-		if (!strTag && bDebug) console.log("Unknown tag: " + oFile.getShortAt(iEntryOffset, bBigEnd));
+		if (!strTag && bDebug) console.log("Unknown tag: " + oFile.getShortAt(iEntryOffset, bBigEnd).toString(16));
 		oTags[strTag] = readTagValue(oFile, iEntryOffset, iTIFFStart, iDirStart, bBigEnd);
 	}
 	return oTags;
@@ -488,8 +493,9 @@ function readTagValue(oFile, iEntryOffset, iTIFFStart, iDirStart, bBigEnd)
 
 function readEXIFData(oFile, iStart, iLength) 
 {
+	console.log(oFile.getStringAt(iStart, 4))
 	if (oFile.getStringAt(iStart, 4) != "Exif") {
-		if (bDebug) console.log("Not valid EXIF data! " + oFile.getStringAt(iStart, 4));
+		if (bDebug) console.log("Not valid EXIF data! " + oFile.getStringAt(iStart, 4).toString(16));
 		return false;
 	}
 
@@ -512,12 +518,13 @@ function readEXIFData(oFile, iStart, iLength)
 		return false;
 	}
 
-	if (oFile.getLongAt(iTIFFOffset+4, bBigEnd) != 0x00000008) {
+	var iIFDOffset = oFile.getLongAt(iTIFFOffset+4, bBigEnd);
+	/*if (oFile.getLongAt(iTIFFOffset+4, bBigEnd) != 0x00000008) {
 		if (bDebug) console.log("Not valid TIFF data! (First offset not 8)", oFile.getShortAt(iTIFFOffset+4, bBigEnd));
-		return false;
-	}
+		//return false;
+	}*/
 
-	var oTags = readTags(oFile, iTIFFOffset, iTIFFOffset+8, EXIF.TiffTags, bBigEnd);
+	var oTags = readTags(oFile, iTIFFOffset, iTIFFOffset+iIFDOffset, EXIF.TiffTags, bBigEnd);
 
 	if (oTags['ExifIFDPointer']) {
 		var oEXIFTags = readTags(oFile, iTIFFOffset, iTIFFOffset + oTags['ExifIFDPointer'], EXIF.Tags, bBigEnd);
