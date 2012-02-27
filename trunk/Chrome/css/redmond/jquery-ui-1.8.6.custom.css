@@ -59,26 +59,26 @@
 .exif-widget { font-family: Arial, sans-serif; font-size: 12px; }
 .exif-widget .exif-widget { font-size: 1em; }
 .exif-widget input, .exif-widget select, .exif-widget textarea, .exif-widget button { font-family: Arial, sans-serif; font-size: 1em; }
-.exif-widget-content { border: 1px solid #86cce9; background: #fcfdfd url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_inset-hard_100_fcfdfd_1x100.png) 50% bottom repeat-x; color: #222222; }
+.exif-widget-content { border: 1px solid #86cce9; background: #fcfdfd url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_inset-hard_100_fcfdfd_1x100.png) 50% bottom repeat-x; color: #222222; }
 .exif-widget-content a { color: #222222; }
-.exif-widget-header { border: 1px solid #649bb4; background: #66c0e5 url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_gloss-wave_80_66c0e5_500x100.png) 50% 50% repeat-x; color: #ffffff; font-weight: bold; }
+.exif-widget-header { border: 1px solid #649bb4; background: #66c0e5 url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_gloss-wave_80_66c0e5_500x100.png) 50% 50% repeat-x; color: #ffffff; font-weight: bold; }
 .exif-widget-header a { color: #ffffff; }
 
 /* Interaction states
 ----------------------------------*/
-.exif-state-default, .exif-widget-content .exif-state-default, .exif-widget-header .exif-state-default { border: 1px solid #c5dbec; background: #dfeffc url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x; font-weight: bold; color: #2e6e9e; }
+.exif-state-default, .exif-widget-content .exif-state-default, .exif-widget-header .exif-state-default { border: 1px solid #c5dbec; background: #dfeffc url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x; font-weight: bold; color: #2e6e9e; }
 .exif-state-default a, .exif-state-default a:link, .exif-state-default a:visited { color: #2e6e9e; text-decoration: none; }
-.exif-state-hover, .exif-widget-content .exif-state-hover, .exif-widget-header .exif-state-hover, .exif-state-focus, .exif-widget-content .exif-state-focus, .exif-widget-header .exif-state-focus { border: 1px solid #79b7e7; background: #d0e5f5 url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_glass_75_d0e5f5_1x400.png) 50% 50% repeat-x; font-weight: bold; color: #1d5987; }
+.exif-state-hover, .exif-widget-content .exif-state-hover, .exif-widget-header .exif-state-hover, .exif-state-focus, .exif-widget-content .exif-state-focus, .exif-widget-header .exif-state-focus { border: 1px solid #79b7e7; background: #d0e5f5 url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_glass_75_d0e5f5_1x400.png) 50% 50% repeat-x; font-weight: bold; color: #1d5987; }
 .exif-state-hover a, .exif-state-hover a:hover { color: #1d5987; text-decoration: none; }
-.exif-state-active, .exif-widget-content .exif-state-active, .exif-widget-header .exif-state-active { border: 1px solid #79b7e7; background: #f5f8f9 url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_inset-hard_100_f5f8f9_1x100.png) 50% 50% repeat-x; font-weight: bold; color: #d46816; }
+.exif-state-active, .exif-widget-content .exif-state-active, .exif-widget-header .exif-state-active { border: 1px solid #79b7e7; background: #f5f8f9 url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_inset-hard_100_f5f8f9_1x100.png) 50% 50% repeat-x; font-weight: bold; color: #d46816; }
 .exif-state-active a, .exif-state-active a:link, .exif-state-active a:visited { color: #d46816; text-decoration: none; }
 .exif-widget :active { outline: none; }
 
 /* Interaction Cues
 ----------------------------------*/
-.exif-state-highlight, .exif-widget-content .exif-state-highlight, .exif-widget-header .exif-state-highlight  {border: 1px solid #fad42e; background: #fbec88 url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_flat_55_fbec88_40x100.png) 50% 50% repeat-x; color: #363636; }
+.exif-state-highlight, .exif-widget-content .exif-state-highlight, .exif-widget-header .exif-state-highlight  {border: 1px solid #fad42e; background: #fbec88 url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_flat_55_fbec88_40x100.png) 50% 50% repeat-x; color: #363636; }
 .exif-state-highlight a, .exif-widget-content .exif-state-highlight a,.exif-widget-header .exif-state-highlight a { color: #363636; }
-.exif-state-error, .exif-widget-content .exif-state-error, .exif-widget-header .exif-state-error {border: 1px solid #cd0a0a; background: #fef1ec url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x; color: #cd0a0a; }
+.exif-state-error, .exif-widget-content .exif-state-error, .exif-widget-header .exif-state-error {border: 1px solid #cd0a0a; background: #fef1ec url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x; color: #cd0a0a; }
 .exif-state-error a, .exif-widget-content .exif-state-error a, .exif-widget-header .exif-state-error a { color: #cd0a0a; }
 .exif-state-error-text, .exif-widget-content .exif-state-error-text, .exif-widget-header .exif-state-error-text { color: #cd0a0a; }
 .exif-priority-primary, .exif-widget-content .exif-priority-primary, .exif-widget-header .exif-priority-primary { font-weight: bold; }
@@ -89,14 +89,14 @@
 ----------------------------------*/
 
 /* states and images */
-.exif-icon { width: 16px; height: 16px; background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_469bdd_256x240.png); }
-.exif-widget-content .exif-icon {background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_469bdd_256x240.png); }
-.exif-widget-header .exif-icon {background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_d8e7f3_256x240.png); }
-.exif-state-default .exif-icon { background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_6da8d5_256x240.png); }
-.exif-state-hover .exif-icon, .exif-state-focus .exif-icon {background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_217bc0_256x240.png); }
-.exif-state-active .exif-icon {background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_f9bd01_256x240.png); }
-.exif-state-highlight .exif-icon {background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_2e83ff_256x240.png); }
-.exif-state-error .exif-icon, .exif-state-error-text .exif-icon {background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-icons_cd0a0a_256x240.png); }
+.exif-icon { width: 16px; height: 16px; background-image: url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-icons_469bdd_256x240.png); }
+.exif-widget-content .exif-icon {background-image: url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-icons_469bdd_256x240.png); }
+.exif-widget-header .exif-icon {background-image: url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-icons_d8e7f3_256x240.png); }
+.exif-state-default .exif-icon { background-image: url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-icons_6da8d5_256x240.png); }
+.exif-state-hover .exif-icon, .exif-state-focus .exif-icon {background-image: url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-icons_217bc0_256x240.png); }
+.exif-state-active .exif-icon {background-image: url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-icons_f9bd01_256x240.png); }
+.exif-state-highlight .exif-icon {background-image: url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-icons_2e83ff_256x240.png); }
+.exif-state-error .exif-icon, .exif-state-error-text .exif-icon {background-image: url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-icons_cd0a0a_256x240.png); }
 
 /* positioning */
 .exif-icon-carat-1-n { background-position: 0 0; }
@@ -291,8 +291,8 @@
 .exif-corner-all { -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
 
 /* Overlays */
-.exif-widget-overlay { background: #aaaaaa url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); }
-.exif-widget-shadow { margin: -8px 0 0 -8px; padding: 8px; background: #395d7f url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/css/redmond/images/ui-bg_flat_80_395d7f_40x100.png) 50% 50% repeat-x; opacity: .50;filter:Alpha(Opacity=50); -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px; }/*
+.exif-widget-overlay { background: #aaaaaa url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); }
+.exif-widget-shadow { margin: -8px 0 0 -8px; padding: 8px; background: #395d7f url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_flat_80_395d7f_40x100.png) 50% 50% repeat-x; opacity: .50;filter:Alpha(Opacity=50); -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px; }/*
  * jQuery UI Resizable 1.8.6
  *
  * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)

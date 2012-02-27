@@ -51,6 +51,9 @@ function getFlikrEXIF(id, callback){
 			$.each(data['photo']['exif'], function(i, tag){
 				var data = tag['raw']['_content'],
 					name = tag['tag'];
+				if(name == "ISO"){
+					name = "ISOSpeedRatings"
+				}
 				if(typeof exifAttributes[name] != 'undefined'){
 					aExifData[name] = $.extend({}, exifAttributes[name], {
 						"data": data,
