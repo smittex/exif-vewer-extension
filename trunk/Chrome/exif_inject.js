@@ -161,7 +161,8 @@ if(re.PHOTO_PAGE.test(location.href)){
 					'action': 'checkExif',
 					'src': this.src
 				}, function(data){
-					injectOverlay(img, data);
+					if(Object['keys'](data.data).length)
+						injectOverlay(img, data);
 				})
 			}
 		});
@@ -199,7 +200,7 @@ if(re.PHOTO_PAGE.test(location.href)){
 				
 					var parent = null,
 						table = $("<table />").attr("width", "100%").addClass("exifTable");
-					if(gps) {
+					if(gps && gps.lat && gps.lng) {
 						parent = $("<div />").append(
 							$("<ul />").append(
 								$("<li />").append($("<a/>").text(chrome.i18n.getMessage("dialogTitle")).attr("href","#exifDataTab"))
