@@ -380,3 +380,23 @@ button.exif-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra p
 .exif-dialog .exif-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
 .exif-dialog .exif-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
 .exif-draggable .exif-dialog-titlebar { cursor: move; }
+
+
+/*
+ * jQuery UI Tabs 1.8.18
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Tabs#theming
+ */
+.exif-tabs { position: relative; padding: .2em; zoom: 1; } /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+.exif-tabs .exif-tabs-nav { margin: 0; padding: .2em .2em 0; }
+.exif-tabs .exif-tabs-nav li { list-style: none; float: left; position: relative; top: 1px; margin: 0 .2em 1px 0; border-bottom: 0 !important; padding: 0; white-space: nowrap; }
+.exif-tabs .exif-tabs-nav li a { float: left; padding: .5em 1em; text-decoration: none; }
+.exif-tabs .exif-tabs-nav li.exif-tabs-selected { margin-bottom: 0; padding-bottom: 1px; }
+.exif-tabs .exif-tabs-nav li.exif-tabs-selected a, .exif-tabs .exif-tabs-nav li.exif-state-disabled a, .exif-tabs .exif-tabs-nav li.exif-state-processing a { cursor: text; }
+.exif-tabs .exif-tabs-nav li a, .exif-tabs.exif-tabs-collapsible .exif-tabs-nav li.exif-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
+.exif-tabs .exif-tabs-panel { display: block; border-width: 0; padding: 1em 1.4em; background: none; }
+.exif-tabs .exif-tabs-hide { display: none !important; }

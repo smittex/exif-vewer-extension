@@ -24,9 +24,23 @@ function checkExif(src, callback){
 				delete aExifData[name];
 			}
 		});
+		
+		var gps_data = {
+			Latitude: EXIF.getTag(img, "GPSLatitude"),
+			Longitude: EXIF.getTag(img, "GPSLongitude"),
+			LatitudeRef: EXIF.getTag(img, "GPSLatitudeRef"),
+			LongitudeRef: EXIF.getTag(img, "GPSLongitudeRef"),
+			Position: EXIF.getTag(img, "GPSPosition")
+		}
+		
+		var gps = {};
+		gps.lat = Geo.parseDMS(gps_data.Latitude,gps_data.LatitudeRef);
+		gps.lng = Geo.parseDMS(gps_data.Longitude,gps_data.LongitudeRef);
+		
 		if(Object['keys'](aExifData).length){
 			callback({
 				'data': aExifData,
+				'gps': gps,
 				'src': src
 			});
 		}
@@ -36,87 +50,80 @@ function checkExif(src, callback){
 // get Flikr exif
 
 function getFlikrEXIF(id, callback){
-	$.ajax({
-		'url': "http://api.flickr.com/services/rest/",
-		'dataType': 'json',
-		'data': {
-			'method': 'flickr.photos.getExif',
-			'api_key': 'a44589ed5e15fc1c6d0e08193ab7b5b3',
-			'photo_id': id,
-			'format': 'json',
-			'nojsoncallback':'1'
-		},
-		'success': function(data){
-			var aExifData = {};
-			$.each(data['photo']['exif'], function(i, tag){
-				var data = tag['raw']['_content'],
-					name = tag['tag'];
-				if(name == "ISO"){
-					name = "ISOSpeedRatings"
+	var oData = {};
+	$.when(
+		$.ajax({
+			'url': "http://api.flickr.com/services/rest/",
+			'dataType': 'json',
+			'data': {
+				'method': 'flickr.photos.getExif',
+				'api_key': 'a44589ed5e15fc1c6d0e08193ab7b5b3',
+				'photo_id': id,
+				'format': 'json',
+				'nojsoncallback':'1'
+			},
+			'success': function(data){
+				var aExifData = {};
+				$.each(data['photo']['exif'], function(i, tag){
+					var data = tag['raw']['_content'],
+						name = tag['tag'];
+					if(name == "ISO"){
+						name = "ISOSpeedRatings"
+					}
+					if(typeof exifAttributes[name] != 'undefined'){
+						aExifData[name] = $.extend({}, exifAttributes[name], {
+							"data": data,
+							"label": chrome.i18n.getMessage(name)
+						});
+					} else {
+						aExifData[name] = {
+							"data": data,
+							"label": tag['label'],
+							"visible": false
+						};
+					}
+				});
+				oData.data = aExifData;
+			}
+		}),
+		$.ajax({
+			'url': "http://api.flickr.com/services/rest/",
+			'dataType': 'json',
+			'data': {
+				'method': 'flickr.photos.geo.getLocation',
+				'api_key': 'a44589ed5e15fc1c6d0e08193ab7b5b3',
+				'photo_id': id,
+				'format': 'json',
+				'nojsoncallback':'1'
+			},
+			'success': function(data){
+				if(data && data.photo && data.photo.location){
+					oData.gps = {
+						lat: data.photo.location.latitude,
+						lng: data.photo.location.longitude
+					}
 				}
-				if(typeof exifAttributes[name] != 'undefined'){
-					aExifData[name] = $.extend({}, exifAttributes[name], {
-						"data": data,
-						"label": chrome.i18n.getMessage(name)
-					});
-				} else {
-					aExifData[name] = {
-						"data": data,
-						"label": tag['label'],
-						"visible": false
-					};
-				}
-			});
-			//console.log(aExifData);
-			callback(aExifData);
-		}
+			}
+		})
+	).then(function(){
+		callback(oData);
 	});
 }
 
 // A generic onclick callback function.
 function genericOnClick(info, tab) {
 		var img = {src: info.srcUrl};
-		EXIF.getData(img, function(){
-				var aExifData = $.extend({}, exifAttributes);
-				$.each(aExifData, function(name, tag){
-					var data = EXIF.getTag(img, name);
-					if(data){
-						$.extend(tag, {
-							"data": EXIF.getTag(img, name),
-							"label": chrome.i18n.getMessage(name)
-						});
-					} else {
-						delete aExifData[name];
-					}
-				});
+		
+		if(/https?:\/\/.*?\.staticflickr.com\//g.test(info.srcUrl)){
 
-				var gps_data = {
-					Latitude: EXIF.getTag(img, "GPSLatitude"),
-					Longitude: EXIF.getTag(img, "GPSLongitude"),
-					LatitudeRef: EXIF.getTag(img, "GPSLatitudeRef"),
-					LongitudeRef: EXIF.getTag(img, "GPSLongitudeRef"),
-					Position: EXIF.getTag(img, "GPSPosition")
-				}
-					
-
-				//if(exif_data == '')	exif_data = chrome.i18n.getMessage("noEXIF");
+		} else {
+			checkExif(info.srcUrl, function(data){
 				chrome.tabs.sendRequest(tab.id, {
 					'action': 'showExif',
-					'src': img.src,
-					'data': aExifData
-				}, function (){
-					if(gps_data.Latitude && gps_data.Longitude){
-						var gps = {};
-						gps.lat = Geo.parseDMS(gps_data.Latitude,gps_data.LatitudeRef);
-						gps.lng = Geo.parseDMS(gps_data.Longitude,gps_data.LongitudeRef);
-						chrome.tabs.sendRequest(tab.id, {
-							'action': 'showGps',
-							'src': img.src,
-							'data' : gps
-						});
-					}
+					'data': data
 				});
-		});
+			})
+		}
 }
 // Create one test item for each context type.
   var context = "image";

@@ -31,7 +31,7 @@
 	cursor: pointer;
 	width: 16px;
 	height: 16px;
-	padding: 2px;
+	padding: 0px;
 	margin: 0px;
 	/*border: 1px solid rgba(0,0,0,0);*/
 	border-radius: 4px;
@@ -39,16 +39,18 @@
 	background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/camera_blue-16.png);
 	background-position: 2px 2px;
 	background-repeat: no-repeat;
-	opacity: 0.75;
+	opacity: 0.5;
 }
 .overlayContainer:hover{
 	/*border: 1px solid #a0d7ee;*/
-	background-color: rgba(180,235,255, .4) !important;
-	-webkit-box-shadow: 0 0 10px 0 #555;
-	opacity: 1;
+	/*background-color: rgba(180,235,255, .4) !important;*/
+	/*-webkit-box-shadow: 0 0 10px 0 #555;*/
+	/*opacity: 1;*/
 }
 
-
+.ExifVewerTabData {
+	max-height: 460px;
+}
 .exif-dialog .exif-dialog-titlebar-heart { position: absolute; right: 3.8em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
 .exif-dialog .exif-dialog-titlebar-heart span { display: block; margin: 1px; }
 .exif-dialog .exif-dialog-titlebar-heart:hover, .exif-dialog .exif-dialog-titlebar-heart:focus { padding: 0; }
