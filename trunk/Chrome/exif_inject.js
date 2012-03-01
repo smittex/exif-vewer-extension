@@ -1,10 +1,10 @@
+var dialog;
 function exif_inject(data){
 	var content = $("<div />").append(
 			$("<div />").addClass("ExifViewer").attr("img", data['src']).append(
-				$("<div />").addClass("ExifVewerTabData").exif(data['data'])
+				$("<div />").addClass("ExifVewerTabData").exif(data['data'], data['gps'])
 			)
-		),
-		dialog = content.dialog({
+		),dialog = content.dialog({
 			"minWidth" : 450,
 			"position": "center",
 			"resizable": false,
@@ -102,23 +102,9 @@ function exif_inject(data){
 		}
 }
 
-
-function exif_injectMap(data){
-	$("<iframe />")
-		.appendTo($(".ExifViewer[img='"+data['src']+"']"))
-		.css("width", "100%")
-		.css("min-height", "200px")
-		.css("border", "1px solid #cccccc")
-		.attr("src","http://maps.google.com/maps?f=q&source=s_q&q="+data['data']['lat']+","+data['data']['lng']+"&output=embed&type=G_NORMAL_MAP");
-
-	
-}
-
 chrome.extension.onRequest.addListener(	function (request, sender, callback) {
 	if(request['action'] == 'showExif'){
-		exif_inject(request)
-	} else if(request['action'] == 'showGps'){
-		exif_injectMap(request);
+		exif_inject(request.data);
 	}
 });
 
@@ -126,7 +112,7 @@ var re = {
   PHOTO_PAGE: /^https?:\/\/[^\/]*\bflickr\.com\/photos\/[^\/]+\/(\d+)/i
 };
 
-function injectOverlay(img, data){
+function injectOverlay(img, data, gps){
 	var position = img.offset(),
 		size = {
 			width: img.outerWidth(),
@@ -144,22 +130,24 @@ function injectOverlay(img, data){
 			'top': position['top'] + size.height - 22,
 			'left': position['left'] + size.width - 22
 		})
-		.appendTo(document.documentElement);
+		.appendTo(document.documentElement)
+		.hover(function(){
+			$(this).animate({'opacity': 1}, 300)
+		}, function(){
+			$(this).animate({'opacity': .5}, 300)
+		});
 }
 
 if(re.PHOTO_PAGE.test(location.href)){
 	chrome.extension.sendRequest({
 		'action' : 'checkOverlayEnabled'
 	}, function(){
-		console.log(page.getPhotoId());
 		chrome.extension.sendRequest({
 			'action': 'checkFlikrExif',
 			'id': page.getPhotoId()
 		}, function(data){
-			injectOverlay($("div.photo-div img"), {
-				'src': page.getPhotoUrl(),
-				'data': data
-			});
+			var d = $.extend(data, {'src': page.getPhotoUrl()});
+			injectOverlay($("div.photo-div img"), d);
 		})
 	});
 } else {
@@ -181,30 +169,52 @@ if(re.PHOTO_PAGE.test(location.href)){
 }
 
 (function( $ ){
-	function float2exposure(ex){
-		if(ex.toString().indexOf(".")>0){
-			var f = ex.toString().split(".")[1];
-			return "1/" + Math.floor(Math.pow(10, f.length) / parseInt(f.replace(/^0*/, ""))).toString();
-		} else {
-			return ex;
+		function float2exposure(ex){
+			if(ex.toString().indexOf(".")>0){
+				var f = ex.toString().split(".")[1];
+				return "1/" + Math.floor(Math.pow(10, f.length) / parseInt(f.replace(/^0*/, ""))).toString();
+			} else {
+				return ex;
+			}
 		}
-	}
-	function prettyPrint(name, tag){
+		function prettyPrint(name, tag){
+			
+			if(name == "ExposureTime"){
+				return float2exposure(tag.data);
+			} else {
+				return tag.data + (tag.dim?tag.dim:'');
+			}
+		}
+		function gpsFrame(gps){
+			return $("<iframe />")
+				.css("width", "100%")
+				.css("min-height", "400px")
+				.css("border", "1px solid #cccccc")
+				.attr("src","http://maps.google.com/maps?q="+gps['lat']+","+gps['lng']+"&ll="+gps['lat']+","+gps['lng']+"&output=embed&z=8&t=h");			
+		}
 		
-		if(name == "ExposureTime"){
-			return float2exposure(tag.data);
-		} else {
-			return tag.data + (tag.dim?tag.dim:'');
-		}
-	}
 		var table, methods = {
-			init : function( data ) {
+			init : function( data, gps ) {
 				return this.each(function(){
-					table= $("<tbody />").appendTo(
-						$("<table />").attr("width", "100%").addClass("exifTable").appendTo(
-							$(this).data('exif', data)
-						)
-					);
+				
+					var parent = null,
+						table = $("<table />").attr("width", "100%").addClass("exifTable");
+					if(gps) {
+						parent = $("<div />").append(
+							$("<ul />").append(
+								$("<li />").append($("<a/>").text(chrome.i18n.getMessage("dialogTitle")).attr("href","#exifDataTab"))
+							).append(
+								$("<li />").append($("<a/>").text(chrome.i18n.getMessage("dialogTabGeolocation")).attr("href","#exifGpsTab"))
+							)
+						).append(
+							$("<div />").attr('id', 'exifDataTab').append(table)
+						).append(
+							$("<div />").attr('id', 'exifGpsTab').append(gpsFrame(gps))
+						).tabs()
+					} else {
+						parent = table;
+					}
+					
 					if(Object['keys'](data).length){
 						
 						$.each(data, function(name, tag){
@@ -218,7 +228,7 @@ if(re.PHOTO_PAGE.test(location.href)){
 						});
 					} else {
 
-						$(this).append(
+						parent.append(
 							$("<div />").css({
 								'color': '#000',
 								'font-size': '22px',
@@ -226,6 +236,11 @@ if(re.PHOTO_PAGE.test(location.href)){
 							}).text(chrome.i18n.getMessage("noEXIF"))
 						)
 					}
+
+					$(this).data('exif', data).append(
+						parent
+					);
+
 				});
 			},
 			visible: function(){
