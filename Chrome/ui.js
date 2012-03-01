@@ -37,13 +37,13 @@ function checkExif(src, callback){
 		gps.lat = Geo.parseDMS(gps_data.Latitude,gps_data.LatitudeRef);
 		gps.lng = Geo.parseDMS(gps_data.Longitude,gps_data.LongitudeRef);
 		
-		if(Object['keys'](aExifData).length){
+
 			callback({
 				'data': aExifData,
 				'gps': gps,
 				'src': src
 			});
-		}
+
 	});
 }
 
