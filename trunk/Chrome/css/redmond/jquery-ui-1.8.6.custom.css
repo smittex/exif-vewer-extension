@@ -68,7 +68,7 @@
 ----------------------------------*/
 .exif-state-default, .exif-widget-content .exif-state-default, .exif-widget-header .exif-state-default { border: 1px solid #c5dbec; background: #dfeffc url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x; font-weight: bold; color: #2e6e9e; }
 .exif-state-default a, .exif-state-default a:link, .exif-state-default a:visited { color: #2e6e9e; text-decoration: none; }
-.exif-state-hover, .exif-widget-content .exif-state-hover, .exif-widget-header .exif-state-hover, .exif-state-focus, .exif-widget-content .exif-state-focus, .exif-widget-header .exif-state-focus { border: 1px solid #79b7e7; background: #d0e5f5 url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_glass_75_d0e5f5_1x400.png) 50% 50% repeat-x; font-weight: bold; color: #1d5987; }
+.exif-state-hover, .exif-widget-content .exif-state-hover, .exif-widget-header .exif-state-hover, .exif-state-focus, .exif-widget-content .exif-state-focus, .exif-widget-header .exif-state-focus { border: 1px solid #79b7e7; background: #d0e5f5 url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_glass_75_d0e5f5_1x400.png) 50% 50% repeat-x !important; font-weight: bold !important; color: #1d5987 !important; }
 .exif-state-hover a, .exif-state-hover a:hover { color: #1d5987; text-decoration: none; }
 .exif-state-active, .exif-widget-content .exif-state-active, .exif-widget-header .exif-state-active { border: 1px solid #79b7e7; background: #f5f8f9 url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_inset-hard_100_f5f8f9_1x100.png) 50% 50% repeat-x; font-weight: bold; color: #d46816; }
 .exif-state-active a, .exif-state-active a:link, .exif-state-active a:visited { color: #d46816; text-decoration: none; }
@@ -368,7 +368,7 @@ button.exif-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra p
  *
  * http://docs.jquery.com/UI/Dialog#theming
  */
-.exif-dialog { position: absolute; padding: 0.2em; width: 300px; overflow: hidden; }
+.exif-dialog { position: absolute; padding: 0.2em; width: 300px; overflow: hidden; -webkit-box-shadow: 0 0 20px 5px #444;}
 .exif-dialog .exif-dialog-titlebar { margin: -0.1em !important; padding: .5em 1em .3em; border-top: 0px !important; border-left: 0px !important; border-right: 0px !important;position: relative;  -moz-border-radius-bottomleft: 0px !important; -webkit-border-bottom-left-radius: 0px !important; border-bottom-left-radius: 0px !important; -moz-border-radius-bottomright: 0px !important; -webkit-border-bottom-right-radius: 0px !important; border-bottom-right-radius: 0px !important; }
 .exif-dialog .exif-dialog-title { float: left; margin: .1em 16px .2em 0; } 
 .exif-dialog .exif-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
@@ -397,6 +397,6 @@ button.exif-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra p
 .exif-tabs .exif-tabs-nav li a { float: left; padding: .5em 1em; text-decoration: none; }
 .exif-tabs .exif-tabs-nav li.exif-tabs-selected { margin-bottom: 0; padding-bottom: 1px; }
 .exif-tabs .exif-tabs-nav li.exif-tabs-selected a, .exif-tabs .exif-tabs-nav li.exif-state-disabled a, .exif-tabs .exif-tabs-nav li.exif-state-processing a { cursor: text; }
-.exif-tabs .exif-tabs-nav li a, .exif-tabs.exif-tabs-collapsible .exif-tabs-nav li.exif-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
+.exif-tabs .exif-tabs-nav li a, .exif-tabs.exif-tabs-collapsible .exif-tabs-nav li.exif-tabs-selected a { cursor: pointer; color: inherit; background-color: transparent;} /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
 .exif-tabs .exif-tabs-panel { display: block; border-width: 0; padding: 1em 1.4em; background: none; }
 .exif-tabs .exif-tabs-hide { display: none !important; }

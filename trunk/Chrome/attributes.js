@@ -279,15 +279,15 @@ window['exifAttributes'] = {
 	},
 	'LensMake' : {
 		'visible' : true
-	}/*,
-	"'LensModel'" : {
+	},
+	"LensModel" : {
 		'visible' : true
 	},
-	"'LensSerialNumber'" : {
+	"LensSerialNumber" : {
 		'visible' : true
 	},
-	"'Lens'" : {
+	"Lens" : {
 		'visible' : true
-	}*/
+	}
 }
  

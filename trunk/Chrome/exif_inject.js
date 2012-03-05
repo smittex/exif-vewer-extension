@@ -6,6 +6,8 @@ function exif_inject(data){
 			)
 		),dialog = content.dialog({
 			"minWidth" : 450,
+			"show": "fade",
+			"hide": "fade",
 			"position": "center",
 			"resizable": false,
 			"title": chrome.i18n.getMessage("dialogTitle"),
@@ -51,8 +53,7 @@ function exif_inject(data){
 				"padding-right": "5px"
 			})
 		).parent(".exif-dialog").css({
-			"direction": "ltr",
-			"-webkit-box-shadow": "0 0 20px 5px #444"
+			"direction": "ltr"
 		});
 		
 		if(document.location.protocol == 'http:'){
@@ -118,7 +119,6 @@ function injectOverlay(img, data, gps){
 			width: img.outerWidth(),
 			height: img.outerHeight()
 		};
-
 	$("<span />")
 		.addClass('overlayContainer')
 		.click(function(e){
