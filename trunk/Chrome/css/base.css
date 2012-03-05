@@ -36,7 +36,7 @@
 	/*border: 1px solid rgba(0,0,0,0);*/
 	border-radius: 4px;
 	background-color: rgba(0,0,0,0) !important;
-	background-image: url(chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/camera_blue-16.png);
+	background-image: url(chrome-extension://__MSG_@@extension_id__/camera_blue-16.png);
 	background-position: 2px 2px;
 	background-repeat: no-repeat;
 	opacity: 0.5;

@@ -48,7 +48,7 @@ function exif_inject(data){
 		});
 		
 		dialog.prev("div.exif-dialog-titlebar").prepend(
-			$("<img />").attr("src", "chrome-extension://lplmljfembbkocngnlkkdgabpnfokmnl/camera_blue-16.png").css({
+			$("<img />").attr("src", chrome.extension.getURL("camera_blue-16.png")).css({
 				"float":"left",
 				"padding-right": "5px"
 			})
