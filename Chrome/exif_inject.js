@@ -216,8 +216,16 @@ if(re.PHOTO_PAGE.test(location.href)){
 						parent = table;
 					}
 					
+					table.append(
+						$("<tr />").append(
+							$("<td colspan=2 />").attr("id", "ExifViewerImages").css({
+								'text-align': 'center !important'
+							}).addClass("exifTd")
+						).hide()
+					)
+					
 					if(Object['keys'](data).length){
-						
+						console.log(data);
 						$.each(data, function(name, tag){
 							table.append(
 								$("<tr>").append(
@@ -225,8 +233,49 @@ if(re.PHOTO_PAGE.test(location.href)){
 								).append(
 									$("<td>").addClass("exifTd").text((typeof tag['data'] == 'object')?tag['data'].length:prettyPrint(name, tag))
 								).addClass(tag['visible']?"exifVisibleRow":"exifHiddenRow")
-							)
+							);
 						});
+						
+						var imgOpt = {
+							"Model": {prefix: "photo camera: ", site: 'amazon.com' },
+							"LensModel": {prefix: "photo lens: ", site: 'amazon.com' },
+							"Make": {prefix: "logo: "},
+						};
+						chrome.extension.sendRequest({
+							'action' : 'checkShowCameraImage'
+						}, function(){
+							$.each(imgOpt, function(name, param){
+								if(data[name]){
+									$.ajax({
+										url: 'https://ajax.googleapis.com/ajax/services/search/images',
+										data: {
+											rsz: 1,
+											q: param.prefix + data[name]['data'],
+											imgsz: 'small',
+											context: 0,
+											num: 1,
+											as_sitesearch: param.site?param.site:'',
+											//imgtype: 'photo'
+											v: '1.0'
+										},
+										dataType: 'json',
+										success: function(resp){
+											if(resp.responseData.results.length){
+												$("#ExifViewerImages", table).append(
+													$("<img />").attr("src", resp.responseData.results[0].tbUrl).click(function(){
+														window.open(resp.responseData.results[0].originalContextUrl, "_tab");
+													}).css({
+														'display':'none',
+														'vertical-align': 'top'
+													}).attr("title", data[name]['data']).show('slow')
+												).parent().show();
+											}
+										}
+									});
+								}
+							});
+						});						
+						
 					} else {
 
 						parent.append(

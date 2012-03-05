@@ -10,6 +10,10 @@ var rxs = [
 	{
 		"rx": /(https?:\/\/(?:.+\.)+(?:googleusercontent|blogspot)\.com\/(?:.+\/){4})(.+)\/(.+)/,
 		"rep": "$1d/$3"
+	},
+	{
+		"rx": /(https?:\/\/(?:.+\.)+(?:ggpht)\.com\/(?:.+\/){4})(.+)/,
+		"rep": "$1d/$3"
 	}
 ];
 
@@ -159,6 +163,9 @@ chrome.extension.onRequest.addListener(	function (request, sender, callback) {
 		getFlikrEXIF(request['id'], callback);
 	} else if(request['action'] == 'checkOverlayEnabled'){
 		if(localStorage.getItem("overlayEnabled") != "false")
+			callback();
+	} else if(request['action'] == 'checkShowCameraImage'){
+		if(localStorage.getItem("showCameraImage") != "false")
 			callback();
 	} else if(request['action'] == 'copyToClipboard'){
 		copyToClipboard(request['value'])
