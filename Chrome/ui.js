@@ -6,9 +6,24 @@ $(document).ready(function(){
 	loadExifAttributes();
 });
 
+var rxs = [
+	{
+		"rx": /(https?:\/\/(?:.+\.)+(?:googleusercontent|blogspot)\.com\/(?:.+\/){4})(.+)\/(.+)/,
+		"rep": "$1d/$3"
+	}
+];
 
+function fixUrl(src){
+	$.each(rxs, function(i, rx){
+		if(rx.rx.test(src)){
+			src = src.replace(rx.rx, rx.rep);
+		}
+	})
+	return src;
+}
 
 function checkExif(src, callback){
+	var src = fixUrl(src);
 	var img = new image(src);
 	EXIF.getData(img, function(){
 		//var exif_data = exif_data = EXIF.prettyHTML(img,param);
@@ -134,7 +149,12 @@ function genericOnClick(info, tab) {
 
 chrome.extension.onRequest.addListener(	function (request, sender, callback) {
 	if(request['action'] == 'checkExif'){
-		checkExif(request['src'], callback);
+		checkExif(request['src'], function(data){
+			if($.map(data.data, function(tag){
+				return tag.visible?true:null
+			}).length)
+				callback(data);
+		});
 	} else if(request['action'] == 'checkFlikrExif'){
 		getFlikrEXIF(request['id'], callback);
 	} else if(request['action'] == 'checkOverlayEnabled'){

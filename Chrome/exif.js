@@ -84,15 +84,15 @@ EXIF.Tags = {
 
 	// other tags
 	0xA005 : "InteroperabilityIFDPointer",
-	0xA420 : "ImageUniqueID"		// Identifier assigned uniquely to each image
+	0xA420 : "ImageUniqueID",		// Identifier assigned uniquely to each image
 	
 	// Lens tag
 	
-	/*0xA432	: "LensInfo", //	rational64u[4]	ExifIFD	(4 rational values giving focal and aperture ranges, called LensSpecification by the EXIF spec.)
+	0xA432	: "LensInfo", //	rational64u[4]	ExifIFD	(4 rational values giving focal and aperture ranges, called LensSpecification by the EXIF spec.)
 	0xA433	: "LensMake", //	string	ExifIFD	 
 	0xA434	: "LensModel", //	string	ExifIFD	 
 	0xA435	: "LensSerialNumber",
-	0xFDEA :	"Lens"*/
+	0xFDEA :	"Lens"
 	
 };
 
@@ -133,8 +133,8 @@ EXIF.TiffTags = {
 	0xA432	: "LensInfo", //	rational64u[4]	ExifIFD	(4 rational values giving focal and aperture ranges, called LensSpecification by the EXIF spec.)
 	0xA433	: "LensMake", //	string	ExifIFD	 
 	0xA434	: "LensModel", //	string	ExifIFD	 
-	0xA435	: "LensSerialNumber",
-	0xFDEA :	"Lens"	
+	0xA435	: "LensSerialNumber",	
+	0xFDEA :  "Lens"
 }
 
 EXIF.GPSTags = {
@@ -169,6 +169,27 @@ EXIF.GPSTags = {
 	0x001C : "GPSAreaInformation",
 	0x001D : "GPSDateStamp",
 	0x001E : "GPSDifferential"
+}
+
+EXIF.CanonNoteTags = {
+	// 0xA432	: "LensInfo", //	rational64u[4]	ExifIFD	(4 rational values giving focal and aperture ranges, called LensSpecification by the EXIF spec.)
+	// 0xA433	: "LensMake", //	string	ExifIFD	 
+	// 0xA434	: "LensModel", //	string	ExifIFD	 
+	// 0xA435	: "LensSerialNumber",
+	
+	0x0096:	"SerialInfo",
+	//0x0006:	"CanonImageType",
+	0x0095:	"LensModel",
+	//0x4019:	"LensInfo"
+}
+EXIF.NikonNoteTags = {
+	// 0xA432	: "LensInfo", //	rational64u[4]	ExifIFD	(4 rational values giving focal and aperture ranges, called LensSpecification by the EXIF spec.)
+	// 0xA433	: "LensMake", //	string	ExifIFD	 
+	// 0xA434	: "LensModel", //	string	ExifIFD	 
+	// 0xA435	: "LensSerialNumber",
+	
+	0x0082: "AuxiliaryLens",
+	0x0084: "Lens"
 }
 
 EXIF.StringValues = {
@@ -377,6 +398,17 @@ function findEXIFinJPEG(oFile) {
 			if (bDebug) console.log("Found 0xFFE1 marker");
 			if (oFile.getStringAt(iOffset + 4, 4) == "Exif")
 				return readEXIFData(oFile, iOffset + 4, oFile.getShortAt(iOffset+2, true)-2);
+			else if(oFile.getStringAt(iOffset + 4, 28) == "http://ns.adobe.com/xap/1.0/"){
+				if (bDebug) console.log("Found XMP marker", oFile.getStringAt(iOffset + 33, oFile.getShortAt(iOffset+2, true)-31));
+				return readXMPData(oFile.getStringAt(iOffset + 33, oFile.getShortAt(iOffset+2, true)-31));
+			}
+
+		} else if (iMarker == 0xE0) {
+			// 0xE1 = Application-specific 1 (for EXIF)
+			if (bDebug) console.log("Found 0xFFE0 marker");
+			if (oFile.getStringAt(iOffset + 4, 4) == "JFIF")
+				if (bDebug) console.log("Found JFIF marker");
+				//return readEXIFData(oFile, iOffset + 4, oFile.getShortAt(iOffset+2, true)-2);
 
 		} 
 
@@ -395,8 +427,25 @@ function readTags(oFile, iTIFFStart, iDirStart, oStrings, bBigEnd)
 	for (var i=0;i<iEntries;i++) {
 		var iEntryOffset = iDirStart + i*12 + 2;
 		var strTag = oStrings[oFile.getShortAt(iEntryOffset, bBigEnd)];
-		if (!strTag && bDebug) console.log("Unknown tag: " + oFile.getShortAt(iEntryOffset, bBigEnd).toString(16));
+		//if (!strTag && bDebug) console.log("Unknown tag: " + oFile.getShortAt(iEntryOffset, bBigEnd).toString(16));
 		oTags[strTag] = readTagValue(oFile, iEntryOffset, iTIFFStart, iDirStart, bBigEnd);
+	}
+	return oTags;
+}
+
+function readMakerTags(oFile, iTIFFStart, iDirStart, oStrings, bBigEnd) 
+{
+	var iEntries = oFile.getShortAt(iDirStart, bBigEnd);
+	var oTags = {}, oStringsLength = $.map(oStrings, function(tag, name){return name;}).length;
+	for (var i=0;i<iEntries && oStringsLength>0;i++) {
+	
+		var iEntryOffset = iDirStart + i*12 + 2;
+		var strTag = oStrings[oFile.getShortAt(iEntryOffset, bBigEnd)];
+		if(strTag){
+			oStringsLength--;
+			//if (!strTag && bDebug) console.log("Unknown tag: " + oFile.getShortAt(iEntryOffset, bBigEnd).toString(16));
+			oTags[strTag] = readTagValue(oFile, iEntryOffset, iTIFFStart, iDirStart, bBigEnd);
+		}
 	}
 	return oTags;
 }
@@ -407,13 +456,13 @@ function readTagValue(oFile, iEntryOffset, iTIFFStart, iDirStart, bBigEnd)
 	var iType = oFile.getShortAt(iEntryOffset+2, bBigEnd);
 	var iNumValues = oFile.getLongAt(iEntryOffset+4, bBigEnd);
 	var iValueOffset = oFile.getLongAt(iEntryOffset+8, bBigEnd) + iTIFFStart;
-
 	switch (iType) {
 		case 1: // byte, 8-bit unsigned int
 		case 7: // undefined, 8-bit byte, value depending on field
 			if (iNumValues == 1) {
 				return oFile.getByteAt(iEntryOffset + 8, bBigEnd);
 			} else {
+				return oFile.getLongAt(iEntryOffset + 8, bBigEnd);
 				var iValOffset = iNumValues > 4 ? iValueOffset : (iEntryOffset + 8);
 				var aVals = [];
 				for (var n=0;n<iNumValues;n++) {
@@ -488,43 +537,7 @@ function readTagValue(oFile, iEntryOffset, iTIFFStart, iDirStart, bBigEnd)
 	}
 }
 
-
-function readEXIFData(oFile, iStart, iLength) 
-{
-	if (oFile.getStringAt(iStart, 4) != "Exif") {
-		if (bDebug) console.log("Not valid EXIF data! " + oFile.getStringAt(iStart, 4).toString(16));
-		return false;
-	}
-
-	var bBigEnd;
-
-	var iTIFFOffset = iStart + 6;
-
-	// test for TIFF validity and endianness
-	if (oFile.getShortAt(iTIFFOffset) == 0x4949) {
-		bBigEnd = false;
-	} else if (oFile.getShortAt(iTIFFOffset) == 0x4D4D) {
-		bBigEnd = true;
-	} else {
-		if (bDebug) console.log("Not valid TIFF data! (no 0x4949 or 0x4D4D)");
-		return false;
-	}
-
-	if (oFile.getShortAt(iTIFFOffset+2, bBigEnd) != 0x002A) {
-		if (bDebug) console.log("Not valid TIFF data! (no 0x002A)");
-		return false;
-	}
-
-	var iIFDOffset = oFile.getLongAt(iTIFFOffset+4, bBigEnd);
-	/*if (oFile.getLongAt(iTIFFOffset+4, bBigEnd) != 0x00000008) {
-		if (bDebug) console.log("Not valid TIFF data! (First offset not 8)", oFile.getShortAt(iTIFFOffset+4, bBigEnd));
-		//return false;
-	}*/
-
-	var oTags = readTags(oFile, iTIFFOffset, iTIFFOffset+iIFDOffset, EXIF.TiffTags, bBigEnd);
-
-	if (oTags['ExifIFDPointer']) {
-		var oEXIFTags = readTags(oFile, iTIFFOffset, iTIFFOffset + oTags['ExifIFDPointer'], EXIF.Tags, bBigEnd);
+function normalizeEXIFTags(oTags, oEXIFTags){
 		for (var strTag in oEXIFTags) {
 			switch (strTag) {
 				case "LightSource" :
@@ -561,8 +574,54 @@ function readEXIFData(oFile, iStart, iLength)
 			}
 			oTags[strTag] = oEXIFTags[strTag];
 		}
+	return oTags;
+}
+
+function readEXIFData(oFile, iStart, iLength) 
+{
+	if (oFile.getStringAt(iStart, 4) != "Exif" && oFile.getStringAt(iStart, 4) != "JFIF") {
+		if (bDebug) console.log("Not valid EXIF data! " + oFile.getStringAt(iStart, 4).toString(16));
+		return false;
 	}
 
+	var bBigEnd;
+
+	var iTIFFOffset = iStart + 6;
+
+	// test for TIFF validity and endianness
+	if (oFile.getShortAt(iTIFFOffset) == 0x4949) {
+		bBigEnd = false;
+	} else if (oFile.getShortAt(iTIFFOffset) == 0x4D4D) {
+		bBigEnd = true;
+	} else {
+		if (bDebug) console.log("Not valid TIFF data! (no 0x4949 or 0x4D4D)");
+		return false;
+	}
+
+	if (oFile.getShortAt(iTIFFOffset+2, bBigEnd) != 0x002A) {
+		if (bDebug) console.log("Not valid TIFF data! (no 0x002A)");
+		return false;
+	}
+
+	var iIFDOffset = oFile.getLongAt(iTIFFOffset+4, bBigEnd);
+	/*if (oFile.getLongAt(iTIFFOffset+4, bBigEnd) != 0x00000008) {
+		if (bDebug) console.log("Not valid TIFF data! (First offset not 8)", oFile.getShortAt(iTIFFOffset+4, bBigEnd));
+		//return false;
+	}*/
+
+	var oTags = readTags(oFile, iTIFFOffset, iTIFFOffset+iIFDOffset, EXIF.TiffTags, bBigEnd);
+
+	if (oTags['ExifIFDPointer']) {
+		oTags = normalizeEXIFTags(oTags, readTags(oFile, iTIFFOffset, iTIFFOffset + oTags['ExifIFDPointer'], EXIF.Tags, bBigEnd) );
+	}
+
+	if (oTags['MakerNote'] ) {
+		console.log(readMakerTags(oFile, iTIFFOffset, iTIFFOffset + oTags['MakerNote'], EXIF.CanonNoteTags, bBigEnd), "0x" + oFile.getShortAt(iTIFFOffset, iTIFFOffset + oTags['MakerNote']).toString(16));
+		oTags =  normalizeEXIFTags(oTags, readMakerTags(oFile, iTIFFOffset, iTIFFOffset + oTags['MakerNote'], EXIF.CanonNoteTags, bBigEnd));
+		//oTags =  normalizeEXIFTags(oTags, readTags(oFile, iTIFFOffset, iTIFFOffset + oTags['MakerNote'], EXIF.NikonNoteTags, bBigEnd));
+		//console.log(readTags(oFile, iTIFFOffset, iTIFFOffset + oTags['MakerNote'], EXIF.NikonNoteTags, bBigEnd));
+	}
+	
 	if (oTags['GPSInfoIFDPointer']) {
 		var oGPSTags = readTags(oFile, iTIFFOffset, iTIFFOffset + oTags['GPSInfoIFDPointer'], EXIF.GPSTags, bBigEnd);
 		for (var strTag in oGPSTags) {
@@ -577,8 +636,23 @@ function readEXIFData(oFile, iStart, iLength)
 			oTags[strTag] = oGPSTags[strTag];
 		}
 	}
-
+	//console.log(oTags);
 	return oTags;
+}
+
+function readXMPData(sData){
+	var parser=new DOMParser(),
+		oTags = {}
+	window.xmp=parser.parseFromString(sData,"text/xml");
+	$("*", xmp).each(function(){
+		if(this.tagName == "rdf:Description"){
+			$.each(this.attributes, function(i, tag){
+				oTags[tag.localName] = tag.value;
+			});
+			return false;
+		}
+	});	
+	return normalizeEXIFTags(oTags, oTags);
 }
 
 function prettyPrint(data, a){
@@ -629,66 +703,6 @@ EXIF.getAllTags = function(oImg)
 	}
 	return oAllTags;
 }
-
-
-EXIF.pretty = function(oImg) 
-{
-	if (!imageHasData(oImg)) return "";
-	var oData = oImg.exifdata;
-	var strPretty = "";
-	for (var a in oData) {
-		if (oData.hasOwnProperty(a)) {
-			if (typeof oData[a] == "object") {
-				strPretty += a + " : [" + oData[a].length + " values]\r\n";
-			} else {
-				strPretty += a + " : " + oData[a] + "\r\n";
-			}
-		}
-	}
-	return strPretty;
-}
-
-EXIF.prettyHTML = function(oImg, prop) 
-{
-	if (!imageHasData(oImg)) return "";
-	var oData = oImg.exifdata;
-	var strPretty = "";
-	var bAll = false;
-	if(!prop){
-		prop = {};
-		bAll = true;
-	}
-	for (name in prop){
-		//if(prop[name].visible){
-			if (oData.hasOwnProperty(name)) {
-
-					if (typeof oData[name] == "object") {
-						strPretty += "<tr><td class='exifTd'>" + prop[name] + " </td><td class='exifTd'> [" + oData[name].length + " values]</td></tr>";
-					} else {
-						strPretty += "<tr><td class='exifTd'>" + prop[name] + " </td><td class='exifTd'> " + prettyPrint(oData, name) +"</td></tr>";
-					}
-			}
-		//}
-	}
-	/*
-	for (var a in oData) {
-		if (oData.hasOwnProperty(a)) {
-			if(bAll || prop[a]){
-				prop[a] = prop[a]||a;
-				if (typeof oData[a] == "object") {
-					strPretty += "<tr><td>" + prop[a] + " </td><td> [" + oData[a].length + " values]</td></tr>";
-				} else {
-					strPretty += "<tr><td>" + prop[a] + " </td><td> " + prettyPrint(oData, a) + "</td></tr>";
-				}
-			}
-		}
-	}
-	*/
-	if(strPretty != "")
-		strPretty = "<table width=100%>" + strPretty + "</table>";
-	return strPretty;
-}
-
 
 EXIF.readFromBinaryFile = function(oFile) {
 	return findEXIFinJPEG(oFile);
