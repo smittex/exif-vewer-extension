@@ -166,7 +166,7 @@ chrome.extension.onRequest.addListener(	function (request, sender, callback) {
 			callback();
 	} else if(request['action'] == 'checkShowCameraImage'){
 		if(localStorage.getItem("showCameraImage") != "false")
-			callback();
+			getCameraImage(request, callback);
 	} else if(request['action'] == 'copyToClipboard'){
 		copyToClipboard(request['value'])
 	}
@@ -190,4 +190,51 @@ function loadExifAttributes(){
 	localStorage.setItem("exif_attributes", JSON.stringify(exifAttributes));
 }
 
+function getCameraImage(camera, callback){
+	if (cameraImages[camera.model]){
+		callback(cameraImages[camera.model]);
+	} else {
+		//https://www.googleapis.com/shopping/search/v1/public/products?key=AIzaSyCbF3jcr3FT01DDTOBvYoU8s4r6skTXVd4&country=US&q=canon%205d
+		/*$.ajax({
+			url: 'https://www.googleapis.com/shopping/search/v1/public/products',
+			data: {
+				key: 'AIzaSyCbF3jcr3FT01DDTOBvYoU8s4r6skTXVd4',
+				country: 'US',
+				q: camera['model'],
+				restrictBy: 'brand:'+camera['brand']+', title:'+camera['model']+', condition:new',
+				rankBy: 'relevancy'
+			},
+			success: function(data){
+				var img = {
+					src: data.items[0].product.images[0].link,
+					desc: data.items[0].product.description,
+					title: data.items[0].product.title
+				}
+				console.log(img);
+			}
+		});*/
+		
+		$.ajax({
+			url: 'https://ajax.googleapis.com/ajax/services/search/images',
+			data: {
+				rsz: 1,
+				q: 'New ' + camera['model'] + ' photo camera',
+				imgsz: 'small|medium|large',
+				context: 0,
+				num: 1,
+				//as_sitesearch: param.site?param.site:'',
+				imgtype: 'photo',
+				v: '1.0'
+			},
+			dataType: 'json',
+			success: function(resp){
+				cameraImages[camera['model']] = resp.responseData.results[0];
+				localStorage.setItem('cameraImages', JSON.stringify(cameraImages));
+				callback (resp.responseData.results[0]);
+			}
+		});
+	}
+}
+
+var cameraImages = JSON.parse(localStorage.getItem('cameraImages'))||{};
 window['loadExifAttributes'] = loadExifAttributes;
