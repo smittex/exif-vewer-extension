@@ -1,92 +1,14 @@
 <html>
 	<head>
 		<title>EXIF viewer settings</title>
-		<style type="text/css" title="currentStyle">
-			@import "css/redmond/jquery-ui-1.8.6.custom.css";
-	body {maring:0px; padding:0px;font-family: Arial, sans-serif;}
-
-	#attributes tr { 
-		height: 24px;
-		font-size: 0.9em; 
-		white-space: nowrap; 
-		border-radius: 2px;
-		border: 1px solid #cccccc;
-		color:#777777;
-		background-color: #fff;
-	}	
-	#attributes tr[selected] { 
-		font-size: 0.9em; 
-		white-space: nowrap; 
-		color: #000;
-		font-weight: bold;
-		background-color: #eee;
-		border-radius: 2px;
-		border: 1px solid #cccccc;		
-	}
-	#attributes tr#exif-sortable-placeholder {
-
-	}
-	#attributes tr td{
-		padding: 2px 10px;
-	}
-	
-	
-#navbar-container {
-  -webkit-border-end: 1px solid #c6c9ce;
-  background: -webkit-linear-gradient(rgba(234, 238, 243, 0), #eaeef3),
-              -webkit-linear-gradient(left, #eaeef3, #eaeef3 97%, #d3d7db);
-  bottom: 0;
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 206px;
-  z-index: 2;
-  text-align: right; 
-  min-height: 450px;
-}	
-#settings-title {
--webkit-padding-end: 24px;
-color: #53637D;
-font-size: 200%;
-font-weight: normal;
-margin: 0;
-padding-bottom: 14px;
-padding-top: 20px;
-text-align: end;
-}
-
-#mainview-content {
-  box-sizing: border-box;
-  max-width: 888px;
-  min-height: 100%;
-  min-width: 600px;
-  padding: 0 24px;
-  margin: 0 0 0 266px ;
-}
-
-hr{
-	width:90%;
-	background-color: #c6c9ce;
-}
-h1 {
-  -webkit-padding-end: 24px;
-  border-bottom: 1px solid #eeeeee;
-  color: #53637d;
-  font-size: 200%;
-  font-weight: normal;
-  margin: 0;
-  padding-bottom: 4px;
-  padding-top: 13px;
-}
-		</style>
+		<link type="text/css" href="css/redmond/jquery-ui-1.8.6.custom.css" rel="stylesheet" />	
+		<link type="text/css" href="chrome://resources/css/button.css" rel="stylesheet" />	
+		<link type="text/css" href="css/options.css" rel="stylesheet" />	
 		<script src="jquery-1.7.1.min.js"></script>
 		<script src="jquery-ui-1.8.18.custom.min.js"></script>
 		<script>
 		
 		$(document).ready(function(){
-		
-	
-			$("input[type='button']").css("font-size","0.8em").css("padding","2px 5px 2px 5px").button();
 
 			if(localStorage.getItem("overlayEnabled") != "false")
 				$("#overlayEnabled").attr('checked', true);
@@ -110,10 +32,21 @@ h1 {
 							})
 						)
 					).append(
-						$("<td />").text(chrome.i18n.getMessage(name)?chrome.i18n.getMessage(name):name)
+						$("<td />").attr('width', '100%').text(chrome.i18n.getMessage(name)?chrome.i18n.getMessage(name):name)
+					).append(
+						$("<td />").append($("<span class=\"exif-icon exif-icon-sort_up\"></span>").click(function(){
+							table.prepend($(this).parent().parent());
+							$("#attributesContainer")//.scrollTop(0);
+						}))
 					)
+					//.append(
+					//	$("<td />").append($("<span class=\"exif-icon exif-icon-sort_down\"></span>").click(function(){
+					//		table.append($(this).parent().parent());
+					//		$("#attributesContainer").scrollTop(0);
+					//	}))
+					//)
 				)
-			})
+			});
 
 			$("table#attributes tbody").sortable();
 		
@@ -164,7 +97,7 @@ h1 {
 		</center>
 		
 		<div style="padding: 20px;">
-				<input type="button" onclick="saveOptions();" value="Save Options" style="width:150px;height:26px;margin:5px;"/></br>
+				
 				<input type="button" onclick="window.location.href='http://code.google.com/p/exif-vewer-extension/issues/list'" value="Report an issue"  style="width:150px;height:26px;margin:5px;" />
 
 				<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YHWF9X2ETGJ4W" style="position: absolute; bottom: 150px; left: 22px;" ><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" /></a>
@@ -178,20 +111,24 @@ h1 {
 				<p>
 					<input type="checkbox" id="overlayEnabled">Enable overlay on images with EXIF</input>
 				</p>
-				<!--p>
-					<input type="checkbox" id="overlayPreferredEnabled">Do not show overlay if there are no preferred EXIF properties in the photo</input>
-				</p-->
-				<hr />
+			
 				<!--table>
 					<tr>
 						<td type="text" class="attributes_layer" valign="top">Selected attributes:<ul id="selectedattributes" ></ul></td>
 						<td type="text" class="attributes_layer" valign="top">Available attributes:<div class="scrollframe"><ul id="attributes" ><div></ul></td>
 					</tr>
 				</table-->
+				<div id="attributesContainer">
+					<table id="attributes" cellspacing=0 cellpadding=0>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<div id="buttonsContainer">
+					<!--input type="button" onclick="saveOptions();" value="Save Options" style="width:150px;height:26px;margin:5px;"/-->
+					<button  onclick="saveOptions();">Save Options</button>
+				</div>
 				
-				<table id="attributes" cellspacing=0 cellpadding=0>
-				
-				</table>
 	
 	</div>
 	

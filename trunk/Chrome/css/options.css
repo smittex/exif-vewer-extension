@@ -1,0 +1,112 @@
+
+	body {maring:0px; padding:0px;font-family: Arial, sans-serif;overflow:hidden;}
+
+	#attributes tr { 
+		height: 24px;
+		font-size: 0.9em; 
+		white-space: nowrap; 
+		border-radius: 2px;
+		border: 1px solid #cccccc;
+		color:#777777;
+		background-color: #fff;
+		cursor: move;
+	}
+	#attributes tr img, #attributes tr span{
+		cursor:default;
+	}	
+	#attributes tr[selected] { 
+		font-size: 0.9em; 
+		white-space: nowrap; 
+		color: #000;
+		font-weight: bold;
+		background-color: #eee;
+		border-radius: 2px;
+		border: 1px solid #cccccc;		
+	}
+	#attributes tr:not([selected]):hover { 
+		background-color: #fafafa;
+	}
+	
+	#attributes tr:hover .exif-icon{ 
+		display:block;
+	}
+	#attributes tr .exif-icon{ 
+		display:none;
+	}
+	
+	#attributes tr#exif-sortable-placeholder {
+
+	}
+	
+	#attributes tr td{
+		padding: 2px 10px;
+	}
+	
+		
+	#navbar-container {
+	  -webkit-border-end: 1px solid #c6c9ce;
+	  background: -webkit-linear-gradient(rgba(234, 238, 243, 0), #eaeef3),
+				  -webkit-linear-gradient(left, #eaeef3, #eaeef3 97%, #d3d7db);
+	  bottom: 0;
+	  left: 0;
+	  position: fixed;
+	  top: 0;
+	  width: 206px;
+	  z-index: 2;
+	  text-align: right; 
+	  min-height: 450px;
+	}	
+	#settings-title {
+		-webkit-padding-end: 24px;
+		color: #53637D;
+		font-size: 200%;
+		font-weight: normal;
+		margin: 0;
+		padding-bottom: 14px;
+		padding-top: 20px;
+		text-align: end;
+	}
+
+	#mainview-content {
+	  box-sizing: border-box;
+	  max-width: 888px;
+	  min-height: 100%;
+	  min-width: 600px;
+	  padding: 0 24px;
+	  margin: 0 0 0 266px ;
+	}
+
+	h1 {
+	  -webkit-padding-end: 24px;
+	  border-bottom: 1px solid #eeeeee;
+	  color: #53637d;
+	  font-size: 200%;
+	  font-weight: normal;
+	  margin: 0;
+	  padding-bottom: 4px;
+	  padding-top: 13px;
+	}
+	
+	#buttonsContainer{
+		position: absolute;
+		bottom: 20px;
+		width: 600px;
+		text-align: right;
+	}
+	#attributesContainer{
+		position: absolute;
+		bottom: 80px;
+		top: 120px;
+		overflow-y:scroll;
+		overflow-x:hidden;
+		width: 600px;
+		border: 1px inset #EEE;
+	}
+	#attributesContainer table{
+		width: 100%;
+	}
+
+	.exif-icon-sort_down		{	background-image: url(chrome-extension://__MSG_@@extension_id__/img/sort_down.png); }
+	.exif-icon-sort_down:hover	{	background-image: url(chrome-extension://__MSG_@@extension_id__/img/sort_down_green.png); }
+	.exif-icon-sort_up			{	background-image: url(chrome-extension://__MSG_@@extension_id__/img/sort_up.png); }
+	.exif-icon-sort_up:hover 	{	background-image: url(chrome-extension://__MSG_@@extension_id__/img/sort_up_green.png); }
