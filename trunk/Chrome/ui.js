@@ -27,7 +27,8 @@ function fixUrl(src){
 }
 
 function checkExif(src, callback){
-	var src = fixUrl(src);
+	var originalSrc = src,
+		src = fixUrl(src);
 	var img = new image(src);
 	EXIF.getData(img, function(){
 		//var exif_data = exif_data = EXIF.prettyHTML(img,param);
@@ -60,7 +61,7 @@ function checkExif(src, callback){
 			callback({
 				'data': aExifData,
 				'gps': gps,
-				'src': src
+				'src': originalSrc
 			});
 
 	});
@@ -83,25 +84,27 @@ function getFlikrEXIF(id, callback){
 			},
 			'success': function(data){
 				var aExifData = {};
-				$.each(data['photo']['exif'], function(i, tag){
-					var data = tag['raw']['_content'],
-						name = tag['tag'];
-					if(name == "ISO"){
-						name = "ISOSpeedRatings"
-					}
-					if(typeof exifAttributes[name] != 'undefined'){
-						aExifData[name] = $.extend({}, exifAttributes[name], {
-							"data": data,
-							"label": chrome.i18n.getMessage(name)
-						});
-					} else {
-						aExifData[name] = {
-							"data": data,
-							"label": tag['label'],
-							"visible": false
-						};
-					}
-				});
+				if(data['photo']){
+					$.each(data['photo']['exif'], function(i, tag){
+						var data = tag['raw']['_content'],
+							name = tag['tag'];
+						if(name == "ISO"){
+							name = "ISOSpeedRatings"
+						}
+						if(typeof exifAttributes[name] != 'undefined'){
+							aExifData[name] = $.extend({}, exifAttributes[name], {
+								"data": data,
+								"label": chrome.i18n.getMessage(name)
+							});
+						} else {
+							aExifData[name] = {
+								"data": data,
+								"label": tag['label'],
+								"visible": false
+							};
+						}
+					});
+				}
 				oData.data = aExifData;
 			}
 		}),
@@ -136,6 +139,10 @@ function genericOnClick(info, tab) {
 		if(/https?:\/\/.*?\.staticflickr.com\//g.test(info.srcUrl)){
 
 		} else {
+			chrome.tabs.sendRequest(tab.id, {
+					'action': 'startExifProcessing',
+					'data': info.srcUrl
+				});
 			checkExif(info.srcUrl, function(data){
 				chrome.tabs.sendRequest(tab.id, {
 					'action': 'showExif',
@@ -185,7 +192,12 @@ function copyToClipboard(str) {
 function loadExifAttributes(){
 	if(localStorage.getItem("exif_attributes")){
 		var tmp = JSON.parse(localStorage.getItem("exif_attributes"));
-		exifAttributes = $.extend(exifAttributes, JSON.parse(localStorage.getItem("exif_attributes")));
+		$.each(exifAttributes, function(name, val){
+			if(typeof tmp[name] == 'undefined'){
+				tmp[name] = val;
+			}
+		});
+		exifAttributes = tmp;
 	} 
 	localStorage.setItem("exif_attributes", JSON.stringify(exifAttributes));
 }

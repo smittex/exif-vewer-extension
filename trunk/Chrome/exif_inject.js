@@ -1,5 +1,6 @@
 var dialog;
 function exif_inject(data){
+	$("img[src='"+data.src+"']").ajaxLoaderRemove();
 	var content = $("<div />").append(
 			$("<div />").addClass("ExifViewer").attr("img", data['src']).append(
 				$("<div />").addClass("ExifVewerTabData").exif(data['data'], data['gps'])
@@ -106,6 +107,8 @@ function exif_inject(data){
 chrome.extension.onRequest.addListener(	function (request, sender, callback) {
 	if(request['action'] == 'showExif'){
 		exif_inject(request.data);
+	} else if(request['action'] == 'startExifProcessing'){
+		$("img[src='"+request.data+"']").ajaxLoader();
 	}
 });
 
@@ -234,7 +237,8 @@ if(re.PHOTO_PAGE.test(location.href)){
 								$("<tr />").append(
 									$("<td colspan=2 />").attr("id", "ExifViewerImages").css({
 										'text-align': 'center !important',
-										'height': '130px'
+										'height': '130px',
+										'vertical-align': 'center'
 									}).addClass("exifTd").append(
 										$("<img />").attr("src", chrome.extension.getURL("/img/ajax-loader.gif"))
 									)
