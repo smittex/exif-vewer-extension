@@ -48,8 +48,13 @@
 	/*opacity: 1;*/
 }
 
+.attributesContainer{
+	max-height: 357px;
+	overflow-y: auto;
+}
+
 .ExifVewerTabData {
-	max-height: 460px;
+
 }
 .exif-dialog .exif-dialog-titlebar-heart { position: absolute; right: 3.8em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
 .exif-dialog .exif-dialog-titlebar-heart span { display: block; margin: 1px; }

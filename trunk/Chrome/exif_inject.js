@@ -3,7 +3,7 @@ function exif_inject(data){
 	$("img[src='"+data.src+"']").ajaxLoaderRemove();
 	var content = $("<div />").append(
 			$("<div />").addClass("ExifViewer").attr("img", data['src']).append(
-				$("<div />").addClass("ExifVewerTabData").exif(data['data'], data['gps'])
+				$("<div />").addClass("ExifVewerTabData").exif(data['data'], data['gps'], data['src'])
 			)
 		),dialog = content.dialog({
 			"minWidth" : 450,
@@ -39,10 +39,7 @@ function exif_inject(data){
 						}
 					},
 					id: "ExifExpand"
-			},/* {
-				text: chrome.i18n.getMessage("dialogConfigure"),
-				click: function() { window.open(chrome.extension.getURL("options.html"), "_tab"); }
-			}, */{
+			},{
 				text: chrome.i18n.getMessage("dialogClose"),
 				click: function() { $(this).dialog("close");}
 			}]
@@ -192,13 +189,14 @@ if(re.PHOTO_PAGE.test(location.href)){
 		function gpsFrame(gps){
 			return $("<iframe />")
 				.css("width", "100%")
-				.css("min-height", "400px")
+				.css("min-height", "350px")
+				.css("max-height", "350px")
 				.css("border", "1px solid #cccccc")
 				.attr("src","http://maps.google.com/maps?q="+gps['lat']+","+gps['lng']+"&ll="+gps['lat']+","+gps['lng']+"&output=embed&z=8&t=h");			
 		}
 		
 		var table, methods = {
-			init : function( data, gps ) {
+			init : function( data, gps , src) {
 				return this.each(function(){
 				
 					var parent = null,
@@ -211,13 +209,14 @@ if(re.PHOTO_PAGE.test(location.href)){
 								$("<li />").append($("<a/>").text(chrome.i18n.getMessage("dialogTabGeolocation")).attr("href","#exifGpsTab"))
 							)
 						).append(
-							$("<div />").attr('id', 'exifDataTab').append(table)
+							$("<div />").attr('id', 'exifDataTab').addClass("attributesContainer").append(table)
 						).append(
 							$("<div />").attr('id', 'exifGpsTab').append(gpsFrame(gps))
 						).tabs()
 					} else {
-						parent = table;
+						parent = $("<div />").addClass("attributesContainer").append(table);
 					}
+					
 					
 					if(Object['keys'](data).length){
 						console.log(data);
@@ -235,12 +234,16 @@ if(re.PHOTO_PAGE.test(location.href)){
 							
 							table.prepend(
 								$("<tr />").append(
-									$("<td colspan=2 />").attr("id", "ExifViewerImages").css({
+									$("<td />").attr("id", "ExifViewerImages").css({
 										'text-align': 'center !important',
 										'height': '130px',
 										'vertical-align': 'center'
 									}).addClass("exifTd").append(
 										$("<img />").attr("src", chrome.extension.getURL("/img/ajax-loader.gif"))
+									)
+								).append(
+									$("<td />").addClass("exifTd").append(
+										$("<canvas width=230 height=100></canvas>").histogram({src: src})
 									)
 								)
 							)
@@ -259,6 +262,18 @@ if(re.PHOTO_PAGE.test(location.href)){
 												
 											}
 							});	
+						} else {
+							table.prepend(
+								$("<tr />").append(
+									$("<td colspan=2 />").attr("id", "ExifViewerImages").css({
+										'text-align': 'center !important',
+										'height': '100px',
+										'vertical-align': 'center'
+									}).append(
+										$("<canvas width=360 height=100></canvas>").histogram({src: src})
+									)
+								)
+							)
 						}
 				
 						

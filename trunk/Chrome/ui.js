@@ -26,10 +26,39 @@ function fixUrl(src){
 	return src;
 }
 
+function getHistogramData(src, callback){
+	var image = new Image;
+	var cImage = document.createElement("canvas");
+	var ctxImage = cImage.getContext('2d');
+	var worker = new Worker('/js/histogram.js');
+
+	image.src = src;
+	image.addEventListener('load', function(e) {
+		cImage.width = image.width;
+		cImage.height = image.height;
+		ctxImage.drawImage(image, 0, 0);
+		var imageData = ctxImage.getImageData(0, 0, cImage.width, cImage.height);
+		var message = {'image':[imageData]};
+		worker.postMessage(message);
+	}, false);
+
+	worker.addEventListener('message', function(e) {
+	  try {
+		callback(e.data);
+	  }catch(e) {
+		console.log(e);
+	  }
+	}, false);
+	worker.addEventListener('error', function(e) {
+	  console.log(e);
+	}, false);
+}
+
 function checkExif(src, callback){
 	var originalSrc = src,
 		src = fixUrl(src);
 	var img = new image(src);
+
 	EXIF.getData(img, function(){
 		//var exif_data = exif_data = EXIF.prettyHTML(img,param);
 		var aExifData = $.extend({}, exifAttributes);
@@ -143,12 +172,21 @@ function genericOnClick(info, tab) {
 					'action': 'startExifProcessing',
 					'data': info.srcUrl
 				});
-			checkExif(info.srcUrl, function(data){
-				chrome.tabs.sendRequest(tab.id, {
-					'action': 'showExif',
-					'data': data
-				});
-			})
+			try {
+				checkExif(info.srcUrl, function(data){
+					chrome.tabs.sendRequest(tab.id, {
+						'action': 'showExif',
+						'data': data
+					});
+				})
+			} catch(e) {
+				checkExif(info.srcUrl, function(data){
+					chrome.tabs.sendRequest(tab.id, {
+						'action': 'showExif',
+						'data': null
+					});
+				})
+			}
 		}
 }
 // Create one test item for each context type.
@@ -174,6 +212,8 @@ chrome.extension.onRequest.addListener(	function (request, sender, callback) {
 	} else if(request['action'] == 'checkShowCameraImage'){
 		if(localStorage.getItem("showCameraImage") != "false")
 			getCameraImage(request, callback);
+	} else if(request['action'] == 'getHistogramData'){
+		getHistogramData(request.src, callback);
 	} else if(request['action'] == 'copyToClipboard'){
 		copyToClipboard(request['value'])
 	}
