@@ -428,7 +428,6 @@ function readTags(oFile, iTIFFStart, iDirStart, oStrings, bBigEnd)
 		var iEntryOffset = iDirStart + i*12 + 2;
 		var strTag = oStrings[oFile.getShortAt(iEntryOffset, bBigEnd)];
 		//if (!strTag && bDebug) console.log("Unknown tag: " + oFile.getShortAt(iEntryOffset, bBigEnd).toString(16));
-console.log(strTag, oFile.getShortAt(iEntryOffset+2, bBigEnd), oFile.getLongAt(iEntryOffset+4, bBigEnd))
 		oTags[strTag] = readTagValue(oFile, iEntryOffset, iTIFFStart, iDirStart, bBigEnd);
 	}
 	return oTags;
