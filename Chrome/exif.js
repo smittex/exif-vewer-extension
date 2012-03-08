@@ -428,6 +428,7 @@ function readTags(oFile, iTIFFStart, iDirStart, oStrings, bBigEnd)
 		var iEntryOffset = iDirStart + i*12 + 2;
 		var strTag = oStrings[oFile.getShortAt(iEntryOffset, bBigEnd)];
 		//if (!strTag && bDebug) console.log("Unknown tag: " + oFile.getShortAt(iEntryOffset, bBigEnd).toString(16));
+console.log(strTag, oFile.getShortAt(iEntryOffset+2, bBigEnd), oFile.getLongAt(iEntryOffset+4, bBigEnd))
 		oTags[strTag] = readTagValue(oFile, iEntryOffset, iTIFFStart, iDirStart, bBigEnd);
 	}
 	return oTags;
@@ -462,7 +463,11 @@ function readTagValue(oFile, iEntryOffset, iTIFFStart, iDirStart, bBigEnd)
 			if (iNumValues == 1) {
 				return oFile.getByteAt(iEntryOffset + 8, bBigEnd);
 			} else {
-				return oFile.getLongAt(iEntryOffset + 8, bBigEnd);
+				if(oFile.getStringAt(iValueOffset, 5) == "ASCII"){
+					return oFile.getStringAt(iValueOffset + 8, iNumValues-8);
+				} else {
+					return oFile.getLongAt(iEntryOffset + 8, bBigEnd);
+				}
 				var iValOffset = iNumValues > 4 ? iValueOffset : (iEntryOffset + 8);
 				var aVals = [];
 				for (var n=0;n<iNumValues;n++) {
@@ -616,11 +621,12 @@ function readEXIFData(oFile, iStart, iLength)
 	}
 
 	if (oTags['MakerNote'] ) {
-		console.log(readMakerTags(oFile, iTIFFOffset, iTIFFOffset + oTags['MakerNote'], EXIF.CanonNoteTags, bBigEnd), "0x" + oFile.getShortAt(iTIFFOffset, iTIFFOffset + oTags['MakerNote']).toString(16));
 		oTags =  normalizeEXIFTags(oTags, readMakerTags(oFile, iTIFFOffset, iTIFFOffset + oTags['MakerNote'], EXIF.CanonNoteTags, bBigEnd));
-		//oTags =  normalizeEXIFTags(oTags, readTags(oFile, iTIFFOffset, iTIFFOffset + oTags['MakerNote'], EXIF.NikonNoteTags, bBigEnd));
-		//console.log(readTags(oFile, iTIFFOffset, iTIFFOffset + oTags['MakerNote'], EXIF.NikonNoteTags, bBigEnd));
 	}
+	
+	// if (oTags['MakerNote'] ) {
+		// oTags =  normalizeEXIFTags(oTags, readMakerTags(oFile, iTIFFOffset, iTIFFOffset + oTags['MakerNote'], EXIF.CanonNoteTags, bBigEnd));
+	// }
 	
 	if (oTags['GPSInfoIFDPointer']) {
 		var oGPSTags = readTags(oFile, iTIFFOffset, iTIFFOffset + oTags['GPSInfoIFDPointer'], EXIF.GPSTags, bBigEnd);
