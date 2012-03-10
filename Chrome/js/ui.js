@@ -90,7 +90,8 @@ function checkExif(src, callback){
 			callback({
 				'data': aExifData,
 				'gps': gps,
-				'src': originalSrc
+				'src': originalSrc,
+				'histogram': true
 			});
 
 	});
@@ -157,6 +158,7 @@ function getFlikrEXIF(id, callback){
 			}
 		})
 	).then(function(){
+		oData.histogram = true;
 		callback(oData);
 	});
 }

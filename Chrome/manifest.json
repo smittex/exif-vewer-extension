@@ -1,7 +1,7 @@
 {
 	"name": "EXIF Viewer",
 	"description": "Quick access to EXIF data of any image you view",
-	"version": "1.7.0",
+	"version": "1.7.1",
 	"default_locale": "en",
 	"permissions": [
 		"tabs",
@@ -15,7 +15,7 @@
 	},
 	"content_scripts": [ {
       "all_frames": false,
-      "js": [ "jquery-1.7.1.min.js" ,"jquery-ui-1.8.18.custom.min.js", "jquery.ajaxLoader.js", "jquery.histogram.js", "page.js", "exif_inject.js" ],
+      "js": [ "js/jquery-1.7.1.min.js" ,"js/jquery-ui-1.8.18.custom.min.js", "js/jquery.ajaxLoader.js", "js/jquery.histogram.js", "js/page.js", "js/exif_inject.js" ],
 	  "css": ["css/redmond/jquery-ui-1.8.6.custom.css", "css/base.css"],
       "matches": [ "<all_urls>" ],
       "run_at": "document_idle"
