@@ -3,7 +3,7 @@ function exif_inject(data){
 	$("img[src='"+data.src+"']").ajaxLoaderRemove();
 	var content = $("<div />").append(
 			$("<div />").addClass("ExifViewer").attr("img", data['src']).append(
-				$("<div />").addClass("ExifVewerTabData").exif(data['data'], data['gps'], data['src'])
+				$("<div />").addClass("ExifVewerTabData").exif(data)
 			)
 		),dialog = content.dialog({
 			"minWidth" : 450,
@@ -21,7 +21,7 @@ function exif_inject(data){
 					chrome.extension.sendRequest({
 						'action' : 'copyToClipboard',
 						'value': $(this).find(".ExifVewerTabData tr:visible").map(function(){
-									return this.childNodes[0].innerText + ": " + this.childNodes[1].innerText ;
+									return this.childNodes[0].innerText + ": " + this.childNodes[1].innerText;
 								}).get().join("\n")
 					});
 				}
@@ -196,10 +196,13 @@ if(re.PHOTO_PAGE.test(location.href)){
 		}
 		
 		var table, methods = {
-			init : function( data, gps , src) {
+			init : function( settings ) {
 				return this.each(function(){
 				
 					var parent = null,
+						data = settings.data,
+						gps  = settings.gps,
+						src  = settings.src,
 						table = $("<table />").attr("width", "100%").addClass("exifTable");
 					if(gps && gps.lat && gps.lng) {
 						parent = $("<div />").append(
@@ -278,14 +281,21 @@ if(re.PHOTO_PAGE.test(location.href)){
 				
 						
 					} else {
+						if(settings.histogram){
+							parent.append(
+								$("<center />").append(
+									$("<canvas width=360 height=100></canvas>").histogram({src: src})
+								)
+							)
+						} 
+							parent.append(
+								$("<p />").css({
+									'color': '#000',
+									'font-size': '22px',
+									'text-align': 'center'
+								}).text(chrome.i18n.getMessage("noEXIF"))
+							);
 
-						parent.append(
-							$("<div />").css({
-								'color': '#000',
-								'font-size': '22px',
-								'text-align': 'center'
-							}).text(chrome.i18n.getMessage("noEXIF"))
-						)
 					}
 
 					$(this).data('exif', data).append(
