@@ -31,9 +31,11 @@ var Histogram = Class.create({
     }
   },
   calculate : function() {
-    this.convertColor(this.type);
+   // this.convertColor(this.type);
     var len = this.data.length;
-    for(var i=0; i<len; i+=4) {
+	var k = Math.floor(len / 40000);
+	k = (k>1)?k:1;
+    for(var i=0; i<len; i+=4*k) {
       this.bins.r[this.data[i]]++;
       this.bins.g[this.data[i + 1]]++;
       this.bins.b[this.data[i + 2]]++;
@@ -67,42 +69,15 @@ var Histogram = Class.create({
 	var max = Mean(ca) + Median(ca) + (1+  Mean(ca)/Median(ca))*StdDev(ca);
     return max;
   },
-  normalize : function(factor) {
+  normalize : function() {
     for(var ch in this.bins) {
       for(var i=0; i<256; i++) {
-        this.bins[ch][i] /= factor;
+        this.bins[ch][i] = Math.round((
+			((i>0)? this.bins[ch][i-1] :  this.bins[ch][i]) + 
+			this.bins[ch][i] + 
+			((i<255)? this.bins[ch][i+1] :  this.bins[ch][i])
+		)/3);
       }
-    }
-  },
-  backProject : function() {
-    // TODO
-  },
-  compare : function(hist, method) {
-    // TODO
-    switch(method) {
-    case 'correl':
-      break;
-    case 'chisqr':
-      break;
-    case 'intersect':
-      break;
-    case 'bhattacharyya':
-      break;
-    default:
-      break;
-    }
-  },
-  convertColor : function(type) {
-    // TODO
-    switch(type) {
-    case 'rgb':
-      break;
-    case 'gray':
-      break;
-    case 'hsv':
-      break;
-    default:
-      break;
     }
   }
 });
@@ -112,6 +87,7 @@ self.addEventListener('message', function(e) {
   var hist = new Histogram(e.data.image[0]);
   hist.calculate();
   hist.bins.max = hist.getMax();
+  hist.normalize();
   postMessage(hist.bins);
 }, false);
 
