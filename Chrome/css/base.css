@@ -1,13 +1,19 @@
 .exifTable{
-	background-color: #FFFFFF !important;
+	background-color: #FCFDFD !important;
+	margin: 0px !important;
 }
-
+.exifTable tr:nth-child(odd){
+		background-color: #fff;
+}
+.exifTable tr:nth-child(even){
+		background-color: #fafafa;
+}
 .exifTd{
 	font: 12px Lucida Grande, Lucida Sans, Arial, sans-serif !important; 
 	color: #000000 !important;
 	text-align: left !important;
-	background-color: #FFFFFF !important;
-	padding: 0 0 2px 2px !important;
+	padding: 2px !important;
+	margin: 0px !important;
 	border-top: 0px !important;
 	border-right:0px !important;
 	border-left:0px !important;
@@ -48,10 +54,7 @@
 	/*opacity: 1;*/
 }
 
-.attributesContainer{
-	max-height: 357px;
-	overflow-y: auto;
-}
+
 
 .ExifVewerTabData {
 

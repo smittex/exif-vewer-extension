@@ -171,25 +171,31 @@ EXIF.GPSTags = {
 	0x001E : "GPSDifferential"
 }
 
-EXIF.CanonNoteTags = {
-	// 0xA432	: "LensInfo", //	rational64u[4]	ExifIFD	(4 rational values giving focal and aperture ranges, called LensSpecification by the EXIF spec.)
-	// 0xA433	: "LensMake", //	string	ExifIFD	 
-	// 0xA434	: "LensModel", //	string	ExifIFD	 
-	// 0xA435	: "LensSerialNumber",
-	
-	0x0096:	"SerialInfo",
-	//0x0006:	"CanonImageType",
-	0x0095:	"LensModel",
-	//0x4019:	"LensInfo"
-}
-EXIF.NikonNoteTags = {
-	// 0xA432	: "LensInfo", //	rational64u[4]	ExifIFD	(4 rational values giving focal and aperture ranges, called LensSpecification by the EXIF spec.)
-	// 0xA433	: "LensMake", //	string	ExifIFD	 
-	// 0xA434	: "LensModel", //	string	ExifIFD	 
-	// 0xA435	: "LensSerialNumber",
-	
-	0x0082: "AuxiliaryLens",
-	0x0084: "Lens"
+EXIF.MakerNote = {
+	"Canon": {
+		// 0xA432	: "LensInfo", //	rational64u[4]	ExifIFD	(4 rational values giving focal and aperture ranges, called LensSpecification by the EXIF spec.)
+		// 0xA433	: "LensMake", //	string	ExifIFD	 
+		// 0xA434	: "LensModel", //	string	ExifIFD	 
+		// 0xA435	: "LensSerialNumber",
+		
+		0x0096:	"SerialInfo",
+		//0x0006:	"CanonImageType",
+		0x0095:	"LensModel",
+		//0x4019:	"LensInfo"
+	}, "NIKON CORPORATION": {
+		// 0xA432	: "LensInfo", //	rational64u[4]	ExifIFD	(4 rational values giving focal and aperture ranges, called LensSpecification by the EXIF spec.)
+		// 0xA433	: "LensMake", //	string	ExifIFD	 
+		// 0xA434	: "LensModel", //	string	ExifIFD	 
+		// 0xA435	: "LensSerialNumber",
+		
+		0x0082: "AuxiliaryLens",
+		0x0084: "Lens",
+		0x0098: "LensID"
+	}, "OLYMPUS IMAGING CORP.": {
+		0x2010: {  //EquipmentIFD
+			0x0203: "LensModel"
+		}
+	}
 }
 
 EXIF.StringValues = {
@@ -441,10 +447,14 @@ function readMakerTags(oFile, iTIFFStart, iDirStart, oStrings, bBigEnd)
 	
 		var iEntryOffset = iDirStart + i*12 + 2;
 		var strTag = oStrings[oFile.getShortAt(iEntryOffset, bBigEnd)];
-		if(strTag){
+		if(typeof strTag === "string"){
 			oStringsLength--;
 			//if (!strTag && bDebug) console.log("Unknown tag: " + oFile.getShortAt(iEntryOffset, bBigEnd).toString(16));
 			oTags[strTag] = readTagValue(oFile, iEntryOffset, iTIFFStart, iDirStart, bBigEnd);
+		} else if(typeof strTag === "object"){
+			console.log(
+				readMakerTags(oFile, iTIFFOffset, iTIFFOffset + oFile.getShortAt(iEntryOffset+4, bBigEnd), bBigEnd)
+			);
 		}
 	}
 	return oTags;
@@ -619,9 +629,9 @@ function readEXIFData(oFile, iStart, iLength)
 		oTags = normalizeEXIFTags(oTags, readTags(oFile, iTIFFOffset, iTIFFOffset + oTags['ExifIFDPointer'], EXIF.Tags, bBigEnd) );
 	}
 
-	if (oTags['MakerNote'] ) {
-		oTags =  normalizeEXIFTags(oTags, readMakerTags(oFile, iTIFFOffset, iTIFFOffset + oTags['MakerNote'], EXIF.CanonNoteTags, bBigEnd));
-	}
+	if (oTags['MakerNote'] && EXIF.MakerNote[oTags['Make']]) {
+		oTags =  normalizeEXIFTags(oTags, readMakerTags(oFile, iTIFFOffset, iTIFFOffset + oTags['MakerNote'], EXIF.MakerNote[oTags['Make']], bBigEnd));
+	} 
 	
 	// if (oTags['MakerNote'] ) {
 		// oTags =  normalizeEXIFTags(oTags, readMakerTags(oFile, iTIFFOffset, iTIFFOffset + oTags['MakerNote'], EXIF.CanonNoteTags, bBigEnd));

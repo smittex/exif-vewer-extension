@@ -17,6 +17,18 @@ var rxs = [
 	}
 ];
 
+function ImageData(data){
+	$.extend(this, data);
+	if(this.data.LensID && EXIF.Lens[this.data.Make.data] && EXIF.Lens[this.data.Make.data][this.data.LensID.data]){
+		this.data.LensModel = $.extend(exifAttributes.LensModel, {
+			"data": EXIF.Lens[this.data.Make.data][this.data.LensID.data],
+			"label": chrome.i18n.getMessage("LensModel")
+		});
+	}
+	
+	this.histogram = true;
+}
+
 function fixUrl(src){
 	$.each(rxs, function(i, rx){
 		if(rx.rx.test(src)){
@@ -87,12 +99,12 @@ function checkExif(src, callback){
 		gps.lng = Geo.parseDMS(gps_data.Longitude,gps_data.LongitudeRef);
 		
 
-			callback({
+			callback(new ImageData({
 				'data': aExifData,
 				'gps': gps,
 				'src': originalSrc,
-				'histogram': true
-			});
+				'originalSrc': src
+			}));
 
 	});
 }
@@ -118,6 +130,11 @@ function getFlikrEXIF(id, callback){
 					$.each(data['photo']['exif'], function(i, tag){
 						var data = tag['raw']['_content'],
 							name = tag['tag'];
+							
+						if(parseInt(tag['tag'])){
+							var tagId = parseInt(tag['tag']);
+							name = (tag['tagspace'] == "TIFF")?EXIF.TiffTags[tagId]:EXIF.Tags[tagId]
+						}
 						if(name == "ISO"){
 							name = "ISOSpeedRatings"
 						}
@@ -156,10 +173,25 @@ function getFlikrEXIF(id, callback){
 					}
 				}
 			}
+		}),
+		$.ajax({
+			'url': "http://api.flickr.com/services/rest/",
+			'dataType': 'json',
+			'data': {
+				'method': 'flickr.photos.getSizes',
+				'api_key': 'a44589ed5e15fc1c6d0e08193ab7b5b3',
+				'photo_id': id,
+				'format': 'json',
+				'nojsoncallback':'1'
+			},
+			'success': function(data){
+				if(data && data.size && data.size.length){
+					oData.originalSrc = oData.src = data.size[data.size.length-1].source;
+				}
+			}
 		})
 	).then(function(){
-		oData.histogram = true;
-		callback(oData);
+		callback(new ImageData(oData));
 	});
 }
 
@@ -247,7 +279,7 @@ function loadExifAttributes(){
 }
 
 function getCameraImage(camera, callback){
-	if (cameraImages[camera.model] && !camera.force){
+	if (cameraImages[camera['model']] && !camera['force'] && cameraImages[camera['model']]['brand']){
 		callback(cameraImages[camera.model]);
 	} else {
 		$.ajax({

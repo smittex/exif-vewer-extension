@@ -73,7 +73,7 @@
 							}).attr("title", "Click to update image")
 						)
 					).append(
-						$("<td />").text( cam['brand'] )
+						$("<td />").text( cam['brand'] ? cam['brand'] : "" )
 					).append(
 						$("<td />").text( name )
 					)
