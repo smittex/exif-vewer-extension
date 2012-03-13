@@ -30,11 +30,11 @@ function exif_inject(data){
 					disabled: (Object['keys'](data['data']).length==0),
 					click: function(){
 						if($(this).find(".exifHiddenRow").is(":visible")){
-							$(this).find(".exifHiddenRow").hide();
+							$(this).find(".attributesContainer").css("max-height", "").find(".exifHiddenRow").hide();
 							$(this).parent(".exif-dialog").find("#ExifExpand").button("option", "label", chrome.i18n.getMessage("dialogExpand"));
 						} else {
-							$(this).css({'min-height': $(this).height() + "px"})
-							$(this).find(".exifHiddenRow").show();
+							var h = $(this).find(".attributesContainer").height();
+							$(this).find(".attributesContainer").css("max-height", h+"px").find(".exifHiddenRow").show();
 							$(this).parent(".exif-dialog").find("#ExifExpand").button("option", "label", chrome.i18n.getMessage("dialogCollapse"));
 						}
 					},
@@ -63,7 +63,7 @@ function exif_inject(data){
 		}
 		
 		var titlebar = content.parent(".exif-dialog").find(".exif-dialog-titlebar"),
-			h = $('<a href="#"/>').addClass("exif-dialog-titlebar-heart exif-corner-all").attr("role",
+			h = $('<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YHWF9X2ETGJ4W" target="_tab"/>').addClass("exif-dialog-titlebar-heart exif-corner-all").attr("role",
 				"button").hover(function () {
 					h.addClass("exif-state-hover")
 				}, function () {
@@ -72,14 +72,10 @@ function exif_inject(data){
 					h.addClass("exif-state-focus")
 				}).blur(function () {
 					h.removeClass("exif-state-focus")
-				}).click(function (i) {
-					window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YHWF9X2ETGJ4W", "_tab");
-					return false
 				}).append(
 					$("<span />").addClass("exif-icon exif-icon-heart")
-				)
-				.appendTo(titlebar),
-			w =  $('<a href="#"/>').addClass("exif-dialog-titlebar-wrench exif-corner-all").attr("role",
+				).appendTo(titlebar),
+			w =  $('<a href="'+chrome.extension.getURL("options.html")+'" target="_tab"/>').addClass("exif-dialog-titlebar-wrench exif-corner-top").attr("role",
 				"button").hover(function () {
 					w.addClass("exif-state-hover")
 				}, function () {
@@ -88,9 +84,6 @@ function exif_inject(data){
 					w.addClass("exif-state-focus")
 				}).blur(function () {
 					w.removeClass("exif-state-focus")
-				}).click(function (i) {
-					window.open(chrome.extension.getURL("options.html"), "_tab");
-					return false
 				}).append(
 					$("<span />").addClass("exif-icon exif-icon-wrench")
 				)
@@ -223,7 +216,7 @@ if(re.PHOTO_PAGE.test(location.href)){
 						data = settings.data,
 						gps  = settings.gps,
 						src  = settings.src,
-						table = $("<table />").attr("width", "100%").addClass("exifTable");
+						table = $("<table cellspacing=0 cellpadding=0/>").attr("width", "100%").addClass("exifTable");
 					if(gps && gps.lat && gps.lng) {
 						parent = $("<div />").append(
 							$("<ul />").append(
@@ -244,13 +237,26 @@ if(re.PHOTO_PAGE.test(location.href)){
 					if(Object['keys'](data).length){
 						console.log(data);
 						$.each(data, function(name, tag){
-							table.append(
-								$("<tr>").append(
-									$("<td>").addClass("exifTd").text(tag['label'])
-								).append(
-									$("<td>").addClass("exifTd").append((typeof tag['data'] == 'object')?tag['data'].length:prettyPrint(name, tag))
-								).addClass(tag['visible']?"exifVisibleRow":"exifHiddenRow")
-							);
+							if(tag['visible']){
+								table.append(
+									$("<tr>").append(
+										$("<td>").addClass("exifTd").text(tag['label'])
+									).append(
+										$("<td>").addClass("exifTd").text((typeof tag['data'] == 'object')?tag['data'].length:prettyPrint(name, tag))
+									).addClass(tag['visible']?"exifVisibleRow":"exifHiddenRow")
+								);
+							}
+						});
+						$.each(data, function(name, tag){
+							if(!tag['visible']){
+								table.append(
+									$("<tr>").append(
+										$("<td>").addClass("exifTd").text(tag['label'])
+									).append(
+										$("<td>").addClass("exifTd").text((typeof tag['data'] == 'object')?tag['data'].length:prettyPrint(name, tag))
+									).addClass(tag['visible']?"exifVisibleRow":"exifHiddenRow")
+								);
+							}
 						});
 						
 						if(data["Model"]){
@@ -260,6 +266,7 @@ if(re.PHOTO_PAGE.test(location.href)){
 									$("<td />").attr("id", "ExifViewerImages").css({
 										'text-align': 'center !important',
 										'height': '130px',
+										'width': '165px',
 										'vertical-align': 'center'
 									}).addClass("exifTd").append(
 										$("<img />").attr("src", chrome.extension.getURL("/img/ajax-loader.gif"))
