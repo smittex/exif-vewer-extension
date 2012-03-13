@@ -237,6 +237,8 @@ function loadExifAttributes(){
 		$.each(exifAttributes, function(name, val){
 			if(typeof tmp[name] == 'undefined'){
 				tmp[name] = val;
+			} else {
+				tmp[name] = $.extend(val, tmp[name]);
 			}
 		});
 		exifAttributes = tmp;

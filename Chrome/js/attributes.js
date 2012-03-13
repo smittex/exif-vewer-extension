@@ -49,7 +49,8 @@ window['exifAttributes'] = {
 		'visible' : true
 	},
 	'FNumber' : {
-		'visible' : true
+		'visible' : true,
+		'prefix': "f / "
 	},
 	'ExposureProgram' : {
 		'visible' : true
@@ -143,7 +144,8 @@ window['exifAttributes'] = {
 		'visible' : false
 	},
 	'FocalLengthIn35mmFilm' : {
-		'visible' : false
+		'visible' : false,
+		'dim' : "mm"
 	},
 	'SceneCaptureType' : {
 		'visible' : false

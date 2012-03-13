@@ -63,7 +63,7 @@ function exif_inject(data){
 		}
 		
 		var titlebar = content.parent(".exif-dialog").find(".exif-dialog-titlebar"),
-			h = $('<a href="#"/>').addClass("exif-dialog-titlebar-heart exif-corner-top").attr("role",
+			h = $('<a href="#"/>').addClass("exif-dialog-titlebar-heart exif-corner-all").attr("role",
 				"button").hover(function () {
 					h.addClass("exif-state-hover")
 				}, function () {
@@ -79,7 +79,7 @@ function exif_inject(data){
 					$("<span />").addClass("exif-icon exif-icon-heart")
 				)
 				.appendTo(titlebar),
-			w =  $('<a href="#"/>').addClass("exif-dialog-titlebar-wrench exif-corner-top").attr("role",
+			w =  $('<a href="#"/>').addClass("exif-dialog-titlebar-wrench exif-corner-all").attr("role",
 				"button").hover(function () {
 					w.addClass("exif-state-hover")
 				}, function () {
@@ -93,6 +93,26 @@ function exif_inject(data){
 					return false
 				}).append(
 					$("<span />").addClass("exif-icon exif-icon-wrench")
+				)
+				.appendTo(titlebar);
+				
+			$('<a href="#"/>').addClass("exif-dialog-titlebar-alert exif-corner-all").attr("role",
+				"button").hover(function () {
+					$(this).addClass("exif-state-hover")
+				}, function () {
+					$(this).removeClass("exif-state-hover")
+				}).focus(function () {
+					$(this).addClass("exif-state-focus")
+				}).blur(function () {
+					$(this).removeClass("exif-state-focus")
+				}).click(function () {
+					window.open("http://code.google.com/p/exif-vewer-extension/issues/entry?comment=" + 
+						escape("Page URL: " + location.href + "\r\n" + 
+						"Image URL: "+data['src'] + "\r\n")
+						, "_tab");
+					return false
+				}).append(
+					$("<span />").addClass("exif-icon exif-icon-alert")
 				)
 				.appendTo(titlebar);
 			 
@@ -183,7 +203,7 @@ if(re.PHOTO_PAGE.test(location.href)){
 			if(name == "ExposureTime"){
 				return float2exposure(tag.data);
 			} else {
-				return tag.data + (tag.dim?tag.dim:'');
+				return (tag.prefix?tag.prefix:'') + tag.data + (tag.dim?tag.dim:'');
 			}
 		}
 		function gpsFrame(gps){
@@ -228,7 +248,7 @@ if(re.PHOTO_PAGE.test(location.href)){
 								$("<tr>").append(
 									$("<td>").addClass("exifTd").text(tag['label'])
 								).append(
-									$("<td>").addClass("exifTd").text((typeof tag['data'] == 'object')?tag['data'].length:prettyPrint(name, tag))
+									$("<td>").addClass("exifTd").append((typeof tag['data'] == 'object')?tag['data'].length:prettyPrint(name, tag))
 								).addClass(tag['visible']?"exifVisibleRow":"exifHiddenRow")
 							);
 						});

@@ -9,7 +9,7 @@
     var ctxStyle,
 		discreetWidth = Math.round(canvas.width / 255),
     ctxStyle = 'fillStyle';
-	ctx.globalAlpha = .8;
+	ctx.globalAlpha = .9;
     ctx.fillStyle = colors[type][1];
     ctx.strokeStyle = colors[type][1];
     ctx.beginPath();
