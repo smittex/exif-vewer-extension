@@ -3,13 +3,23 @@
 		<title>EXIF viewer settings</title>
 		<link type="text/css" href="css/redmond/jquery-ui-1.8.6.custom.css" rel="stylesheet" />	
 		<link type="text/css" href="chrome://resources/css/button.css" rel="stylesheet" />	
+		<link type="text/css" href="chrome://resources/css/button.css" rel="stylesheet" />	
 		<link type="text/css" href="css/options.css" rel="stylesheet" />	
 		<script src="js/jquery-1.7.1.min.js"></script>
 		<script src="js/jquery-ui-1.8.18.custom.min.js"></script>
+		<script src="js/jquery.ajaxLoader.js"></script>
 		<script>
 		
 		$(document).ready(function(){
 
+			$(".navbar-item").click(function(){
+				$(".navbar-item").removeClass("navbar-item-selected");
+				var tab = $(this);
+				$(".tabPage").hide();
+				tab.addClass("navbar-item-selected");
+				$("#" + tab.attr("pagename")).show();
+			});
+		
 			if(localStorage.getItem("overlayEnabled") != "false")
 				$("#overlayEnabled").attr('checked', true);
 
@@ -39,17 +49,36 @@
 							$("#attributesContainer")//.scrollTop(0);
 						}))
 					)
-					//.append(
-					//	$("<td />").append($("<span class=\"exif-icon exif-icon-sort_down\"></span>").click(function(){
-					//		table.append($(this).parent().parent());
-					//		$("#attributesContainer").scrollTop(0);
-					//	}))
-					//)
 				)
 			});
 
 			$("table#attributes tbody").sortable();
-		
+
+
+			var cameras = $("table#cameras");
+			var ci = chrome.extension.getBackgroundPage().cameraImages;
+			$.each(ci, function(name, cam){
+				cameras.append(
+					$("<tr />").append(
+						$("<td width=200/>").append(
+							$("<img />").attr("src", cam.tbUrl).click(function(){
+								var img = $(this).ajaxLoader();
+								chrome.extension.getBackgroundPage().getCameraImage({
+									"model": name,
+									"brand": cam['brand'],
+									"force": true
+								}, function(cam){
+									img.attr("src", cam.tbUrl).ajaxLoaderRemove();
+								})
+							}).attr("title", "Click to update image")
+						)
+					).append(
+						$("<td />").text( cam['brand'] )
+					).append(
+						$("<td />").text( name )
+					)
+				)
+			})
 
 		});
 		
@@ -96,6 +125,11 @@
 			<img src="camera_blue-128.png">
 		</center>
 		
+		<ul id="navbar">
+		  <li id="tabPpageMain" class="navbar-item navbar-item-selected" pagename="mainview-content" tabindex="0"><span><span>Basic options</span></li>
+		  <li id="tabPageFilters" class="navbar-item" pagename="camera-content" tabindex="2" style=""><span><span>List of cameras</span></li>
+		</ul>
+		
 		<div style="padding: 20px;">
 				
 				<input type="button" onclick="window.location.href='http://code.google.com/p/exif-vewer-extension/issues/list'" value="Report an issue"  style="width:150px;height:26px;margin:5px;" />
@@ -105,31 +139,37 @@
 		</div>
 	</div>
 	
-	<div id="mainview-content">
+	<div id="mainview-content" class="tabPage">
+		<h1>Basic options</h1>
+		<p>
+			<input type="checkbox" id="overlayEnabled">Enable overlay on images with EXIF</input>
+		</p>
+		<div id="attributesContainer">
+			<table id="attributes" cellspacing=0 cellpadding=0>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div id="buttonsContainer">
+			<!--input type="button" onclick="saveOptions();" value="Save Options" style="width:150px;height:26px;margin:5px;"/-->
+			<button  onclick="saveOptions();">Save Options</button>
+		</div>
+	</div>
 	
-				<h1>Basic options</h1>
-				<p>
-					<input type="checkbox" id="overlayEnabled">Enable overlay on images with EXIF</input>
-				</p>
-			
-				<!--table>
-					<tr>
-						<td type="text" class="attributes_layer" valign="top">Selected attributes:<ul id="selectedattributes" ></ul></td>
-						<td type="text" class="attributes_layer" valign="top">Available attributes:<div class="scrollframe"><ul id="attributes" ><div></ul></td>
-					</tr>
-				</table-->
-				<div id="attributesContainer">
-					<table id="attributes" cellspacing=0 cellpadding=0>
-						<tbody>
-						</tbody>
-					</table>
-				</div>
-				<div id="buttonsContainer">
-					<!--input type="button" onclick="saveOptions();" value="Save Options" style="width:150px;height:26px;margin:5px;"/-->
-					<button  onclick="saveOptions();">Save Options</button>
-				</div>
-				
+	<div id="camera-content" class="tabPage" style="display: none;">
 	
+		<h1>List of cameras</h1>
+		<div id="attributesContainer">
+			<table id="cameras" cellspacing=0 cellpadding=0>
+				<thead>
+					<th>Photo</th>
+					<th>Brand</th>
+					<th>Model</th>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
 	</div>
 	
 
