@@ -33,19 +33,38 @@ var Histogram = Class.create({
   calculate : function() {
     this.convertColor(this.type);
     var len = this.data.length;
-    for(var i=0; i<len; i+=4*10) {
+    for(var i=0; i<len; i+=4) {
       this.bins.r[this.data[i]]++;
       this.bins.g[this.data[i + 1]]++;
       this.bins.b[this.data[i + 2]]++;
     }
   },
   getMax : function() {
-    var max = 0;
-    for(var ch in this.bins) {
-      for(var i=0; i<256; i++) {
-        max = this.bins[ch][i] > max ? this.bins[ch][i] : max;
-      }
-    }
+	
+	function StdDev(ca){
+		var i = 0, sum = 0,
+			m = Mean(ca);
+		for (i in ca){
+			sum += Math.pow(ca[i]-m, 2)
+		}
+		return Math.floor( Math.sqrt(sum/ca.length) );
+	}
+	
+	function Mean(ca){
+		var sum=0, i=0;
+		for (i=0; i<ca.length; i++){
+			sum += ca[i];
+		}
+		return Math.round(sum/ca.length);
+	}
+	function Median(ca){
+		ca.sort(function(a,b){return a-b;});
+		return Math.round((ca[Math.round(ca.length/2)] + ca[Math.round(ca.length/2)+1])/2);
+	}
+	var ca = [];
+	for(var i=0; i<256; i++)
+		ca[i] = Math.round((this.bins.r[i]+ this.bins.g[i] + this.bins.b[i])/3);
+	var max = Mean(ca) + Median(ca) + (1+  Mean(ca)/Median(ca))*StdDev(ca);
     return max;
   },
   normalize : function(factor) {
