@@ -66,7 +66,7 @@ var Histogram = Class.create({
 				tmp.splice(i, 1);
 			}
 		}
-		return Math.round((ca[Math.round(ca.length/2)] + ca[Math.round(ca.length/2)+1])/2) || Mean(ca);
+		return Math.round((tmp[Math.round(tmp.length/2)] + tmp[Math.round(tmp.length/2)+1])/2) || Mean(tmp);
 	}
 	var ca = [];
 	for(var i=0; i<256; i++)
