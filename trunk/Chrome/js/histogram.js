@@ -60,12 +60,18 @@ var Histogram = Class.create({
 		return Math.round(sum/ca.length);
 	}
 	function Median(ca){
-		ca.sort(function(a,b){return a-b;});
-		return Math.round((ca[Math.round(ca.length/2)] + ca[Math.round(ca.length/2)+1])/2);
+		var tmp = ca.sort(function(a,b){return a-b;});
+		for(var i in tmp){
+			if(!tmp[i]){
+				tmp.splice(i, 1);
+			}
+		}
+		return Math.round((ca[Math.round(ca.length/2)] + ca[Math.round(ca.length/2)+1])/2) || Mean(ca);
 	}
 	var ca = [];
 	for(var i=0; i<256; i++)
 		ca[i] = Math.round((this.bins.r[i]+ this.bins.g[i] + this.bins.b[i])/3);
+	//postMessage([Mean(ca), Median(ca), (1+  Mean(ca)/Median(ca))*StdDev(ca)]);
 	var max = Mean(ca) + Median(ca) + (1+  Mean(ca)/Median(ca))*StdDev(ca);
     return max;
   },
