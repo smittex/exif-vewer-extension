@@ -216,22 +216,32 @@ if(re.PHOTO_PAGE.test(location.href)){
 						data = settings.data,
 						gps  = settings.gps,
 						src  = settings.src,
-						table = $("<table cellspacing=0 cellpadding=0/>").attr("width", "100%").addClass("exifTable");
-					if(gps && gps.lat && gps.lng) {
+					//if(gps && gps.lat && gps.lng) {
 						parent = $("<div />").append(
 							$("<ul />").append(
 								$("<li />").append($("<a/>").text(chrome.i18n.getMessage("dialogTitle")).attr("href","#exifDataTab"))
 							).append(
-								$("<li />").append($("<a/>").text(chrome.i18n.getMessage("dialogTabGeolocation")).attr("href","#exifGpsTab"))
+								$("<li />").append($("<a/>").text(chrome.i18n.getMessage("dialogTabHistogram")).attr("href","#exifHistogramTab"))
+							).append(
+								$("<li />").css({
+									"display": (gps && gps.lat && gps.lng)?"block":"none"
+								}).append($("<a/>").text(chrome.i18n.getMessage("dialogTabGeolocation")).attr("href","#exifGpsTab"))
 							)
 						).append(
-							$("<div />").attr('id', 'exifDataTab').addClass("attributesContainer").append(table)
+							$("<div />").attr('id', 'exifDataTab').append(table = $("<table cellspacing=0 cellpadding=0/>").attr("width", "100%").addClass("exifTable"))
+						).append(
+							$("<div />").attr('id', 'exifHistogramTab').css({
+								'text-align': 'center'
+							})
+								.append($("<canvas width=381 height=80></canvas>").histogram({src: src, colors: ["r"]}))
+								.append($("<canvas width=381 height=80></canvas>").histogram({src: src, colors: ["g"]}))
+								.append($("<canvas width=381 height=80></canvas>").histogram({src: src, colors: ["b"]}))
 						).append(
 							$("<div />").attr('id', 'exifGpsTab').append(gpsFrame(gps))
 						).tabs()
-					} else {
-						parent = $("<div />").addClass("attributesContainer").append(table);
-					}
+					// } else {
+						// parent = $("<div />").addClass("attributesContainer").append(table);
+					// }
 					
 					
 					if(Object['keys'](data).length){
@@ -273,7 +283,7 @@ if(re.PHOTO_PAGE.test(location.href)){
 									)
 								).append(
 									$("<td />").addClass("exifTd").append(
-										$("<canvas width=230 height=100></canvas>").histogram({src: src})
+										$("<canvas width=241 height=100></canvas>").histogram({src: src})
 									)
 								)
 							)
@@ -300,7 +310,7 @@ if(re.PHOTO_PAGE.test(location.href)){
 										'height': '100px',
 										'vertical-align': 'center'
 									}).append(
-										$("<canvas width=360 height=100></canvas>").histogram({src: src})
+										$("<canvas width=381 height=100></canvas>").histogram({src: src})
 									)
 								)
 							)
@@ -309,13 +319,13 @@ if(re.PHOTO_PAGE.test(location.href)){
 						
 					} else {
 						if(settings.histogram){
-							parent.append(
+							$(parent).children("#exifDataTab").append(
 								$("<center />").append(
 									$("<canvas width=360 height=100></canvas>").histogram({src: src})
 								)
 							)
 						} 
-							parent.append(
+							$(parent).children("#exifDataTab").append(
 								$("<p />").css({
 									'color': '#000',
 									'font-size': '22px',

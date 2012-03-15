@@ -35,6 +35,9 @@
 	"dialogTabGeolocation" : {
 		"message" : "Geolocation"
 	},
+	"dialogTabHistogram" : {
+		"message" : "Histogram"
+	},
 	"ExifVersion" : {
 		"message" : "Exif Version"
 	},

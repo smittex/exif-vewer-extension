@@ -34,7 +34,10 @@
         },
         "dialogTabGeolocation": {
                 "message": "地理位置"
-        },      
+        },
+		"dialogTabHistogram" : {
+			"message" : "Histogram"
+		},
         "ExifVersion":{ "message": "Exif 版本"},
         "FlashpixVersion":{ "message": "Flashpix 版本"},
         "ColorSpace":{ "message": "色彩空間"},
