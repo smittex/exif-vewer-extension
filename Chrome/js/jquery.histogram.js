@@ -1,4 +1,4 @@
-
+var histograms = {};
 (function( $ ){
   const colors = {
         'r':   ['#000', '#ff0000'],
@@ -31,31 +31,58 @@
 	  ctx.closePath();
   };		
 		
-		
-	function drawHistogram(ctx, bins, canvas) {
-		drawHist(ctx, 'r', bins['r'], bins.max, canvas);
-		drawHist(ctx, 'g', bins['g'], bins.max, canvas);
-		drawHist(ctx, 'b', bins['b'], bins.max, canvas);
-	}	
+	
+	function drawBoard(context, bw, bh){
+		for (var x = 0; x <= bw; x += 20) {
+			context.moveTo(0.5 + x, 0);
+			context.lineTo(0.5 + x, bh);
+		}
+
+
+		for (var x = 0; x <= bh; x += 20) {
+			context.moveTo(0, 0.5 + x);
+			context.lineTo(bw, 0.5 + x);
+		}
+
+		context.strokeStyle = "#eee";
+		context.stroke();
+	}
+	
+	function drawHistogram(ctx, bins, canvas, colors) {
+		$.each(colors, function(i, c){
+			drawHist(ctx, c, bins[c], bins.max, canvas);
+		});
+		ctx.globalCompositeOperation = 'darker';
+		drawBoard(ctx, canvas.width, canvas.height)
+	}
+	
+	function proceedHistogram(node, data, colors){
+		return node.each(function(){
+				var ctxHistogram = this.getContext('2d');
+				ctxHistogram.clearRect(0, 0, this.width, this.height);
+				ctxHistogram.strokeStyle = '#000';
+				ctxHistogram.globalCompositeOperation = 'lighter';
+				drawHistogram(ctxHistogram, data, this, colors);
+				ctxHistogram.globalCompositeOperation = 'source-over';
+		});	
+	}
 		
 	var methods = {
 		init : function( data ) {
 			var node = this;
-			chrome.extension.sendRequest({
-				'action' : 'getHistogramData',
-				'src': data.src
-			}, function(data){
-				return node.each(function(){
-						var ctxHistogram = this.getContext('2d');
-						//ctxHistogram.fillStyle = '#ffffff';
-						//ctxHistogram.fillRect(0, 0, this.width, this.height);
-						ctxHistogram.clearRect(0, 0, this.width, this.height);
-						ctxHistogram.strokeStyle = '#000';
-						ctxHistogram.globalCompositeOperation = 'lighter';
-						drawHistogram(ctxHistogram, data, this);
-						ctxHistogram.globalCompositeOperation = 'source-over';
+			if(histograms[data.src]){
+				proceedHistogram(node, histograms[data.src], data.colors||["r","g","b"]);
+			} else {
+				chrome.extension.sendRequest({
+					'action' : 'getHistogramData',
+					'src': data.src
+				}, function(hist){
+					histograms[data.src] = hist;
+					return node.each(function(){
+						proceedHistogram(node, hist, data.colors||["r","g","b"]);
+					});
 				});
-			});
+			}
 			return node;
 		}
 	};

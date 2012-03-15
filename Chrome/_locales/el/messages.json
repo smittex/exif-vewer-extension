@@ -34,7 +34,10 @@
         },
         "dialogTabGeolocation": {
                 "message": "Γεωτοποθέτηση"
-        },      
+        }, 
+		"dialogTabHistogram" : {
+			"message" : "Histogram"
+		},    
         "ExifVersion":{ "message": "Έκδοση Exif"},
         "FlashpixVersion":{ "message": "Έκδοση Flashpix"},
         "ColorSpace":{ "message": "Χρωματικός χώρος"},
