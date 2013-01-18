@@ -171,6 +171,71 @@ EXIF.GPSTags = {
 	0x001E : "GPSDifferential"
 }
 
+EXIF.IPTCTags = {
+	0:	"ApplicationRecordVersion",
+	3: "ObjectTypeReference",
+	4: "ObjectAttributeReference",
+	5: "ObjectName",
+	7: "EditStatus",
+	8: "EditorialUpdate",
+	10: "Urgency",
+	12: "SubjectReference",
+	15: "Category",
+	20: "SupplementalCategories",
+	22: "FixtureIdentifier",
+	25: "Keywords",
+	26: "ContentLocationCode",
+	27: "ContentLocationName",
+	30: "ReleaseDate",
+	35: "ReleaseTime",
+	37: "ExpirationDate",
+	38: "ExpirationTime",
+	40: "SpecialInstructions",
+	42: "ActionAdvised",
+	45: "ReferenceService",
+	47: "ReferenceDate",
+	50: "ReferenceNumber",
+	55: "DateCreated",
+	60: "TimeCreated",
+	62: "DigitalCreationDate",
+	63: "DigitalCreationTime",
+	65: "OriginatingProgram",
+	70: "ProgramVersion",
+	75: "ObjectCycle",
+	80: "By-line",
+	85: "By-lineTitle",
+	90: "City",
+	92: "Sub-location",
+	95: "Province-State",
+	100: "Country-PrimaryLocationCode",
+	101: "Country-PrimaryLocationName",
+	103: "OriginalTransmissionReference",
+	105: "Headline",
+	110: "Credit",
+	115: "Source",
+	116: "CopyrightNotice",
+	118: "Contact",
+	120: "Caption-Abstract",
+	121: "LocalCaption",
+	122: "Writer-Editor",
+	125: "RasterizedCaption",
+	130: "ImageType",
+	131: "ImageOrientation",
+	135: "LanguageIdentifier",
+	184: "JobID",
+	185: "MasterDocumentID",
+	186: "ShortDocumentID",
+	187: "UniqueDocumentID",
+	188: "OwnerID",
+	221: "Prefs",
+	225: "ClassifyState",
+	228: "SimilarityIndex",
+	230: "DocumentNotes",
+	231: "DocumentHistory",
+	232: "ExifCameraInfo",
+	255: "CatalogSets"
+}
+
 EXIF.MakerNote = {
 	"Canon": {
 		// 0xA432	: "LensInfo", //	rational64u[4]	ExifIFD	(4 rational values giving focal and aperture ranges, called LensSpecification by the EXIF spec.)
@@ -180,7 +245,7 @@ EXIF.MakerNote = {
 		
 		0x0096:	"SerialInfo",
 		//0x0006:	"CanonImageType",
-		0x0095:	"LensModel",
+		0x0095:	"LensModel"
 		//0x4019:	"LensInfo"
 	}, "NIKON CORPORATION": {
 		// 0xA432	: "LensInfo", //	rational64u[4]	ExifIFD	(4 rational values giving focal and aperture ranges, called LensSpecification by the EXIF spec.)
@@ -358,16 +423,16 @@ function addEvent(oElement, strEvent, fncHandler)
 
 function imageHasData(oImg) 
 {
-	return !!(oImg.exifdata);
+	return !!(oImg['exifdata']);
 }
 
 function getImageData(oImg, fncCallback) 
 {
 	BinaryAjax(
-		oImg.src,
+		oImg['src'],
 		function(oHTTP) {
 			var oEXIF = findEXIFinJPEG(oHTTP.binaryResponse);
-			oImg.exifdata = oEXIF || {};
+			oImg['exifdata'] = oEXIF || {};
 			if (fncCallback) fncCallback();
 		}
 	)
@@ -380,13 +445,14 @@ function findEXIFinJPEG(oFile) {
 		return false; // not a valid jpeg
 	}
 
+	var data = {};
 	var iOffset = 2,i=0;
 	var iLength = oFile.getLength();
 	while (iOffset < iLength) {
-		if(i++ > 10) return;
+		if(i++ > 10) return data;
 		if (oFile.getByteAt(iOffset) != 0xFF) {
 			if (bDebug) console.log("Not a valid marker at offset " + iOffset.toString(16) + ", found: " + oFile.getByteAt(iOffset).toString(16));
-			return false; // not a valid marker, something is wrong
+			//return data; // not a valid marker, something is wrong
 		}
 
 		var iMarker = oFile.getByteAt(iOffset+1);
@@ -394,34 +460,53 @@ function findEXIFinJPEG(oFile) {
 		// we could implement handling for other markers here, 
 		// but we're only looking for 0xFFE1 for EXIF data
 		
-		if (iMarker == 22400) {
+		if (iMarker == 0x5780) {
 			if (bDebug) console.log("Found 0x5780 marker");
-			return readEXIFData(oFile, iOffset + 4, oFile.getShortAt(iOffset+2, true)-2);
+			$.extend(data,  readEXIFData(oFile, iOffset + 4, oFile.getShortAt(iOffset+2, true)-2));
 			iOffset += 2 + oFile.getShortAt(iOffset+2, true);
+			continue;
 
-		} else if (iMarker == 225) {
+		} else if (iMarker == 0xE1) {
 			// 0xE1 = Application-specific 1 (for EXIF)
 			if (bDebug) console.log("Found 0xFFE1 marker");
-			if (oFile.getStringAt(iOffset + 4, 4) == "Exif")
-				return readEXIFData(oFile, iOffset + 4, oFile.getShortAt(iOffset+2, true)-2);
-			else if(oFile.getStringAt(iOffset + 4, 28) == "http://ns.adobe.com/xap/1.0/"){
+			if (oFile.getStringAt(iOffset + 4, 4) == "Exif"){
+				if (bDebug) console.log("Found Exif marker");
+				$.extend(data, readEXIFData(oFile, iOffset + 4, oFile.getShortAt(iOffset+2, true)-2));
+			} else if(oFile.getStringAt(iOffset + 4, 28) == "http://ns.adobe.com/xap/1.0/"){
 				if (bDebug) console.log("Found XMP marker", oFile.getStringAt(iOffset + 33, oFile.getShortAt(iOffset+2, true)-31));
-				return readXMPData(oFile.getStringAt(iOffset + 33, oFile.getShortAt(iOffset+2, true)-31));
+				$.extend(data, readXMPData(oFile.getStringAt(iOffset + 33, oFile.getShortAt(iOffset+2, true)-31)));
 			}
 
 		} else if (iMarker == 0xE0) {
-			// 0xE1 = Application-specific 1 (for EXIF)
+			// 0xE0 = Application-specific 1 (for EXIF)
 			if (bDebug) console.log("Found 0xFFE0 marker");
-			if (oFile.getStringAt(iOffset + 4, 4) == "JFIF")
+			if (oFile.getStringAt(iOffset + 4, 4) == "JFIF"){
 				if (bDebug) console.log("Found JFIF marker");
-				//return readEXIFData(oFile, iOffset + 4, oFile.getShortAt(iOffset+2, true)-2);
+				$.extend(data,  readEXIFData(oFile, iOffset + 4, oFile.getShortAt(iOffset+2, true)-2));
+				iOffset += 2 + oFile.getShortAt(iOffset+2, true);
+				continue;
+			}
+
+		} else if (iMarker == 0xED) {
+			// 0xED = IPTC-NAA Record
+			if (bDebug) console.log("Found 0xED marker", oFile.getStringAt(iOffset+4, 4));
+			if (oFile.getStringAt(iOffset+4+14, 4) == "8BIM"){
+				if (bDebug) console.log("Found 8BIM marker");
+				var segmentType = oFile.getShortAt(oFile, iOffset + 4+14+4, false);
+				var headerLen = oFile.getByteAt(iOffset + 4+14+4+2);
+				var pointer = (iOffset + 4+14+4+2) + 1 + headerLen + ((headerLen + 1) % 2);
+				var segmentLen = oFile.getLongAt(pointer, true);
+				console.log(segmentLen);
+				if(segmentLen>10000)
+					segmentLen = 10000;
+				$.extend(data, readIPTCData(oFile, pointer+4, segmentLen));
+			}
 
 		} 
 
 		iOffset += 2 + oFile.getShortAt(iOffset+2, true);
-
-
 	}
+	return data;
 
 }
 
@@ -608,7 +693,7 @@ function readEXIFData(oFile, iStart, iLength)
 	} else if (oFile.getShortAt(iTIFFOffset) == 0x4D4D) {
 		bBigEnd = true;
 	} else {
-		if (bDebug) console.log("Not valid TIFF data! (no 0x4949 or 0x4D4D)");
+		if (bDebug) console.log("Not valid TIFF data! (no 0x4949 or 0x4D4D): "+ oFile.getShortAt(iTIFFOffset).toString(16));
 		return false;
 	}
 
@@ -651,14 +736,14 @@ function readEXIFData(oFile, iStart, iLength)
 			oTags[strTag] = oGPSTags[strTag];
 		}
 	}
-	//console.log(oTags);
+	if(bDebug) console.log(oTags);
 	return oTags;
 }
 
 function readXMPData(sData){
 	var parser=new DOMParser(),
-		oTags = {}
-	window.xmp=parser.parseFromString(sData,"text/xml");
+		oTags = {},
+		xmp = parser.parseFromString(sData,"text/xml");
 	$("*", xmp).each(function(){
 		if(this.tagName == "rdf:Description"){
 			$.each(this.attributes, function(i, tag){
@@ -670,6 +755,32 @@ function readXMPData(sData){
 	return normalizeEXIFTags(oTags, oTags);
 }
 
+function readIPTCData(oFile, iStart, iLength) 
+{
+	var pos = iStart,
+		oTags = {};
+	while(pos + 5 <= iLength) {
+		var entryMarker = oFile.getByteAt(pos);
+		var entryRecord = oFile.getByteAt(pos + 1);
+		var tag = oFile.getByteAt(pos + 2);
+		// dataLen is really only the length of the data.
+		// There are signs, that the highest bit of this int
+		// indicates an extended tag. Be aware of this.
+		var dataLen = oFile.getShortAt(pos + 3, true);
+		console.log(
+			entryMarker.toString(16),
+			entryRecord.toString(16),
+			tag.toString(16),
+			dataLen.toString(16)
+		);
+		if(EXIF.IPTCTags[tag])
+			oTags[EXIF.IPTCTags[tag]] =  oFile.getStringAt(pos + 5, dataLen);
+	
+		pos += 5 + dataLen;
+	}
+	console.log(oTags)
+	return oTags;
+}
 function prettyPrint(data, a){
 	if(a == "ExposureTime"){
 		return float2exposure(data[a]);
@@ -702,14 +813,14 @@ EXIF.getData = function(oImg, fncCallback)
 EXIF.getTag = function(oImg, strTag) 
 {
 	if (!imageHasData(oImg)) return;
-	return oImg.exifdata[strTag];
+	return oImg['exifdata'][strTag];
 }
 
 EXIF.getAllTags = function(oImg) 
 {
 	if (!imageHasData(oImg)) return {};
 	alert(oImg)
-	var oData = oImg.exifdata;
+	var oData = oImg['exifdata'];
 	var oAllTags = {};
 	for (var a in oData) {
 		if (oData.hasOwnProperty(a)) {

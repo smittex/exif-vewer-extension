@@ -2,118 +2,12 @@
 	<head>
 		<title>EXIF viewer settings</title>
 		<link type="text/css" href="css/redmond/jquery-ui-1.8.6.custom.css" rel="stylesheet" />	
-		<link type="text/css" href="chrome://resources/css/button.css" rel="stylesheet" />	
-		<link type="text/css" href="chrome://resources/css/button.css" rel="stylesheet" />	
+		<link type="text/css" href="chrome://resources/css/button.css" rel="stylesheet" />
 		<link type="text/css" href="css/options.css" rel="stylesheet" />	
 		<script src="js/jquery-1.7.1.min.js"></script>
 		<script src="js/jquery-ui-1.8.18.custom.min.js"></script>
 		<script src="js/jquery.ajaxLoader.js"></script>
-		<script>
-		
-		$(document).ready(function(){
-
-			$(".navbar-item").click(function(){
-				$(".navbar-item").removeClass("navbar-item-selected");
-				var tab = $(this);
-				$(".tabPage").hide();
-				tab.addClass("navbar-item-selected");
-				$("#" + tab.attr("pagename")).show();
-			});
-		
-			if(localStorage.getItem("overlayEnabled") != "false")
-				$("#overlayEnabled").attr('checked', true);
-
-			var attributes = JSON.parse(localStorage.getItem("exif_attributes"));
-			var table = $("table#attributes");
-			$.each(attributes, function(name, attr){
-				table.append(
-					$("<tr />").attr("id", name).attr('selected', attr.visible).append(
-						$("<td />").append(
-							$("<img />").attr('src', attr.visible ? 'img/yes.png' : 'img/no.png').click( function(){
-								var tr = $(this).parent().parent(),
-									visible = !tr.get(0).hasAttribute('selected');
-								console.log(visible)
-								
-								$(this).attr('src', visible ? 'img/yes.png' : 'img/no.png');
-								if(visible)
-									tr.attr('selected', true);
-								else
-									tr.removeAttr('selected');
-							})
-						)
-					).append(
-						$("<td />").attr('width', '100%').text(chrome.i18n.getMessage(name)?chrome.i18n.getMessage(name):name)
-					).append(
-						$("<td />").append($("<span class=\"exif-icon exif-icon-sort_up\"></span>").click(function(){
-							table.prepend($(this).parent().parent());
-							$("#attributesContainer")//.scrollTop(0);
-						}))
-					)
-				)
-			});
-
-			$("table#attributes tbody").sortable();
-
-
-			var cameras = $("table#cameras");
-			var ci = chrome.extension.getBackgroundPage().cameraImages;
-			$.each(ci, function(name, cam){
-				cameras.append(
-					$("<tr />").append(
-						$("<td width=200/>").append(
-							$("<img />").attr("src", cam.tbUrl).click(function(){
-								var img = $(this).ajaxLoader();
-								chrome.extension.getBackgroundPage().getCameraImage({
-									"model": name,
-									"brand": cam['brand'],
-									"force": true
-								}, function(cam){
-									img.attr("src", cam.tbUrl).ajaxLoaderRemove();
-								})
-							}).attr("title", "Click to update image")
-						)
-					).append(
-						$("<td />").text( cam['brand'] ? cam['brand'] : "" )
-					).append(
-						$("<td />").text( name )
-					)
-				)
-			})
-
-		});
-		
-		
-		function saveOptions(){
-
-			localStorage.setItem("overlayEnabled", $("#overlayEnabled").is(':checked'));
-			var attributes = {};//JSON.parse(localStorage.getItem("exif_attributes"));
-
-			$("#attributes tr").each(function(i, elem){
-				var name = elem.getAttribute("id");
-				attributes[name] = {
-					visible: elem.hasAttribute('selected'),
-					pos: i
-				}
-			});
-			
-			localStorage.setItem("exif_attributes", JSON.stringify(attributes));
-			var bgPage = chrome.extension.getBackgroundPage();
-			bgPage.exifAttributes = attributes;
-
-				
-			$("#dialog").text(chrome.i18n.getMessage("optionsSaved")).dialog({
-				title: chrome.i18n.getMessage("optionsDone"),
-				modal: true,
-				resizable: false,
-				buttons: {
-					Ok: function() {
-						$( this ).dialog( "close" );
-					}
-				}
-			});
-			
-		}
-		</script>
+		<script src="js/options.js"></script>
 	</head>
 	<body >
 
@@ -132,7 +26,7 @@
 		
 		<div style="padding: 20px;">
 				
-				<input type="button" onclick="window.location.href='http://code.google.com/p/exif-vewer-extension/issues/list'" value="Report an issue"  style="width:150px;height:26px;margin:5px;" />
+				<input type="button" id="reportAnIssue" value="Report an issue"  style="width:150px;height:26px;margin:5px;" />
 
 				<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YHWF9X2ETGJ4W" style="position: absolute; bottom: 150px; left: 22px;" ><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" /></a>
 				<img src="http://s1.softpedia-static.com/base_img/softpedia_free_award_f.gif" style="position: absolute; bottom: 10px; left: 10px;">
@@ -141,6 +35,7 @@
 	
 	<div id="mainview-content" class="tabPage">
 		<h1>Basic options</h1>
+		
 		<p>
 			<input type="checkbox" id="overlayEnabled">Enable overlay on images with EXIF</input>
 		</p>
@@ -151,8 +46,7 @@
 			</table>
 		</div>
 		<div id="buttonsContainer">
-			<!--input type="button" onclick="saveOptions();" value="Save Options" style="width:150px;height:26px;margin:5px;"/-->
-			<button  onclick="saveOptions();">Save Options</button>
+			<button id="saveOptions">Save Options</button>
 		</div>
 	</div>
 	
@@ -161,11 +55,6 @@
 		<h1>List of cameras</h1>
 		<div id="attributesContainer">
 			<table id="cameras" cellspacing=0 cellpadding=0>
-				<thead>
-					<th>Photo</th>
-					<th>Brand</th>
-					<th>Model</th>
-				</thead>
 				<tbody>
 				</tbody>
 			</table>

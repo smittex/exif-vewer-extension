@@ -18,6 +18,10 @@
  * Utilities for accessing elements in Flickr pages.
  */
 
+var re = {
+	PHOTO_PAGE: /^https?:\/\/[^\/]*\bflickr\.com\/photos\/[^\/]+\/(\d+)/i
+};
+ 
 var page = {
 
   getPhotoId: function() {

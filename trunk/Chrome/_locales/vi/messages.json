@@ -1,4 +1,10 @@
 ﻿{
+	"title": {
+		"message": "EXIF Viewer"
+	},
+	"description": {
+		"message": "Quick access to EXIF data of any image you view"
+	},
 	"menuitem" : {
 		"message" : "Hiển thị dữ liệu EXIF"
 	},
