@@ -1,5 +1,5 @@
-EXIF.Lens = {};
-EXIF.Lens.Canon = {
+EXIF['Lens'] = {};
+EXIF['Lens']['Canon'] = {
 	"1" : " Canon EF 50mm f/1.8",
 	"2" : " Canon EF 28mm f/2.8",
 	"3" : " Canon EF 135mm f/2.8 Soft",

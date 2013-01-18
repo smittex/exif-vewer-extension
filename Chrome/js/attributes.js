@@ -290,6 +290,30 @@ window['exifAttributes'] = {
 	},
 	"Lens" : {
 		'visible' : true
-	}
+	},
+	'ApplicationRecordVersion': {'visible': false},
+	'By-line': {'visible': false},
+	'Caption-Abstract': {'visible': false},
+	'Category': {'visible': false},
+	'City': {'visible': false},
+	'Country-PrimaryLocationCode': {'visible': false},
+	'Country-PrimaryLocationName': {'visible': false},
+	'Credit': {'visible': false},
+	'DateCreated': {'visible': false},
+	'EditStatus': {'visible': false},
+	'FixtureIdentifier': {'visible': false},
+	'Headline': {'visible': false},
+	'Keywords': {'visible': false},
+	'ObjectName': {'visible': false},
+	'OriginalTransmissionReference': {'visible': false},
+	'OriginatingProgram': {'visible': false},
+	'ProgramVersion': {'visible': false},
+	'ReferenceNumber': {'visible': false},
+	'ReleaseDate': {'visible': false},
+	'Source': {'visible': false},
+	'SpecialInstructions': {'visible': false},
+	'SupplementalCategories': {'visible': false},
+	'TimeCreated': {'visible': false},
+	'Urgency': {'visible': false}
 }
  

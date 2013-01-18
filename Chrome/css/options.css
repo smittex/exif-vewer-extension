@@ -1,5 +1,5 @@
 
-	body {maring:0px; padding:0px;font-family: Arial, sans-serif;overflow:hidden;}
+	body {maring:0px; padding:0px;font-family: Segoe UI, Arial, sans-serif;overflow:hidden;}
 
 	#attributes tr { 
 		height: 24px;
@@ -152,4 +152,89 @@ div.exif-ajax-loader {
   color: black;
   text-shadow: #bbcee9 0 1px 1px;
 }
-	
+.camera-row td{
+	border-bottom: 1px solid #ccc;
+}
+.camera-iamge-container{
+	width:200px;
+	height:80px;
+	background-repeat:no-repeat;
+	background-position:center; 
+	background-size: contain;
+}
+.camera-image-url{
+	width: 250px;
+	font-size: 10px;
+}
+.camera-image-reload{
+	vertical-align: bottom;
+	padding: 2px;
+}
+
+.camera-description{
+	font-family: Segoe UI, Arial, sans-serif;
+	font-size: 12px;
+}
+.exif-dialog-titlebar{
+	background: #444;
+}
+.exif-dialog{
+	background: #eee;
+}
+
+
+button, input[type="button"]{
+	-webkit-transition: all .1s linear;
+	-webkit-appearance: none;
+	-webkit-border-image: none;
+	-webkit-box-align: center;
+	-webkit-box-shadow: rgba(0, 0, 0, 0.078125) 0px 1px 0px 0px, rgba(255, 255, 255, 0.746094) 0px 1px 2px 0px inset;
+	-webkit-user-select: none;
+	background-color: #F0F0F0;
+	background-image: -webkit-linear-gradient(top, #EDEDED, #EDEDED 38%, #DEDEDE);
+	border-bottom-color: rgba(0, 0, 0, 0.246094);
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-left-color: rgba(0, 0, 0, 0.246094);
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: rgba(0, 0, 0, 0.246094);
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top-color: rgba(0, 0, 0, 0.246094);
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	border-top-style: solid;
+	border-top-width: 1px;
+	box-shadow: rgba(0, 0, 0, 0.078125) 0px 1px 0px 0px, rgba(255, 255, 255, 0.746094) 0px 1px 2px 0px inset;
+	box-sizing: border-box;
+	color: #444;
+	cursor: default;
+	display: inline-block;
+	font-family: 'Segoe UI', Tahoma, sans-serif;
+	font-size: 12px;
+	height: 24px;
+	letter-spacing: normal;
+	line-height: normal;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 1px;
+	margin-top: 0px;
+	min-height: 24px;
+	min-width: 48px;
+	padding-bottom: 1px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 1px;
+	text-align: center;
+	text-indent: 0px;
+	text-shadow: #F0F0F0 0px 1px 0px;
+	text-transform: none;
+	word-spacing: 0px;
+}
+
+button:hover, input[type="button"]:hover{
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 0px 0px, rgba(255, 255, 255, 1) 0px 1px 2px 0px inset;
+}

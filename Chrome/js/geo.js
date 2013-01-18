@@ -7,7 +7,7 @@ Geo.parseDMS = function(dms, ref) {
   // and convert to decimal degrees...
   switch (dms && dms.length) {
     case 3:  // interpret 3-part result as d/m/s
-      var deg = dms[0]/1 + dms[1]/60 + dms[2]/3600; 
+      var deg = dms[0]/1 + dms[1]/60 + (parseInt(dms[2])?dms[2]/3600:0); 
       break;
     case 2:  // interpret 2-part result as d/m
       var deg = dms[0]/1 + dms[1]/60; 

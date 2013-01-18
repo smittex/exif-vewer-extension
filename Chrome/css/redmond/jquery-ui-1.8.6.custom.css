@@ -31,7 +31,7 @@
 ----------------------------------*/
 
 /* states and images */
-.exif-icon { display: block; text-indent: -99999px; overflow: hidden; background-repeat: no-repeat; }
+.exif-icon { display: inline-block; text-indent: -99999px; overflow: hidden; background-repeat: no-repeat; }
 
 
 /* Misc visuals
@@ -56,33 +56,33 @@
 
 /* Component containers
 ----------------------------------*/
-.exif-widget { font-family: Arial, sans-serif; font-size: 12px; }
+.exif-widget { font-family: Oswald, Segoe UI, Arial, sans-serif; font-size: 12px; }
 .exif-widget .exif-widget { font-size: 1em; }
-.exif-widget input, .exif-widget select, .exif-widget textarea, .exif-widget button { font-family: Arial, sans-serif; font-size: 1em; }
-.exif-widget-content { border: 1px solid #86cce9; background: #fcfdfd url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_inset-hard_100_fcfdfd_1x100.png) 50% bottom repeat-x; color: #222222; }
-.exif-widget-content a { color: #222222; }
-.exif-widget-header { border: 1px solid #649bb4; background: #66c0e5 url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_gloss-wave_80_66c0e5_500x100.png) 50% 50% repeat-x; color: #ffffff; font-weight: bold; }
+.exif-widget input, .exif-widget select, .exif-widget textarea, .exif-widget button { font-family: Oswald, Segoe UI, Arial, sans-serif; font-size: 1em; }
+.exif-widget-content {  }
+.exif-widget-content a { color: #ddd; }
+.exif-widget-header { border: 2px ridge #555;  color: #ffffff; font-family: Oswald, sans-serif; font-weight: normal;}
 .exif-widget-header a { color: #ffffff; }
 
 /* Interaction states
 ----------------------------------*/
-.exif-state-default, .exif-widget-content .exif-state-default, .exif-widget-header .exif-state-default { border: 1px solid #DDD;; background: #dfeffc url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x; font-weight: bold; color: #2e6e9e; }
-.exif-state-default a, .exif-state-default a:link, .exif-state-default a:visited { color: #2e6e9e; text-decoration: none; }
-.exif-state-hover, .exif-widget-content .exif-state-hover, .exif-widget-header .exif-state-hover, .exif-state-focus, .exif-widget-content .exif-state-focus, .exif-widget-header .exif-state-focus { border: 1px solid #79b7e7; background: #d0e5f5 url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_glass_75_d0e5f5_1x400.png) 50% 50% repeat-x !important; font-weight: bold !important; color: #1d5987 !important; }
-.exif-state-hover a, .exif-state-hover a:hover { color: #1d5987; text-decoration: none; }
-.exif-state-active, .exif-widget-content .exif-state-active, .exif-widget-header .exif-state-active { border: 1px solid #79b7e7; background: #f5f8f9 url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_inset-hard_100_f5f8f9_1x100.png) 50% 50% repeat-x; font-weight: bold; color: #d46816; }
-.exif-state-active a, .exif-state-active a:link, .exif-state-active a:visited { color: #d46816; text-decoration: none; }
+.exif-state-default, .exif-widget-content .exif-state-default, .exif-widget-header .exif-state-default { border: 1px outset #999; background-image: -webkit-linear-gradient(#686868, #2a2a2a);  color: #ccc; text-shadow:0px 1px 1px #000; -webkit-transition: all .2s ease-in;}
+.exif-state-default a, .exif-state-default a:link, .exif-state-default a:visited { color: #ccc; text-decoration: none; text-shadow:0px 1px 1px #000; }
+.exif-state-hover, .exif-widget-content .exif-state-hover, .exif-widget-header .exif-state-hover, .exif-state-focus, .exif-widget-content .exif-state-focus, .exif-widget-header .exif-state-focus { border: 1px outset #fff; background-image: -webkit-linear-gradient(#686868, #0A0A0A) !important; color: #fff !important; }
+.exif-state-hover a, .exif-state-hover a:hover { color: #fff; text-decoration: none; }
+.exif-state-active, .exif-widget-content .exif-state-active, .exif-widget-header .exif-state-active { border: 1px outset #eee; background-image: -webkit-linear-gradient(#2a2a2a, #0A0A0A);  color: #f0f0f0; text-shadow:0px 1px 1px #000; }
+.exif-state-active a, .exif-state-active a:link, .exif-state-active a:visited { color: #f0f0f0; text-shadow:0px 1px 1px #000; text-decoration: none; }
 .exif-widget :active { outline: none; }
 
 /* Interaction Cues
 ----------------------------------*/
-.exif-state-highlight, .exif-widget-content .exif-state-highlight, .exif-widget-header .exif-state-highlight  {border: 1px solid #fad42e; background: #fbec88 url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_flat_55_fbec88_40x100.png) 50% 50% repeat-x; color: #363636; }
+.exif-state-highlight, .exif-widget-content .exif-state-highlight, .exif-widget-header .exif-state-highlight  {border: 1px outset #ddd; background: #fbec88 url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_flat_55_fbec88_40x100.png) 50% 50% repeat-x; color: #363636; }
 .exif-state-highlight a, .exif-widget-content .exif-state-highlight a,.exif-widget-header .exif-state-highlight a { color: #363636; }
-.exif-state-error, .exif-widget-content .exif-state-error, .exif-widget-header .exif-state-error {border: 1px solid #cd0a0a; background: #fef1ec url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x; color: #cd0a0a; }
+.exif-state-error, .exif-widget-content .exif-state-error, .exif-widget-header .exif-state-error {border: 1px outset #ddd; background: #fef1ec url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x; color: #cd0a0a; }
 .exif-state-error a, .exif-widget-content .exif-state-error a, .exif-widget-header .exif-state-error a { color: #cd0a0a; }
 .exif-state-error-text, .exif-widget-content .exif-state-error-text, .exif-widget-header .exif-state-error-text { color: #cd0a0a; }
-.exif-priority-primary, .exif-widget-content .exif-priority-primary, .exif-widget-header .exif-priority-primary { font-weight: bold; }
-.exif-priority-secondary, .exif-widget-content .exif-priority-secondary,  .exif-widget-header .exif-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; }
+.exif-priority-primary, .exif-widget-content .exif-priority-primary, .exif-widget-header .exif-priority-primary {  }
+.exif-priority-secondary, .exif-widget-content .exif-priority-secondary,  .exif-widget-header .exif-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); fontfont-weight: normal; }
 .exif-state-disabled, .exif-widget-content .exif-state-disabled, .exif-widget-header .exif-state-disabled { opacity: .35; filter:Alpha(Opacity=35); background-image: none; }
 
 /* Icons
@@ -391,7 +391,7 @@ button.exif-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra p
  *
  * http://docs.jquery.com/UI/Tabs#theming
  */
-.exif-tabs { position: relative; padding: 0; zoom: 1; border:0px; } /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+.exif-tabs { padding: 0; zoom: 1; border:0px; } /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
 .exif-tabs .exif-tabs-nav { margin: 0; padding: .2em .2em 0; border-radius: 3px 3px 0 0; background: transparent; border-width: 0 0 1px 0;}
 .exif-tabs .exif-tabs-nav li { list-style: none; float: left; position: relative; top: 1px; margin: 0 .2em 1px 0; border-bottom: 0 !important; padding: 0; white-space: nowrap; }
 .exif-tabs .exif-tabs-nav li a { float: left; padding: .5em 1em; text-decoration: none; }

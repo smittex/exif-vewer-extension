@@ -1,6 +1,6 @@
 var histograms = {};
 (function( $ ){
-  const colors = {
+  var colors = {
         'r':   ['#000', '#ff0000'],
         'g':   ['#000', '#00ff00'],
         'b':   ['#000', '#0000ff']
@@ -52,8 +52,8 @@ var histograms = {};
 		$.each(colors, function(i, c){
 			drawHist(ctx, c, bins[c], bins.max, canvas);
 		});
-		ctx.globalCompositeOperation = 'darker';
-		drawBoard(ctx, canvas.width, canvas.height)
+		//ctx.globalCompositeOperation = 'darker';
+		//drawBoard(ctx, canvas.width, canvas.height)
 	}
 	
 	function proceedHistogram(node, data, colors){
@@ -70,16 +70,16 @@ var histograms = {};
 	var methods = {
 		init : function( data ) {
 			var node = this;
-			if(histograms[data.src]){
-				proceedHistogram(node, histograms[data.src], data.colors||["r","g","b"]);
+			if(histograms[data['src']]){
+				proceedHistogram(node, histograms[data['src']], data['colors']||["r","g","b"]);
 			} else {
 				chrome.extension.sendRequest({
 					'action' : 'getHistogramData',
-					'src': data.src
+					'src': data['src']
 				}, function(hist){
-					histograms[data.src] = hist;
+					histograms[data['src']] = hist;
 					return node.each(function(){
-						proceedHistogram(node, hist, data.colors||["r","g","b"]);
+						proceedHistogram(node, hist, data['colors']||["r","g","b"]);
 					});
 				});
 			}
@@ -87,7 +87,7 @@ var histograms = {};
 		}
 	};
 
-	$.fn.histogram = function( method ) {
+	$['fn']['histogram'] = function( method ) {
 		if ( methods[method] ) {
 			return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
 		} else if ( typeof method === 'object' || typeof method === 'string' || ! method ) {

@@ -1,3 +1,14 @@
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-15750103-6']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+var ga = document.createElement('script'); ga['type'] = 'text/javascript'; ga['async'] = true;
+ga['src'] = 'https://ssl.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+var flickrApiKey = '76f67ec399e50432f88749c94f49f64e';
 function image(src){
 	this['src'] = src;
 }
@@ -15,27 +26,24 @@ var rxs = [
 		"rx": /(https?:\/\/(?:.+\.)+(?:ggpht)\.com\/(?:.+\/){4})(.+)/,
 		"rep": "$1d/$3"
 	}
+	// ,
+	// {
+		// "rx": /https?:\/\/farm\d+\.staticflickr\.com\/\d+\/(\d+).*/,
+		// "type": "flikr",
+		// "rep": "$1"
+	// }
 ];
 
 function ImageData(data){
 	$.extend(this, data);
-	if(this.data.LensID && EXIF.Lens[this.data.Make.data] && EXIF.Lens[this.data.Make.data][this.data.LensID.data]){
-		this.data.LensModel = $.extend(exifAttributes.LensModel, {
-			"data": EXIF.Lens[this.data.Make.data][this.data.LensID.data],
+	if(this['data']['LensID'] && EXIF['Lens'][this['data']['Make']['data']] && EXIF['Lens'][this['data']['Make']['data']][this['data']['LensID']['data']]){
+		this['data']['LensModel'] = $.extend(exifAttributes['LensModel'], {
+			"data": EXIF['Lens'][this['data']['Make']['data']][this['data']['LensID']['data']],
 			"label": chrome.i18n.getMessage("LensModel")
 		});
 	}
 	
 	this.histogram = true;
-}
-
-function fixUrl(src){
-	$.each(rxs, function(i, rx){
-		if(rx.rx.test(src)){
-			src = src.replace(rx.rx, rx.rep);
-		}
-	})
-	return src;
 }
 
 function getHistogramData(src, callback){
@@ -55,31 +63,44 @@ function getHistogramData(src, callback){
 	}, false);
 
 	worker.addEventListener('message', function(e) {
-	  try {
-		callback(e.data);
-	  }catch(e) {
-		console.log(e);
-	  }
-	}, false);
-	worker.addEventListener('error', function(e) {
-	  console.log(e);
+		callback(e['data']);
 	}, false);
 }
 
 function checkExif(src, callback){
-	var originalSrc = src,
-		src = fixUrl(src);
-	var img = new image(src);
+	var originalSrc = src;
+	var bProcessed = false;
+	$.each(rxs, function(i, rx){
+		if(rx['rx'].test(src)){
+			bProcessed = true;
+			if(rx['type'] == "flikr"){
+				getFlikrEXIF(src.replace(rx['rx'], rx['rep']), callback, src);
+			} else {
+				getEmbeddedEXIF(src.replace(rx['rx'], rx['rep']), callback, src);
+			}
+			return;
+		}
+	});
+	if(!bProcessed){
+		getEmbeddedEXIF(src, callback);
+	}
+}
 
-	EXIF.getData(img, function(){
-		//var exif_data = exif_data = EXIF.prettyHTML(img,param);
+// get EXIF from image content
+function getEmbeddedEXIF(src, callback, originalSrc){
+	originalSrc = originalSrc || src;
+	var oImage = new image(src);
+	EXIF.getData(oImage, function(){
+		//console.log(oImage);
+		//var exif_data = exif_data = EXIF.prettyHTML(oImage,param);
 		var aExifData = $.extend({}, exifAttributes);
 		$.each(aExifData, function(name, tag){
-			var data = EXIF.getTag(img, name);
+			var data = EXIF.getTag(oImage, name);
+			//console.log(name, tag, data);
 			if(data){
 				$.extend(tag, {
 					"data": data,
-					"label": chrome.i18n.getMessage(name)
+					"label": chrome.i18n.getMessage(name)||name
 				});
 			} else {
 				delete aExifData[name];
@@ -87,18 +108,18 @@ function checkExif(src, callback){
 		});
 		
 		var gps_data = {
-			Latitude: EXIF.getTag(img, "GPSLatitude"),
-			Longitude: EXIF.getTag(img, "GPSLongitude"),
-			LatitudeRef: EXIF.getTag(img, "GPSLatitudeRef"),
-			LongitudeRef: EXIF.getTag(img, "GPSLongitudeRef"),
-			Position: EXIF.getTag(img, "GPSPosition")
+			Latitude: EXIF.getTag(oImage, "GPSLatitude"),
+			Longitude: EXIF.getTag(oImage, "GPSLongitude"),
+			LatitudeRef: EXIF.getTag(oImage, "GPSLatitudeRef"),
+			LongitudeRef: EXIF.getTag(oImage, "GPSLongitudeRef"),
+			Position: EXIF.getTag(oImage, "GPSPosition")
 		}
 		
 		var gps = {};
-		gps.lat = Geo.parseDMS(gps_data.Latitude,gps_data.LatitudeRef);
-		gps.lng = Geo.parseDMS(gps_data.Longitude,gps_data.LongitudeRef);
+		gps['lat'] = Geo.parseDMS(gps_data.Latitude,gps_data.LatitudeRef);
+		gps['lng'] = Geo.parseDMS(gps_data.Longitude,gps_data.LongitudeRef);
 		
-
+		
 			callback(new ImageData({
 				'data': aExifData,
 				'gps': gps,
@@ -110,16 +131,17 @@ function checkExif(src, callback){
 }
 
 // get Flikr exif
-
-function getFlikrEXIF(id, callback){
-	var oData = {};
+function getFlikrEXIF(id, callback, src){
+	var oData = {
+		"src": src
+	};
 	$.when(
 		$.ajax({
 			'url': "http://api.flickr.com/services/rest/",
 			'dataType': 'json',
 			'data': {
 				'method': 'flickr.photos.getExif',
-				'api_key': 'a44589ed5e15fc1c6d0e08193ab7b5b3',
+				'api_key': flickrApiKey,
 				'photo_id': id,
 				'format': 'json',
 				'nojsoncallback':'1'
@@ -152,7 +174,7 @@ function getFlikrEXIF(id, callback){
 						}
 					});
 				}
-				oData.data = aExifData;
+				oData['data'] = aExifData;
 			}
 		}),
 		$.ajax({
@@ -160,16 +182,16 @@ function getFlikrEXIF(id, callback){
 			'dataType': 'json',
 			'data': {
 				'method': 'flickr.photos.geo.getLocation',
-				'api_key': 'a44589ed5e15fc1c6d0e08193ab7b5b3',
+				'api_key': flickrApiKey,
 				'photo_id': id,
 				'format': 'json',
 				'nojsoncallback':'1'
 			},
 			'success': function(data){
-				if(data && data.photo && data.photo.location){
-					oData.gps = {
-						lat: data.photo.location.latitude,
-						lng: data.photo.location.longitude
+				if(data && data['photo'] && data['photo']['location']){
+					oData['gps'] = {
+						"lat": data['photo']['location']['latitude'],
+						"lng": data['photo']['location']['longitude']
 					}
 				}
 			}
@@ -179,14 +201,15 @@ function getFlikrEXIF(id, callback){
 			'dataType': 'json',
 			'data': {
 				'method': 'flickr.photos.getSizes',
-				'api_key': 'a44589ed5e15fc1c6d0e08193ab7b5b3',
+				'api_key': flickrApiKey,
 				'photo_id': id,
 				'format': 'json',
 				'nojsoncallback':'1'
 			},
 			'success': function(data){
-				if(data && data.size && data.size.length){
-					oData.originalSrc = oData.src = data.size[data.size.length-1].source;
+				if(data && data['sizes'] && data['sizes'] && data['sizes']['size'] && data['sizes']['size'].length){
+					oData['originalSrc'] = data['sizes']['size'][data['sizes']['size'].length-1]['source'];
+					oData['src'] = oData['src'] || oData['originalSrc'];
 				}
 			}
 		})
@@ -199,29 +222,18 @@ function getFlikrEXIF(id, callback){
 function genericOnClick(info, tab) {
 		var img = {src: info.srcUrl};
 		
-		if(/https?:\/\/.*?\.staticflickr.com\//g.test(info.srcUrl)){
-
-		} else {
 			chrome.tabs.sendRequest(tab.id, {
 					'action': 'startExifProcessing',
 					'data': info.srcUrl
 				});
-			try {
-				checkExif(info.srcUrl, function(data){
-					chrome.tabs.sendRequest(tab.id, {
-						'action': 'showExif',
-						'data': data
-					});
-				})
-			} catch(e) {
-				checkExif(info.srcUrl, function(data){
-					chrome.tabs.sendRequest(tab.id, {
-						'action': 'showExif',
-						'data': null
-					});
-				})
-			}
-		}
+
+			checkExif(info.srcUrl, function(data){
+				chrome.tabs.sendRequest(tab.id, {
+					'action': 'showExif',
+					'data': data
+				});
+			})
+
 }
 // Create one test item for each context type.
   var context = "image";
@@ -233,23 +245,31 @@ function genericOnClick(info, tab) {
 chrome.extension.onRequest.addListener(	function (request, sender, callback) {
 	if(request['action'] == 'checkExif'){
 		checkExif(request['src'], function(data){
-			if($.map(data.data, function(tag){
-				return tag.visible?true:null
+			if($.map(data['data'], function(tag){
+				return tag['visible']?true:null
 			}).length)
 				callback(data);
 		});
 	} else if(request['action'] == 'checkFlikrExif'){
 		getFlikrEXIF(request['id'], callback);
-	} else if(request['action'] == 'checkOverlayEnabled'){
-		if(localStorage.getItem("overlayEnabled") != "false")
-			callback();
+	} else if(request['action'] == 'getSettings'){
+		callback({
+			"overlayEnabled": localStorage.getItem("overlayEnabled") != "false",
+			"accordion": localStorage.getItem("accordion")?JSON.parse(localStorage.getItem("accordion")):[0,1,2,3],
+			"tab":0
+		})
+	} else if(request['action'] == 'setSeetings'){
+		if(request['accordion']){
+			localStorage.setItem("accordion", JSON.stringify(request['accordion']));
+		}
 	} else if(request['action'] == 'checkShowCameraImage'){
-		if(localStorage.getItem("showCameraImage") != "false")
-			getCameraImage(request, callback);
+		getCameraImage(request, callback);
 	} else if(request['action'] == 'getHistogramData'){
 		getHistogramData(request.src, callback);
 	} else if(request['action'] == 'copyToClipboard'){
 		copyToClipboard(request['value'])
+	}else if(request['action'] == 'buy'){
+		buy(request['model'])
 	}
 });
 
@@ -279,33 +299,64 @@ function loadExifAttributes(){
 }
 
 function getCameraImage(camera, callback){
-	if (cameraImages[camera['model']] && !camera['force'] && cameraImages[camera['model']]['brand']){
-		callback(cameraImages[camera.model]);
+	if (cameraImages[camera['model']]){
+		callback(cameraImages[camera['model']]);
 	} else {
-		$.ajax({
-			url: 'https://ajax.googleapis.com/ajax/services/search/images',
-			data: {
-				rsz: 1,
-				q: camera['model'].replace(/\n{2,}/g,'') + (camera['brand']?(' by "' + camera['brand'].replace(/\n{2,}/g,'') + '"'):""),
-				imgsz: 'small|medium|large',
-				context: 0,
-				num: 1,
-				start: (camera['force']?Math.round(Math.random(1)*20):1),
-				//as_sitesearch: param.site?param.site:'',
-				imgtype: 'photo',
-				v: '1.0'
-			},
-			dataType: 'json',
-			success: function(resp){
-				cameraImages[camera['model']] = resp.responseData.results[0];
-				cameraImages[camera['model']]['model'] = camera['model'];
-				cameraImages[camera['model']]['brand'] = camera['brand'];
-				localStorage.setItem('cameraImages', JSON.stringify(cameraImages));
-				callback (resp.responseData.results[0]);
-			}
-		});
+		cameraImages[camera['model']] = {};
+		$.when(
+			$.ajax({
+				"url": 'http://www.dpreview.com/products/search-by-name',
+				"type": "POST",
+				"data": {
+					"terms": camera['model'].replace(/\n{2,}/g,'')
+				},
+				"dataType": 'json',
+				"success": function(resp){
+					if(parseInt(resp['result']) && resp['products'] && resp['products'][0]){
+						$.extend(cameraImages[camera['model']], {
+							"imageUrl": resp['products'][0]['imageUrl'],
+							"productUrl": resp['products'][0]['productUrl'],
+							"name": resp['products'][0]['name'],
+							"model": camera['model'],
+							"brand": camera['brand']
+						})
+					}
+				}
+			}),
+			$.ajax({
+				"url": 'https://ajax.googleapis.com/ajax/services/search/images',
+				"data": {
+					"rsz": 1,
+					"q": camera['model'].replace(/\n{2,}/g,'') + (camera['brand']?(' by "' + camera['brand'].replace(/\n{2,}/g,'') + '"'):""),
+					"imgsz": 'small|medium|large',
+					"context": 0,
+					"num": 1,
+					"start": (camera['force']?Math.round(Math.random(1)*20):1),
+					"imgtype": 'photo',
+					"v": '1.0'
+				},
+				"dataType": 'json',
+				"success": function(resp){
+					$.extend(cameraImages[camera['model']], {
+						"tbUrl": resp['responseData']['results'][0]['tbUrl'],
+						"model": camera['model'],
+						"brand": camera['brand']
+					});
+				}
+			})
+		).then(function(){
+			callback (cameraImages[camera['model']]);
+			localStorage.setItem('cameraImages', JSON.stringify(cameraImages));
+		})
 	}
 }
 
-var cameraImages = JSON.parse(localStorage.getItem('cameraImages'))||{};
+window['setCameraImage'] = function(camera, callback){
+	$.extend(cameraImages[camera['model']], camera);
+	localStorage.setItem('cameraImages', JSON.stringify(cameraImages));
+	callback (cameraImages[camera['model']]);
+}
+
+
+window['cameraImages'] = JSON.parse(localStorage.getItem('cameraImages'))||{};
 window['loadExifAttributes'] = loadExifAttributes;

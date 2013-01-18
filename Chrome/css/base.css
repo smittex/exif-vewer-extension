@@ -1,23 +1,72 @@
+
+body.ExifViewerBlur{
+/*-webkit-filter: blur(5px);*/
+}
+
+.ExifViewer {
+	position: fixed;
+	right:-350px;
+	top:0px;
+	bottom:0px;
+	background-image: -webkit-linear-gradient(#0a0a0a, #2a2a2a);
+	opacity:.25;
+	z-index: 999999999999999;
+	width:350px;
+	-webkit-box-shadow: 0 0 5px 0 #000;
+	-webkit-transition: opacity .3s linear, right .3s linear;
+}
+.ExifViewer  a{
+	background-color: transparent !important;
+}
+.ExifViewer-titlebar{
+	border-bottom: 1px ridge #555;
+	background-image: -webkit-linear-gradient(#686868, #2a2a2a);
+	font-family: Oswald, Segoe UI, Arial, sans-serif; font-size: 12px;
+	color: #f0f0f0; text-shadow:0px 1px 1px #000;
+	padding: 4px;
+}
+.ExifViewer-titlebar span{
+	line-height: 16px;
+	vertical-align: top;
+}
+.ExifHistogram{
+	border: 1px solid #7f7f7f;
+	background-color: #3a3a3a;
+	margin: 5px;
+}
 .exifTable{
-	background-color: #FCFDFD !important;
+	background-color: transparent !important;
 	margin: 0px !important;
 }
 .exifTable tr:nth-child(odd){
-		background-color: #fff;
+		background-image: rgba(255,255,255,50);
 }
 .exifTable tr:nth-child(even){
-		background-color: #fafafa;
+		background-image: rgba(255,255,255,20);
 }
 .exifTd{
-	font: 12px Lucida Grande, Lucida Sans, Arial, sans-serif !important; 
-	color: #000000 !important;
+	vertical-align: top;
+	font: 12px Segoe UI, Lucida Grande, Lucida Sans, Arial, sans-serif !important; 
+	color: #ccc !important;
 	text-align: left !important;
 	padding: 2px !important;
 	margin: 0px !important;
 	border-top: 0px !important;
 	border-right:0px !important;
 	border-left:0px !important;
-	border-bottom: 1px solid #eee !important;
+	border-bottom: 1px solid #333 !important;
+	max-width: 150px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	vertical-align: top;
+}
+.exifTd[exif_attribute="ImageDescription"]{
+	white-space: normal;
+}
+
+.exifTdLong{
+	white-space: normal;
 }
 
 .exifHiddenRow{
@@ -57,22 +106,74 @@
 
 
 .ExifVewerTabData {
-
+	height:100%;
 }
-.exif-dialog { z-index: 9999999999 !important; }
-.exif-dialog .exif-dialog-titlebar-heart { position: absolute; right: 3.8em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
-.exif-dialog .exif-dialog-titlebar-heart span { display: block; margin: 1px; }
-.exif-dialog .exif-dialog-titlebar-heart:hover, .exif-dialog .exif-dialog-titlebar-heart:focus { padding: 0; }
 
-.exif-dialog .exif-dialog-titlebar-wrench { position: absolute; right: 2.0em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
-.exif-dialog .exif-dialog-titlebar-wrench span { display: block; margin: 1px; }
-.exif-dialog .exif-dialog-titlebar-wrench:hover, .exif-dialog .exif-dialog-titlebar-wrench:focus { padding: 0; }
+.exif-dialog-titlebar-heart { width: 19px; margin: 1px; padding: 0; height: 18px; }
+.exif-dialog-titlebar-heart span { display: inline-block; margin: 1px; }
+.exif-dialog-titlebar-heart:hover, .exif-dialog .exif-dialog-titlebar-heart:focus { padding: 0; }
+.exif-dialog-titlebar-heart:hover span { background-image: url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-icons_d8e7f3_256x240.png); }
 
-.exif-dialog .exif-dialog-titlebar-alert { position: absolute; right: 5.6em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
-.exif-dialog .exif-dialog-titlebar-alert span { display: block; margin: 1px; }
-.exif-dialog .exif-dialog-titlebar-alert:hover, .exif-dialog .exif-dialog-titlebar-alert:focus { padding: 0; }
+
+.exif-dialog-titlebar-wrench {  width: 19px;  height: 18px; }
+.exif-dialog-titlebar-wrench span { display: inline-block; margin: 1px; }
+.exif-dialog-titlebar-wrench:hover, .exif-dialog-titlebar-wrench:focus { padding: 0; }
+.exif-dialog-titlebar-wrench:hover span { background-image: url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-icons_d8e7f3_256x240.png); }
+
+.exif-dialog-titlebar-alert { width: 19px; height: 18px; }
+.exif-dialog-titlebar-alert span { display: inline-block; margin: 1px; }
+.exif-dialog-titlebar-alert:hover, .exif-dialog-titlebar-alert:focus { padding: 0; }
+.exif-dialog-titlebar-alert:hover span { background-image: url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-icons_d8e7f3_256x240.png); }
+
+.exif-dialog-titlebar-close { width: 19px; height: 18px; }
+.exif-dialog-titlebar-close span { display: inline-block; margin: 1px; }
+.exif-dialog-titlebar-close:hover, .exif-dialog-titlebar-close:focus { padding: 0; }
+.exif-dialog-titlebar-close:hover span { background-image: url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-icons_d8e7f3_256x240.png); }
+
+.exif-icon-copytoclipboard {background-image: url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-icons_469bdd_256x240.png) !important; }
+.exif-icon-copytoclipboard:hover {background-image: url(chrome-extension://__MSG_@@extension_id__/css/redmond/images/ui-icons_d8e7f3_256x240.png) !important; }
+
 
 div.exif-ajax-loader {
 	background: #333 url(chrome-extension://__MSG_@@extension_id__/img/ajax-loader-img.gif) no-repeat 50% 50%;
 	opacity: .6;
 }
+.attributesContainer{
+	height: 100%;
+}
+
+.exif-accordion-header{
+	text-align: right;
+	border: 0 !important;
+	background: transparent !important;
+	border-bottom: 1px solid #5e5d5d !important;
+	padding: 2px !important;
+	margin: 2px !important;
+	font-weight: normal !important;
+}
+.exif-accordion-header a{
+	line-height: 16px;
+	vertical-align: top;
+}
+.camera-iamge-container{
+	margin:10px;
+	height:110px;
+	background-color:#fff;
+	border: 1px solid $999;
+	vertical-align: bottom;
+	text-align:left;
+	background-repeat:no-repeat;
+	background-position:center; 
+	background-size: contain;
+}
+
+#exif-scrollbar { width: 320px; clear: both; margin: 20px 0 10px; }
+#exif-scrollbar .exif-viewport { width: 300px; overflow: hidden; position: relative; }
+#exif-scrollbar .exif-overview { list-style: none; position: absolute; left: 0; top: 0; width:100%;}
+#exif-scrollbar .exif-thumb .exif-end,
+#exif-scrollbar .exif-thumb { background-color: #aaa; border-radius: 8px; }
+#exif-scrollbar .exif-scrollbar { position: relative; float: right; width: 15px; }
+#exif-scrollbar .exif-track { background-color: #4c4c4c; height: 100%; width:8px; border-radius:4px; position: relative; padding: 0 1px; }
+#exif-scrollbar .exif-thumb { height: 20px; width: 8px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
+#exif-scrollbar .exif-thumb .end { overflow: hidden; height: 5px; width: 13px; }
+#exif-scrollbar .exif-scrollbar.disable{ display: none; }
